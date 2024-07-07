@@ -5,13 +5,13 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Bcfier.Revit")]
-[assembly: AssemblyDescription("Bcfier.Revit")]
+[assembly: AssemblyTitle("Bcfier.Renga")]
+[assembly: AssemblyDescription("Bcfier.Renga")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("teocomi")]
-[assembly: AssemblyProduct("Bcfier.Revit")]
-[assembly: AssemblyCopyright("Copyright © teocomi 2017")]
-[assembly: AssemblyTrademark("teocomi")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Bcfier.Renga")]
+[assembly: AssemblyCopyright("Copyright © teocomi 2017, © tyan 2024")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -38,4 +38,4 @@ using System.Windows;
                                                 // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: GuidAttribute("59068325-ACDC-4DB3-892A-1C90C9434BF8")]
+[assembly: GuidAttribute("A1C17F5E-2AC4-499E-926F-34B2B5FAE4B6")]

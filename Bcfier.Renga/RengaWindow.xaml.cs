@@ -26,7 +26,8 @@ namespace Bcfier.RengaPlugin
     public RengaWindow(Renga.IApplication app, ExtEvntOpenView handler)
     {
       InitializeComponent();
-
+      Bcfier.LabelVersion.Content = "BCFier for Renga " +
+                         System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
       try
       {
         _Handler = handler;

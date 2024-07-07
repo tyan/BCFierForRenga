@@ -21,6 +21,9 @@ namespace Bcfier.Win
     {
       InitializeComponent();
 
+      Bcfier.LabelVersion.Content = "BCFier for Windows " +
+                   System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+
       string[] args = Environment.GetCommandLineArgs();
       if (args.Length > 1 && File.Exists(args[1]))
       {

@@ -9,17 +9,14 @@ using System.Windows;
 [assembly: AssemblyTitle("Bcfier")]
 [assembly: AssemblyDescription("Bcfier")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("teocomi")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Bcfier")]
-[assembly: AssemblyCopyright("Copyright © teocomi 2017")]
-[assembly: AssemblyTrademark("teocomi")]
+[assembly: AssemblyCopyright("Copyright © teocomi 2017, © tyan 2024")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: InternalsVisibleTo("Bcfier.Renga")]
-[assembly: InternalsVisibleTo("Bcfier.Revit")]
 [assembly: InternalsVisibleTo("Bcfier.Win")]
-[assembly: InternalsVisibleTo("Bcfier.XbimXplorer")]
-[assembly: InternalsVisibleTo("Bcfier.Navisworks")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

@@ -49,10 +49,6 @@ namespace Bcfier.UserControls
 
       };
       HelpBtn.Click += HelpBtnOnClick;
-      //set version
-      LabelVersion.Content = "BCFier " +
-                         System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-
     }
 
 
