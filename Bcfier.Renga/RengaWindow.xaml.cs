@@ -31,6 +31,15 @@ namespace Bcfier.RengaPlugin
       {
         _Handler = handler;
         _App = app;
+        
+        var applicationEvents = new Renga.ApplicationEventSource(_App);
+        applicationEvents.BeforeProjectClose += (eventArgs) =>
+        {
+          if (Bcfier.TryCloseAllBcfs())
+            Close();
+          else
+            eventArgs.Prevent();
+        };
       }
       catch (Exception ex1)
       {
@@ -112,7 +121,7 @@ namespace Bcfier.RengaPlugin
     /// <param name="e"></param>
     private void Window_Closing(object sender, CancelEventArgs e)
     {
-      e.Cancel = Bcfier.onClosing(e);
+      e.Cancel = !Bcfier.TryCloseAllBcfs();
     }
     #endregion
 

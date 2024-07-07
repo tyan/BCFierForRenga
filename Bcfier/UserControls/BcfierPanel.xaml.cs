@@ -26,8 +26,6 @@ namespace Bcfier.UserControls
     //my data context
     private readonly BcfContainer _bcf = new BcfContainer();
 
-
-
     public BcfierPanel()
     {
       InitializeComponent();
@@ -58,7 +56,7 @@ namespace Bcfier.UserControls
     }
 
 
-    private bool CheckSaveBcf(BcfFile bcf)
+    private bool SaveBcf(BcfFile bcf)
     {
       try
       {
@@ -315,7 +313,7 @@ namespace Bcfier.UserControls
           return;
         var bcf = bcfs.First();
 
-        if (CheckSaveBcf(bcf))
+        if (SaveBcf(bcf))
           _bcf.CloseFile(bcf);
       }
       catch (System.Exception ex1)
@@ -351,22 +349,15 @@ namespace Bcfier.UserControls
     }
     //prompt to save bcf
     //delete temp folders
-    public bool onClosing(CancelEventArgs e)
+    public bool TryCloseAllBcfs()
     {
       foreach (var bcf in _bcf.BcfFiles)
-      {
-        //does not need to be saved, or user has saved it
-        if (CheckSaveBcf(bcf))
-        {
-          //delete temp folder
-          Utils.DeleteDirectory(bcf.TempPath);
-        }
-        else
-          return true;
-      }
+        // Something was not saved and user has discarded saving
+        if (!SaveBcf(bcf))
+          return false;
 
-
-      return false;
+      _bcf.CloseAllFiles();
+      return true;
     }
     private void HelpBtnOnClick(object sender, RoutedEventArgs routedEventArgs)
     {

@@ -125,7 +125,20 @@ namespace Bcfier.Bcf
       {
         MessageBox.Show("exception: " + ex1);
       }
+    }
 
+    public void CloseAllFiles()
+    {
+      try
+      {
+        foreach (var bcf in _bcfFiles)
+          Utils.DeleteDirectory(bcf.TempPath);
+        _bcfFiles.Clear();
+      }
+      catch (System.Exception ex1)
+      {
+        MessageBox.Show("exception: " + ex1);
+      }
     }
 
     /// <summary>
