@@ -62,12 +62,12 @@ Please note that the visibility and selection of the components relies on their 
 
 ## Installation ##
 
-Installation is done by running BCFier.exe that can be downloaded from bcfier.com. Follow the installation wizard and select the modules you want to install.
+Installation of the plugin is done by copying the folder with the plugin to the %RengaInstallationFolder%/Plugins. Detailed instructions are [here](https://help.rengabim.com/api/how-to-implement-a-plugin.html). BCFier for Windows does not need any installation.
 
 ### Requirements ###
 
-.NET Framework 4.8
+.NET Framework 4.8, RengaProfessional/RengaStandard 8.0 or higher.
 
 ### Uninstallation ###
 
-Uninstall using Programs and Features from Windows or the link in Start Menu > All Programs > BCFier > Uninstall. To manually remove a user settings file delete %localappdata%\BCFier\settings.config.
+To uninstall the plugin simply remove it from Plugins folder. To manually remove a user settings file delete %localappdata%\BCFier\settings.config.
