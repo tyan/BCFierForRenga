@@ -4,9 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,8 +25,6 @@ namespace Bcfier.UserControls
   {
     //my data context
     private readonly BcfContainer _bcf = new BcfContainer();
-
-
 
     public BcfierPanel()
     {
@@ -54,19 +49,10 @@ namespace Bcfier.UserControls
 
       };
       HelpBtn.Click += HelpBtnOnClick;
-      //set version
-      LabelVersion.Content = "BCFier " +
-                         System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-
-
-
-      if (UserSettings.GetBool("checkupdates"))
-        CheckUpdates();
-
     }
 
 
-    private bool CheckSaveBcf(BcfFile bcf)
+    private bool SaveBcf(BcfFile bcf)
     {
       try
       {
@@ -78,7 +64,7 @@ namespace Bcfier.UserControls
           if (answer == MessageBoxResult.Yes)
           {
             _bcf.SaveFile(bcf);
-            return false;
+            return true;
           }
           if (answer == MessageBoxResult.Cancel)
           {
@@ -92,9 +78,6 @@ namespace Bcfier.UserControls
       }
       return true;
     }
-
-
-
 
     #region commands
     private void OnDeleteIssues(object sender, ExecutedRoutedEventArgs e)
@@ -326,7 +309,7 @@ namespace Bcfier.UserControls
           return;
         var bcf = bcfs.First();
 
-        if (CheckSaveBcf(bcf))
+        if (SaveBcf(bcf))
           _bcf.CloseFile(bcf);
       }
       catch (System.Exception ex1)
@@ -362,22 +345,15 @@ namespace Bcfier.UserControls
     }
     //prompt to save bcf
     //delete temp folders
-    public bool onClosing(CancelEventArgs e)
+    public bool TryCloseAllBcfs()
     {
       foreach (var bcf in _bcf.BcfFiles)
-      {
-        //does not need to be saved, or user has saved it
-        if (CheckSaveBcf(bcf))
-        {
-          //delete temp folder
-          Utils.DeleteDirectory(bcf.TempPath);
-        }
-        else
-          return true;
-      }
+        // Something was not saved and user has discarded saving
+        if (!SaveBcf(bcf))
+          return false;
 
-
-      return false;
+      _bcf.CloseAllFiles();
+      return true;
     }
     private void HelpBtnOnClick(object sender, RoutedEventArgs routedEventArgs)
     {
@@ -394,49 +370,6 @@ namespace Bcfier.UserControls
 
     #endregion
 
-    #region web
-    //check github API for new release
-    private void CheckUpdates()
-    {
-      Task.Run(() =>
-      {
-        try
-        {
-          var release = GitHubRest.GetLatestRelease();
-          if (release == null)
-            return;
-
-          string version = release.tag_name.Replace("v", "");
-          var mine = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-          var online = Version.Parse(version);
-
-          if (mine.CompareTo(online) < 0 && release.assets.Any())
-          {
-            Application.Current.Dispatcher.Invoke((Action)delegate {
-
-              var dialog = new NewVersion();
-              dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-              dialog.Description.Text = release.name + " has been released on " + release.published_at.ToLongDateString() + "\ndo you want to check it out now?";
-              //dialog.NewFeatures.Text = document.Element("Bcfier").Element("Changelog").Element("NewFeatures").Value;
-              //dialog.BugFixes.Text = document.Element("Bcfier").Element("Changelog").Element("BugFixes").Value;
-              //dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-              dialog.ShowDialog();
-              if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
-                Process.Start(release.assets.First().browser_download_url);
-
-            });
-          
-          }
-        }
-        catch (System.Exception ex1)
-        {
-          //warning suppressed
-          Console.WriteLine("exception: " + ex1);
-        }
-      });
-    }
-
-    #endregion
     #region drag&drop
     private void Window_DragEnter(object sender, DragEventArgs e)
     {
@@ -475,7 +408,7 @@ namespace Bcfier.UserControls
         if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
         {
           var filenames = e.Data.GetData(DataFormats.FileDrop, true) as string[];
-          if (filenames.Any(x => Path.GetExtension(x).ToUpperInvariant() != ".BCFZIP"))
+          if (filenames.Any(x => Path.GetExtension(x).ToUpperInvariant() != BcfContainer.FileExtension.ToUpperInvariant()))
             dropEnabled = false;
         }
         else

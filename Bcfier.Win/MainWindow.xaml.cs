@@ -21,6 +21,9 @@ namespace Bcfier.Win
     {
       InitializeComponent();
 
+      Bcfier.LabelVersion.Content = "BCFier for Windows " +
+                   System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+
       string[] args = Environment.GetCommandLineArgs();
       if (args.Length > 1 && File.Exists(args[1]))
       {
@@ -36,7 +39,7 @@ namespace Bcfier.Win
     /// <param name="e"></param>
     private void Window_Closing(object sender, CancelEventArgs e)
     {
-      e.Cancel = Bcfier.onClosing(e);
+      e.Cancel = !Bcfier.TryCloseAllBcfs();
     }
 
     #region commands
@@ -78,10 +81,10 @@ namespace Bcfier.Win
 
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
-      Task.Run(() =>
-      {
-        StatHat.Post.EzCounter(@"hello@teocomi.com", "BCFierWinStart", 1);
-      });
+      //Task.Run(() =>
+      //{
+      //  StatHat.Post.EzCounter(@"hello@teocomi.com", "BCFierWinStart", 1);
+      //});
     }
   }
 }

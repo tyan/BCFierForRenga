@@ -1,22 +1,18 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Bcfier")]
-[assembly: AssemblyDescription("Bcfier")]
+[assembly: AssemblyTitle("Bcfier.Renga")]
+[assembly: AssemblyDescription("Bcfier.Renga")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Bcfier")]
+[assembly: AssemblyProduct("Bcfier.Renga")]
 [assembly: AssemblyCopyright("Copyright © teocomi 2017, © tyan 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
-[assembly: InternalsVisibleTo("Bcfier.Renga")]
-[assembly: InternalsVisibleTo("Bcfier.Win")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -35,11 +31,11 @@ using System.Windows;
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
-    //(used if a resource is not found in the page, 
-    // or application resource dictionaries)
-    ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
-    //(used if a resource is not found in the page, 
-    // app, or any theme specific resource dictionaries)
+                                     //(used if a resource is not found in the page, 
+                                     // or application resource dictionaries)
+    ResourceDictionaryLocation.ExternalAssembly //where the generic resource dictionary is located
+                                                //(used if a resource is not found in the page, 
+                                                // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: GuidAttribute("0d553633-80f8-490b-84d6-9d3d6ad4196d")]
+[assembly: GuidAttribute("A1C17F5E-2AC4-499E-926F-34B2B5FAE4B6")]

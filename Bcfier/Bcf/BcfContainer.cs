@@ -28,7 +28,6 @@ namespace Bcfier.Bcf
       BcfFiles = new ObservableCollection<BcfFile>();
     }
 
-
     public ObservableCollection<BcfFile> BcfFiles
     {
       get
@@ -60,7 +59,9 @@ namespace Bcfier.Bcf
 
     public void NewFile()
     {
-      BcfFiles.Add(new BcfFile());
+      var newBcf = new BcfFile();
+      BcfFiles.Add(newBcf);
+      Directory.CreateDirectory(newBcf.TempPath);
       SelectedReportIndex = BcfFiles.Count - 1;
     }
     public void SaveFile(BcfFile bcf)
@@ -124,7 +125,20 @@ namespace Bcfier.Bcf
       {
         MessageBox.Show("exception: " + ex1);
       }
+    }
 
+    public void CloseAllFiles()
+    {
+      try
+      {
+        foreach (var bcf in _bcfFiles)
+          Utils.DeleteDirectory(bcf.TempPath);
+        _bcfFiles.Clear();
+      }
+      catch (System.Exception ex1)
+      {
+        MessageBox.Show("exception: " + ex1);
+      }
     }
 
     /// <summary>
@@ -136,7 +150,7 @@ namespace Bcfier.Bcf
     {
       try
       {
-        Globals.SetStatuses(UserSettings.Get("Stauses"));
+        Globals.SetStatuses(UserSettings.Get("Statuses"));
         Globals.SetTypes(UserSettings.Get("Types"));
 
         foreach (var bcf in BcfFiles)
@@ -179,8 +193,15 @@ namespace Bcfier.Bcf
 
     }
 
+    public static string FileExtension
+    {
+      get { return ".bcf"; }
+    }
 
-
+    public static string FileFilter
+    {
+      get { return String.Format("BIM Collaboration Format (*{0})|*{0}", FileExtension); }
+    }
 
     #region private methods
     /// <summary>
@@ -191,14 +212,17 @@ namespace Bcfier.Bcf
     {
       try
       {
-        var openFileDialog1 = new Microsoft.Win32.OpenFileDialog();
-        openFileDialog1.Filter = "BIM Collaboration Format (*.bcfzip)|*.bcfzip";
-        openFileDialog1.DefaultExt = ".bcfzip";
-        openFileDialog1.Multiselect = true;
-        openFileDialog1.RestoreDirectory = true;
-        openFileDialog1.CheckFileExists = true;
-        openFileDialog1.CheckPathExists = true;
-        var result = openFileDialog1.ShowDialog(); // Show the dialog.
+        var openFileDialog1 = new Microsoft.Win32.OpenFileDialog
+        { 
+        Title = String.Format("Open BCF file ({0})", FileExtension),
+        Filter = FileFilter,
+        DefaultExt = FileExtension,
+        Multiselect = true,
+        RestoreDirectory = true,
+        CheckFileExists = true,
+        CheckPathExists = true
+      };
+      var result = openFileDialog1.ShowDialog(); // Show the dialog.
 
         if (result == true) // Test result.
         {
@@ -213,38 +237,37 @@ namespace Bcfier.Bcf
     }
 
     /// <summary>
-    /// Logic that extracts files from a bcfzip and deserializes them
+    /// Logic that extracts files from a bcf file and deserializes them
     /// </summary>
-    /// <param name="bcfzipfile">Path to the .bcfzip file</param>
+    /// <param name="bcffile">Path to the .bcf file</param>
     /// <returns></returns>
-    private static BcfFile OpenBcfFile(string bcfzipfile)
+    private static BcfFile OpenBcfFile(string filePath)
     {
-      var bcffile = new BcfFile();
+      var file = new BcfFile();
       try
       {
-        if (!File.Exists(bcfzipfile) || !String.Equals(Path.GetExtension(bcfzipfile), ".bcfzip", StringComparison.InvariantCultureIgnoreCase))
-          return bcffile;
+        if (!File.Exists(filePath) || !String.Equals(Path.GetExtension(filePath), FileExtension, StringComparison.InvariantCultureIgnoreCase))
+          return file;
 
+        file.Filename = Path.GetFileNameWithoutExtension(filePath);
+        file.Fullname = filePath;
 
-        bcffile.Filename = Path.GetFileNameWithoutExtension(bcfzipfile);
-        bcffile.Fullname = bcfzipfile;
-
-        using (ZipArchive archive = ZipFile.OpenRead(bcfzipfile))
+        using (ZipArchive archive = ZipFile.OpenRead(filePath))
         {
-          archive.ExtractToDirectory(bcffile.TempPath);
+          archive.ExtractToDirectory(file.TempPath);
         }
 
-        var dir = new DirectoryInfo(bcffile.TempPath);
+        var dir = new DirectoryInfo(file.TempPath);
 
-        var projectFile = Path.Combine(bcffile.TempPath, "project.bcfp");
+        var projectFile = Path.Combine(file.TempPath, "project.bcfp");
         if (File.Exists(projectFile))
         {
           var project = DeserializeProject(projectFile);
           var g = Guid.NewGuid();
           Guid.TryParse(project.Project.ProjectId, out g);
-          bcffile.ProjectId = g;
+          file.ProjectId = g;
         }
-         
+
 
         //ADD ISSUES FOR EACH SUBFOLDER
 
@@ -307,11 +330,11 @@ namespace Bcfier.Bcf
           //it is needed since deserialization overwrites the ones set in the constructor
           bcfissue.RegisterEvents();
           //ViewComment stuff
-          bcffile.Issues.Add(bcfissue);
+          file.Issues.Add(bcfissue);
         }
         try
         {
-          bcffile.Issues = new ObservableCollection<Markup>(bcffile.Issues.OrderBy(x => x.Topic.Index));
+          file.Issues = new ObservableCollection<Markup>(file.Issues.OrderBy(x => x.Topic.Index));
         }
         catch { }
       }
@@ -319,11 +342,11 @@ namespace Bcfier.Bcf
       {
         MessageBox.Show("exception: " + ex1);
       }
-      return bcffile;
+      return file;
     }
 
     /// <summary>
-    /// Serializes to a bcfzip and saves it to disk
+    /// Serializes to a bcf and saves it to disk
     /// </summary>
     /// <param name="bcffile"></param>
     /// <returns></returns>
@@ -428,17 +451,8 @@ namespace Bcfier.Bcf
         //ref: http://stackoverflow.com/questions/27289115/system-io-compression-zipfile-net-4-5-output-zip-in-not-suitable-for-linux-mac
         ZipFile.CreateFromDirectory(bcffile.TempPath, filename, CompressionLevel.Optimal, false, new ZipEncoder());
 
-        //Open browser at location
-        Uri uri2 = new Uri(filename);
-        string reportname = Path.GetFileName(uri2.LocalPath);
-
-        if (File.Exists(filename))
-        {
-          string argument = @"/select, " + filename;
-          System.Diagnostics.Process.Start("explorer.exe", argument);
-        }
         bcffile.HasBeenSaved = true;
-        bcffile.Filename = reportname;
+        bcffile.Filename = Path.GetFileNameWithoutExtension(filename);
       }
       catch (System.Exception ex1)
       {
@@ -448,7 +462,7 @@ namespace Bcfier.Bcf
     }
 
     /// <summary>
-    /// Prompts a the user to select where to save the bcfzip
+    /// Prompts a the user to select where to save the bcf
     /// </summary>
     /// <param name="filename"></param>
     /// <returns></returns>
@@ -456,10 +470,10 @@ namespace Bcfier.Bcf
     {
       var saveFileDialog = new Microsoft.Win32.SaveFileDialog
       {
-        Title = "Save as BCF report file (.bcfzip)",
+        Title = String.Format("Save as BCF file ({0})", FileExtension),
         FileName = filename,
-        DefaultExt = ".bcfzip",
-        Filter = "BIM Collaboration Format (*.bcfzip)|*.bcfzip"
+        DefaultExt = FileExtension,
+        Filter = FileFilter
       };
 
       //if it goes fine I return the filename, otherwise empty

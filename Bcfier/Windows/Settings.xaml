@@ -70,7 +70,7 @@
                   TextWrapping="Wrap" />
               </StackPanel>
               <themes:TextPlaceholder
-                x:Name="Stauses"
+                x:Name="Statuses"
                 Grid.Row="1"
                 Grid.Column="1"
                 Height="50"
@@ -105,7 +105,7 @@
                 Height="50"
                 Margin="5"
                 Placeholder="Architecture, Structure, Mechanical, Electrical" />
-             
+
             </Grid>
           </GroupBox>
           <!--<GroupBox Header="View Settings" Margin="5" Grid.Row="1">
@@ -185,37 +185,6 @@
                   Use default image viewer to open snapshots (.png)
                 </TextBlock>
               </CheckBox>
-            </Grid>
-          </GroupBox>
-          <!--updates-->
-          <CheckBox
-            HorizontalAlignment="Center"
-                Name="checkupdates"
-                Grid.Row="3"
-                Grid.Column="1"
-                Margin="20"
-                Content="Check for updates on startup"
-                IsChecked="True" />
-        </Grid>
-      </TabItem>
-      <TabItem Header="Autodesk Revit">
-        <Grid Margin="5">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-          </Grid.RowDefinitions>
-          <GroupBox Margin="5" Header="View">
-            <Grid Margin="5">
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-              </Grid.RowDefinitions>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140" />
-                <ColumnDefinition Width="1*" />
-              </Grid.ColumnDefinitions>
-              <CheckBox
-                Name="alwaysNewView"
-                Grid.Column="1"
-                Content="Always create a new Revit view when opening Views" />
             </Grid>
           </GroupBox>
         </Grid>
