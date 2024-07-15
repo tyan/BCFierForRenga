@@ -357,7 +357,7 @@ namespace Bcfier.UserControls
     }
     private void HelpBtnOnClick(object sender, RoutedEventArgs routedEventArgs)
     {
-      const string url = "http://bcfier.com/";
+      const string url = "https://github.com/tyan/BCFierForRenga/blob/master/USERGUIDE.md";
       try
       {
         Process.Start(url);
