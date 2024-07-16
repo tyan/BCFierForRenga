@@ -62,11 +62,11 @@ Please note that the visibility and selection of the components relies on their 
 
 ## Installation ##
 
-Installation of the plugin is done by copying the folder with the plugin to the %RengaInstallationFolder%/Plugins. Detailed instructions are [here](https://help.rengabim.com/api/how-to-implement-a-plugin.html). BCFier for Windows does not need any installation.
+Installation of the plugin is done by copying the folder with the plugin to the %RengaInstallationFolder%/Plugins. Detailed instructions are [here](https://help.rengabim.com/en/index.htm#plugins.htm). BCFier for Windows does not need any installation.
 
 ### Requirements ###
 
-.NET Framework 4.8, RengaProfessional/RengaStandard 8.0 or higher.
+.NET Framework 4.8, RengaProfessional/RengaStandard 7.4 or higher.
 
 ### Uninstallation ###
 
