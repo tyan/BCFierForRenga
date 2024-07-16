@@ -1,7 +1,3 @@
-![](/Assets/bcfier-text.png)
-
-
-
 ## Intro
 
 BCFierForRenga is an extendible, opensource [BCF](https://github.com/BuildingSMART/BCF-XML) client. This project is a fork of [BCFier](https://github.com/teocomi/BCFier) project.
@@ -10,7 +6,7 @@ Currently BCFierForRenga is composed of the:
 - Renga plugin
 - Standalone Windows Viewer
 
-**[Here](https://github.com/tyan/BCFierForRenga/blob/master/USERGUIDE.md) you can find a Guide on how to use the installed version of BCFierForRenga**
+**[Here](./USERGUIDE.html) you can find a Guide on how to use the installed version of BCFierForRenga**
 
 ## Getting Started
 
