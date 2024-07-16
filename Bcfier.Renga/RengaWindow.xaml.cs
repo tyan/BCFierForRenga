@@ -90,11 +90,21 @@ namespace Bcfier.RengaPlugin
         var issue = e.Parameter as Markup;
         if (issue == null)
         {
-          MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, "Error", "No Issue selected");
           return;
         }
 
-        var dialog = new AddViewRenga(issue, Bcfier.SelectedBcf().TempPath, _App);
+        var rengaActiveView = _App.ActiveView;
+        if (rengaActiveView.Type != Renga.ViewType.ViewType_View3D)
+        {
+          _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Info, "Info", "Unsupported view");
+          return;
+        }
+
+        var dialog = new AddViewRenga(
+          issue, 
+          Bcfier.SelectedBcf().TempPath, 
+          _App.ActiveView as Renga.IScreenshotService);
         dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         dialog.ShowDialog();
         
