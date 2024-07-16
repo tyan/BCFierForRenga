@@ -1,16 +1,7 @@
-## Intro ##
-
-BCFierForRenga is an extendible and Open Source BCF client. Like IFC is the open standard for Building Information models, BCF (also developed by buildingSMART) is the open standard for Building Issues. BCFier is a set of plugins and standalone apps (modules) that handle BCF and integrate directly with BIM tools.
-
-Currently "BCFierForRenga" is composed of:
-
-- Renga plugin
-- Standalone Windows Viewer
-
-## General Usage ##
+# User Guide #
 
 
-### BCF Report ###
+## BCF Report ##
 
 A “BCF report” or “BCF file” is a file containing one or more issues of a project. It is store on disk with the extension .bcf.
 
@@ -20,7 +11,9 @@ BCFier allows you to have more than one BCF report open at the same time, and yo
 
 BCFier supports BCF files version 1.0 and 2.0. Saved files will always use the latest version of BCF.
 
-###Issues To add a new Issue to a report, just click the “Add Issue” button, a new empty Issue will be generated. You can now set a title and description and start adding Views and Comments.
+### Issues ###
+
+To add a new Issue to a report, just click the “Add Issue” button, a new empty Issue will be generated. You can now set a title and description and start adding Views and Comments.
 
 ### Views ###
 
@@ -28,7 +21,7 @@ A View is the combination of a snapshot (just an image) and a viewpoint (the 3D 
 
 When adding a new View from BCFier Standalone Viewer no viewpoint will be added in the view therefore it will not contain 3D information.
 
-2D Views are not a feature part of BCF. Although the BCFier addins for Revit will support creation of 2D Views (because of the numerous requests) by storing the ID of the view. Therefore it will not work with other tools that support BCF (many tools as Solibri or Navisworks don’t even have 2D Views).
+2D Views are not a feature part of BCF.
 
 ### Comments ###
 
@@ -44,7 +37,7 @@ Examples:
 
 ## Renga
 
-BCFier for Renga are accessible via the Primary Panel.
+BCFier for Renga is accessible via the Primary Panel.
 
 These will let the user create BCF Issues for the current view in the model.
 
