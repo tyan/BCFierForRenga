@@ -1,9 +1,9 @@
 ﻿<RengaPlugin>
 	<Name>BCFier for Renga</Name>
 	<Version>0.1</Version>
-	<RequiredAPIVersion>2.31</RequiredAPIVersion>
-	<Vendor>Renga Software LLC</Vendor>
-	<Copyright>Copyright Renga Software LLC, 2018. All rights reserved.</Copyright>
+	<RequiredAPIVersion>2.33</RequiredAPIVersion>
+	<Vendor>Evgeniy Tyan</Vendor>
+	<Copyright>Copyright © teocomi 2017, © tyan 2024. All rights reserved.</Copyright>
 	<PluginFilename>Bcfier.Renga.dll</PluginFilename>
 	<PluginType>Net</PluginType>
 </RengaPlugin>
