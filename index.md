@@ -22,6 +22,9 @@ Check out the [User Guide](./USERGUIDE.html) on how to get started.
 BCFierForRenga is an extendible, open source [BCF](https://github.com/BuildingSMART/BCF-XML) client. This project is a fork of [BCFier](https://github.com/teocomi/BCFier) project.
 To build the plugin just fork the [repo](https://github.com/tyan/BCFierForRenga) and download the latest version of the [Renga SDK](https://rengabim.com/sdk/).
 
+# Issues and suggestions #
+
+Please feel free to report issues and suggest improvements on the project [GitHub page](https://github.com/tyan/BCFierForRenga/issues).
 
 
 
