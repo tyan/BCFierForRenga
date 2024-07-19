@@ -15,7 +15,7 @@ With BCFier for Renga you can:
 
 # Renga Plugin #
 
-Check out the [User Guide](https://tyan.github.io/BCFierForRenga/USERGUIDE.html) on how to get started.
+Check out the [User Guide](./USERGUIDE.html) on how to get started.
 
 # Open Source #
  
