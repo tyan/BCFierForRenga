@@ -49,6 +49,7 @@ namespace Bcfier.RengaPlugin.Entry
         if (buildingModel == null)
           return;
 
+        // Visibility
         var allObjects = buildingModel.GetObjects();
         var allObjectIds = buildingModel.GetObjects().GetIds();
         var exceptionIds = new List<int>();
@@ -82,6 +83,17 @@ namespace Bcfier.RengaPlugin.Entry
 
         modelView.SetObjectsVisibility(otherIds.ToArray(), defaultVisibility);
         modelView.SetObjectsVisibility(exceptionIds.ToArray(), !defaultVisibility);
+
+        // Selection
+        var selectedObjectsLocalIds = new List<int>();
+
+        foreach (var selectedComponent in v.Components.Selection)
+        {
+          var selectedObjectGlobalId = IfcGuid.FromIfcGUID(selectedComponent.IfcGuid);
+          var selectedObjectLocalId = buildingModel.GetIdFromUniqueId(selectedObjectGlobalId);
+          selectedObjectsLocalIds.Add(selectedObjectLocalId);
+        }
+        app.Selection.SetSelectedObjects(selectedObjectsLocalIds.ToArray());
       }
       catch (Exception ex)
       {

@@ -80,6 +80,20 @@ namespace Bcfier.RengaPlugin.Data
         result.Components.Visibility.DefaultVisibilitySpecified = true;
         result.Components.Visibility.DefaultVisibility = true;
         result.Components.Visibility.Exceptions = hiddenComponents.ToArray();
+
+        // Selection
+        var selectedLocalIds = app.Selection.GetSelectedObjects();
+        result.Components.Selection = new Component[selectedLocalIds.Length];
+
+        for (int i = 0; i < selectedLocalIds.Length; i++)
+        {
+          var selectedLocalId = (int)selectedLocalIds.GetValue(i);
+          var selectedGlobalId = buildingModel.GetUniqueIdFromId(selectedLocalId);
+          var selectedComponent = new Component();
+          selectedComponent.IfcGuid = IfcGuid.ToIfcGuid(selectedGlobalId);
+          result.Components.Selection[i] = selectedComponent;
+        }
+
         return result;
       }
       catch (System.Exception ex1)
