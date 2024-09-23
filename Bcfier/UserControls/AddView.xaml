@@ -4,6 +4,10 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:themes="clr-namespace:Bcfier.Themes"
   xmlns:utils="clr-namespace:Bcfier.Data.Utils"
+  xmlns:lex="http://wpflocalizeextension.codeplex.com"
+  lex:LocalizeDictionary.DesignCulture="en-US"
+  lex:ResxLocalizationProvider.DefaultAssembly="BCFier"
+  lex:ResxLocalizationProvider.DefaultDictionary="Strings"
   Width="300"
   AllowDrop="True"
   DragEnter="Window_DragEnter"
@@ -44,13 +48,13 @@
         Margin="5"
         VerticalAlignment="Bottom"
         FontStyle="Italic"
-        Text="Browse or drag&amp;drop a local image, no 3D information will be included in the viewpoint"
+        Text="{lex:Loc Key=DragAndDropText}"
         TextWrapping="Wrap" />
       <StackPanel Grid.Row="1" Orientation="Horizontal">
         <Button
           Margin="5"
           Click="Button_LoadImage"
-          Content="Browse..." />
+          Content="{lex:Loc Key=Browse}" />
         <Button
           Width="auto"
           Margin="0,5,5,5"
@@ -58,12 +62,12 @@
           VerticalAlignment="Top"
           Style="{StaticResource AnnotateSnapshot}"
           Click="EditSnapshot_Click"
-          Content="Annotate" />
+          Content="{lex:Loc Key=Annotate}" />
         <Button
           Margin="0,5,5,5"
           Style="{StaticResource AnnotateSnapshot}"
           Click="Button_RemoveImage"
-          Content="Remove" />
+          Content="{lex:Loc Key=Remove}" />
       </StackPanel>
       <Image
         x:Name="SnapshotImg"
@@ -119,7 +123,7 @@
         Margin="5"
         Style="{StaticResource AnnotateSnapshot}"
         Click="Button_OK"
-        Content="Add"
+        Content="{lex:Loc Key=OK}"
         IsDefault="True" />
       <Button
         Width="75"
@@ -127,7 +131,7 @@
         Background="Transparent"
         BorderBrush="Transparent"
         Click="Button_Cancel"
-        Content="Cancel" />
+        Content="{lex:Loc Key=Cancel}" />
     </StackPanel>
   </Grid>
 </UserControl>

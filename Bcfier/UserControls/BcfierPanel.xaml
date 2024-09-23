@@ -8,6 +8,10 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:src="clr-namespace:Bcfier.Data.ValueConverters"
   xmlns:themes="clr-namespace:Bcfier.Themes"
+  xmlns:lex="http://wpflocalizeextension.codeplex.com"
+  lex:LocalizeDictionary.DesignCulture="en-US"
+  lex:ResxLocalizationProvider.DefaultAssembly="BCFier"
+  lex:ResxLocalizationProvider.DefaultDictionary="Strings"
   AllowDrop="True"
   DragEnter="Window_DragEnter"
   DragLeave="Window_DragLeave"
@@ -60,21 +64,21 @@
       <themes:ButtonIcon
         x:Name="NewBcfBtn"
         Style="{StaticResource MainMenuButton}"
-        Content="New BCF"
+        Content="{lex:Loc Key=NewBCF}"
         IconPath="{StaticResource IconNewFile}"
-        ToolTip="New BCF Report" />
+        ToolTip="{lex:Loc Key=NewBCFTooltip}" />
       <themes:ButtonIcon
         x:Name="SaveBcfBtn"
         Style="{StaticResource CanSaveEnablerStyle}"
-        Content="Save as..."
+        Content="{lex:Loc Key=SaveAs}"
         IconPath="{StaticResource IconSaveFile}"
-        ToolTip="Save BCF as..." />
+        ToolTip="{lex:Loc Key=SaveAs}" />
       <themes:ButtonIcon
         x:Name="OpenBcfBtn"
         Style="{StaticResource MainMenuButton}"
-        Content="Open BCF"
+        Content="{lex:Loc Key=Open}"
         IconPath="{StaticResource IconOpenFile}"
-        ToolTip="Open a BCF..." />
+        ToolTip="{lex:Loc Key=Open}" />
       <!--<themes:ButtonIcon ToolTip="Open a Web Project..."  x:Name="OpenProjectBtn" Content="Open Project" IconPath="{StaticResource IconOpenFile}" Style="{StaticResource MainMenuButton}"/>-->
       <themes:ButtonIcon
         x:Name="MergeBcfBtn"
@@ -85,16 +89,16 @@
       <themes:ButtonIcon
         x:Name="SettingsBtn"
         Style="{StaticResource MainMenuButton}"
-        Content="Settings"
+        Content="{lex:Loc Key=Settings}"
         IconPath="{StaticResource IconSettings}"
-        ToolTip="Settings..." />
+        ToolTip="{lex:Loc Key=Settings}" />
       <themes:ButtonIcon
         x:Name="HelpBtn"
         HorizontalAlignment="Left"
         Style="{StaticResource MainMenuButton}"
-        Content="Help"
+        Content="{lex:Loc Key=Help}"
         IconPath="{StaticResource IconHelp}"
-        ToolTip="Help" />
+        ToolTip="{lex:Loc Key=Help}" />
       <Label
         Name="LabelVersion"
         HorizontalAlignment="Right"

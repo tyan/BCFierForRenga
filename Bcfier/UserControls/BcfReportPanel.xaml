@@ -8,6 +8,10 @@
   xmlns:src="clr-namespace:Bcfier.Data.ValueConverters"
   xmlns:themes="clr-namespace:Bcfier.Themes"
   xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+  xmlns:lex="http://wpflocalizeextension.codeplex.com"
+  lex:LocalizeDictionary.DesignCulture="en-US"
+  lex:ResxLocalizationProvider.DefaultAssembly="BCFier"
+  lex:ResxLocalizationProvider.DefaultDictionary="Strings"
   Background="White"
   d:DataContext="{d:DesignData d:Source=../SampleBcfFile.xaml}"
   d:DesignHeight="1500"
@@ -51,9 +55,9 @@
         Margin="5"
         BorderBrush="{StaticResource BackgroundDark}"
         KeyDown="SearchBox_OnKeyDown"
-        Placeholder="Search issues..."
+        Placeholder="{lex:Loc Key=Search}"
         Text="{Binding TextSearch, UpdateSourceTrigger=PropertyChanged}"
-        ToolTip="Search within title, description and comments..." />
+        ToolTip="{lex:Loc Key=SearchTooltip}" />
       <ListView
         x:Name="IssueList"
         Grid.Row="2"
@@ -178,10 +182,10 @@
           Style="{StaticResource AddViewCommentStyle}"
           BorderThickness="1,1,0,1"
           Command="data:Commands.AddIssue"
-          Content="Add Issue"
+          Content="{lex:Loc Key=AddIssue}"
           IconColor="Green"
           IconPath="{StaticResource IconAdd}"
-          ToolTip="Add Issue" />
+          ToolTip="{lex:Loc Key=AddIssue}" />
         <themes:ButtonIcon
           x:Name="AddIssuesBtn"
           Margin="0,5,0,5"
