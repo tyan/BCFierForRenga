@@ -2,6 +2,7 @@
 using System.IO;
 
 using Renga;
+using WPFLocalizeExtension.Engine;
 
 
 namespace Bcfier.RengaPlugin.Entry
@@ -12,6 +13,9 @@ namespace Bcfier.RengaPlugin.Entry
     {
       var app = new Renga.Application();
       var ui = app.UI;
+
+      var cultureName = app.GetCurrentLocale() == "ru_RU" ? "ru-RU" : "en-US";
+      LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo(cultureName);
 
       var actionImage = ui.CreateImage();
       actionImage.LoadFromFile(Path.Combine(plugInFolder, "Assets/BCFierIcon16x16.png"));
