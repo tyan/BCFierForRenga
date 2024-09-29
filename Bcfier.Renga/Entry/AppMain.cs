@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-
+using System.Reflection;
+using System.Windows;
 using Renga;
 using WPFLocalizeExtension.Engine;
 
@@ -11,6 +12,21 @@ namespace Bcfier.RengaPlugin.Entry
   {
     public bool Initialize(string plugInFolder)
     {
+      var addinAssembly = Assembly.GetExecutingAssembly();
+
+      AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
+      {
+        var missingName = new AssemblyName(e.Name);
+        var missingPath = Path.Combine(plugInFolder, missingName.Name + ".dll");
+
+        // If we find the DLL in the add-in folder, load and return it.
+        if (File.Exists(missingPath))
+          return Assembly.LoadFrom(missingPath);
+
+        // nothing found
+        return null;
+      };
+
       var app = new Renga.Application();
       var ui = app.UI;
 
