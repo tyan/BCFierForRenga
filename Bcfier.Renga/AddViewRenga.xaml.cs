@@ -11,14 +11,11 @@ namespace Bcfier.RengaPlugin
   /// </summary>
   public partial class AddViewRenga : Window
   {
-
     public AddViewRenga(Markup issue, string bcfTempFolder, Renga.IScreenshotService service)
     {
-
       this.InitializeComponent();
       AddViewControl.Issue = issue;
       AddViewControl.TempFolder = bcfTempFolder;
-      AddViewControl.TextBlockInfo.Text = "3D/2D information of the current view will be included in the viewpoint";
 
       var tempImg = Path.Combine(Path.GetTempPath(), "BCFier", Path.GetTempFileName() + ".png");
       var settings = service.CreateSettings();
