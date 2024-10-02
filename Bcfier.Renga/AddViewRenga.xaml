@@ -5,7 +5,18 @@
   xmlns:ctr="clr-namespace:Bcfier.UserControls;assembly=Bcfier"
   Title="Add View"
   Icon="Assets/icon.ico"
-  SizeToContent="WidthAndHeight">
+  SizeToContent="WidthAndHeight"
+  ResizeMode="NoResize"
+  Style="{DynamicResource Renga.WPF.Style.DialogWindow}">
+  
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Renga.WPF.Styles;component/Themes/Renga.Implicit.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Window.Resources>
+  
   <Grid>
     <ctr:AddView
       x:Name="AddViewControl"
