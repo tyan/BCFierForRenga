@@ -11,7 +11,17 @@
   Width="550"
   MinHeight="200"
   Icon="/Bcfier;component/Assets/icon.ico"
-  SizeToContent="Height">
+  SizeToContent="Height"
+  Style="{DynamicResource Renga.WPF.Style.DialogWindow}">
+  
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Renga.WPF.Styles;component/Themes/Renga.Implicit.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Window.Resources>
+  
   <Grid Margin="5">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
@@ -112,30 +122,6 @@
 
             </Grid>
           </GroupBox>
-          <!--<GroupBox Header="View Settings" Margin="5" Grid.Row="1">
-            <Grid Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="180" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-                <Label Content="On opening a view:" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-                <RadioButton Grid.Column="1" GroupName="attachedElemsOnOpen" Content="Select attached elements" VerticalAlignment="Center" Margin="5" IsChecked="True" Name="SelAttachElems"/>
-                <RadioButton Grid.Column="1" GroupName="attachedElemsOnOpen" Grid.Row="1" Content="Isolate attached elements" VerticalAlignment="Center" Margin="5" Name="IsolateAttachElems"/>
-                <Label Content="View Zoom:" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
-                <CheckBox Grid.Row="3" Grid.Column="1" ToolTip="On opening and creating a view the zoom factor is adapted to be similar to Tekla's"
-                          Content="Optimize for Tekla" Margin="5" Name="OptTekla"></CheckBox>
-                <Label Content="On opening a 3D view:" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
-                <CheckBox Grid.Row="2" Grid.Column="1" ToolTip="Create a new perspective ort orthographic view each time"
-                          Content="Create a new view each time" Margin="5" Name="AlwaysNewView"></CheckBox>
-            </Grid>
-        </GroupBox>-->
           <GroupBox
             Grid.Row="2"
             Margin="5"
@@ -202,16 +188,10 @@
       HorizontalAlignment="Right"
       Orientation="Horizontal">
       <Button
-        Width="75"
-        Margin="5"
         Click="SaveBtnClick"
         Content="Save"
         IsDefault="True" />
       <Button
-        Width="75"
-        Margin="5"
-        Background="Transparent"
-        BorderBrush="Transparent"
         Click="CancelBtnClick"
         Content="Cancel" />
     </StackPanel>
