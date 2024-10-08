@@ -136,13 +136,16 @@
     <value>Через запятую</value>
   </data>
   <data name="DragAndDropText" xml:space="preserve">
-    <value>Если выбрать или перетащить изображение, точка взгляда добавлена не будет.</value>
+    <value>Если добавить изображение с диска, то точка взгляда на модель добавлена не будет.</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>Общие</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Справка</value>
+  </data>
+  <data name="InvalidImageMessage" xml:space="preserve">
+    <value>Невалидное изображение</value>
   </data>
   <data name="NewBCF" xml:space="preserve">
     <value>Новый BCF</value>

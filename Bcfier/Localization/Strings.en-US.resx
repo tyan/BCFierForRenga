@@ -139,13 +139,16 @@
     <value>Comma separated</value>
   </data>
   <data name="DragAndDropText" xml:space="preserve">
-    <value>Browse or drag&amp;amp;drop a local image, no 3D information will be included in the viewpoint</value>
+    <value>No model viewpoint is added when you add an image from a drive.</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
+  </data>
+  <data name="InvalidImageMessage" xml:space="preserve">
+    <value>It's is not a valid image, please try again.</value>
   </data>
   <data name="NewBCF" xml:space="preserve">
     <value>New BCF</value>
@@ -181,10 +184,10 @@
     <value>Settings</value>
   </data>
   <data name="Snapshot" xml:space="preserve">
-    <value>Snapshot</value>
+    <value>Image</value>
   </data>
   <data name="SnapshotEditor" xml:space="preserve">
-    <value>Snapshot Editor:</value>
+    <value>Image Editor:</value>
   </data>
   <data name="TopicStatuses" xml:space="preserve">
     <value>Topic Statuses:</value>
