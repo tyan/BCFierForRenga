@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
+using System.Reflection;
+using System.Resources;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WPFLocalizeExtension.Engine;
+using WPFLocalizeExtension.Providers;
 
 namespace Bcfier.Data.Utils
 {
@@ -25,6 +30,16 @@ namespace Bcfier.Data.Utils
         int width = image.PixelWidth;
         int height = image.PixelHeight;
 
+
+            CultureInfo ci = new CultureInfo("en-US"); //language should be passed here
+
+            Assembly ass = Assembly.Load("BCFier");
+
+            ResourceManager rm = new ResourceManager("BCFier.Localization.Strings", ass);
+
+            var x= rm.GetString("InvalidImageMessage", ci);
+
+
         const int maxWidth = 1500;
         const int maxHeight = 1500;
         if (width > maxWidth || height > maxHeight)
@@ -35,9 +50,9 @@ namespace Bcfier.Data.Utils
           int newWidth = Convert.ToInt32(width / scale);
 
           MessageBoxResult answer = MessageBox.Show(
-            string.Format("Image size is {0}x{1}, "
+            string.Format("{5} {0}x{1}, "
               + "such a big image could increase A LOT the BCF file size. "
-          + "Do you want me to resize it to {2}x{3} for you?", width, height, newWidth, newHeight), "Attention!",
+          + "Do you want me to resize it to {2}x{3} for you?", width, height, newWidth, newHeight, x), "Attention!",
               MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (answer == MessageBoxResult.Yes)
           {

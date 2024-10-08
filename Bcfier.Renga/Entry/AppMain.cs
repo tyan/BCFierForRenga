@@ -17,6 +17,8 @@ namespace Bcfier.RengaPlugin.Entry
       var cultureName = app.GetCurrentLocale() == "ru_RU" ? "ru-RU" : "en-US";
       LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo(cultureName);
 
+      var str = LocalizeDictionary.Instance.DefaultProvider.GetLocalizedObject("InvalidImageMessage", null, LocalizeDictionary.Instance.Culture);
+
       var actionImage = ui.CreateImage();
       actionImage.LoadFromFile(Path.Combine(plugInFolder, "Assets/BCFierIcon16x16.png"));
 

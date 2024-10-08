@@ -22,7 +22,8 @@ namespace Bcfier.Win
     {
       InitializeComponent();
 
-      LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo("en-US");
+      LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo("ru-RU");
+      var str = LocalizeDictionary.Instance.DefaultProvider.GetLocalizedObject("InvalidImageMessage", null, LocalizeDictionary.Instance.Culture);
 
       Bcfier.LabelVersion.Content = "BCFier for Windows " +
                    System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;

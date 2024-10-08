@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using WPFLocalizeExtension.Engine;
 
 namespace Bcfier.Win
 {
@@ -6,6 +7,5 @@ namespace Bcfier.Win
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-    {
-    }
+    {  }
 }
