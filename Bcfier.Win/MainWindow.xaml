@@ -10,9 +10,9 @@
   Height="700"
   Closing="Window_Closing"
   Icon="Assets/icon.ico"
-  Loaded="MainWindow_OnLoaded">
+  Loaded="MainWindow_OnLoaded"
+  Style="{DynamicResource Renga.WPF.Style.DialogWindow}">
   <Window.CommandBindings>
-
     <CommandBinding Command="data:Commands.AddView" Executed="OnAddView" />
   </Window.CommandBindings>
   <Grid>

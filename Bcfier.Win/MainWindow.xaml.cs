@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Bcfier.Bcf.Bcf2;
-using Bcfier.UserControls;
 using WPFLocalizeExtension.Engine;
 
 
@@ -63,15 +62,8 @@ namespace Bcfier.Win
         }
 
         var addView = new AddView(issue, Bcfier.SelectedBcf().TempPath);
-        var win = new Window
-        {
-          Content = addView,
-          Title = "Add View",
-          SizeToContent = SizeToContent.WidthAndHeight,
-          WindowStartupLocation = WindowStartupLocation.CenterScreen
-        };
-        win.ShowDialog();
-        if (win.DialogResult.HasValue && win.DialogResult.Value)
+        addView.ShowDialog();
+        if (addView.DialogResult.HasValue && addView.DialogResult.Value)
           Bcfier.SelectedBcf().HasBeenSaved = false;
 
       }
