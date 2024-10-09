@@ -61,7 +61,7 @@
                   BorderThickness="1"
                   Background="{DynamicResource Renga.WPF.Styles.Brush.ControlBackground}"
                   BorderBrush="{DynamicResource Renga.WPF.Styles.Brush.ControlBorder}" Grid.Row="2">
-        <Image x:Name="SnapshotImg" Margin="0, 0, 0, 13">
+        <Image x:Name="SnapshotImg">
         </Image>
       </Border>
     </Grid>
