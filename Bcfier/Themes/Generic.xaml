@@ -4,29 +4,16 @@
   xmlns:system="clr-namespace:System;assembly=mscorlib"
   xmlns:themes="clr-namespace:Bcfier.Themes">
 
-  <Color x:Key="DisabledControlLightColor">#FFE8EDF9</Color>
-  <Color x:Key="DisabledControlDarkColor">#FFC5CBF9</Color>
-  <Color x:Key="DisabledForegroundColor">#FF888888</Color>
-  <!--  TEXTPLACEHOLDER  -->
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="pack://application:,,,/Renga.WPF.Styles;component/Themes/Renga.Implicit.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
 
   <SolidColorBrush x:Key="TextPlaceholder_Background" Color="White" />
   <SolidColorBrush x:Key="TextPlaceholder_Foreground" Color="Black" />
-  <LinearGradientBrush x:Key="TextPlaceholder_Border" StartPoint="0,0" EndPoint="0,1">
-    <GradientStop Offset="0.05" Color="#FFABADB3" />
-    <GradientStop Offset="0.07" Color="#FFE2E3EA" />
-    <GradientStop Offset="1" Color="#FFE3E9EF" />
-  </LinearGradientBrush>
-  <LinearGradientBrush x:Key="TextPlaceholder_BorderMouseOver" StartPoint="0,0" EndPoint="0,1">
-    <GradientStop Offset="0.05" Color="#FF5C97C1" />
-    <GradientStop Offset="0.07" Color="#FFB9D7EB" />
-    <GradientStop Offset="1" Color="#FFC7E2F1" />
-  </LinearGradientBrush>
-
   <SolidColorBrush x:Key="TextPlaceholder_PlaceholderColor" Color="Gray" />
 
   <Style x:Key="{x:Type themes:TextPlaceholder}" TargetType="{x:Type themes:TextPlaceholder}">
     <Setter Property="Background" Value="{StaticResource TextPlaceholder_Background}" />
-    <Setter Property="BorderBrush" Value="{StaticResource TextPlaceholder_Border}" />
     <Setter Property="Foreground" Value="{StaticResource TextPlaceholder_Foreground}" />
     <Setter Property="BorderThickness" Value="1" />
     <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -39,13 +26,11 @@
           <Border
             x:Name="Border"
             Background="{TemplateBinding Background}"
-            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderBrush="{StaticResource Renga.WPF.Styles.Brush.ControlBorder}"
             BorderThickness="{TemplateBinding BorderThickness}">
             <Grid x:Name="LayoutGrid">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <!--<ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent},
-                                                  Path=ActualHeight}" />-->
               </Grid.ColumnDefinitions>
               <ScrollViewer
                 x:Name="PART_ContentHost"
@@ -64,11 +49,7 @@
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter Property="BorderBrush" Value="{StaticResource TextPlaceholder_BorderMouseOver}" />
               <Setter Property="Cursor" Value="IBeam" />
-            </Trigger>
-            <Trigger Property="IsKeyboardFocusWithin" Value="True">
-              <Setter Property="BorderBrush" Value="{StaticResource TextPlaceholder_BorderMouseOver}" />
             </Trigger>
             <Trigger Property="HasText" Value="True">
               <Setter TargetName="Placeholder" Property="Visibility" Value="Hidden" />
