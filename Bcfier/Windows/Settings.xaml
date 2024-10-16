@@ -9,13 +9,13 @@
   lex:ResxLocalizationProvider.DefaultDictionary="Strings"
   xmlns:themes="clr-namespace:Bcfier.Themes"
   Title="{lex:Loc Key=Settings}"
-  Width="550"
+  Width="500"
   MinHeight="200"
   Icon="/Bcfier;component/Assets/icon.ico"
   SizeToContent="Height"
   ResizeMode="NoResize"
   Style="{DynamicResource Renga.WPF.Style.DialogWindow}">
-  
+
   <Window.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -23,7 +23,7 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Window.Resources>
-  
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
@@ -113,54 +113,6 @@
                 Height="50"
                 Placeholder="{lex:Loc Key=TopicTypesList}"
                 Margin="0, 9, 0, 0"/>
-        </Grid>
-      </GroupBox>
-      <GroupBox
-            Grid.Row="2"
-            Header="{lex:Loc Key=Snapshot}">
-
-        <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-          </Grid.RowDefinitions>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="140" />
-            <ColumnDefinition Width="*" />
-          </Grid.ColumnDefinitions>
-          <StackPanel
-                Grid.Column="0"
-                HorizontalAlignment="Left"
-                Orientation="Vertical">
-            <Label
-                  Grid.Column="0"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Center"
-                  Content="{lex:Loc Key=SnapshotEditor}"
-                  ToolTip="{Binding ElementName=editSnap, Path=ToolTip}"
-                  ToolTipService.InitialShowDelay="20" />
-            <!--<TextBlock TextAlignment="Right" TextWrapping="Wrap" Foreground="Gray" FontStyle="Italic" FontSize="10" HorizontalAlignment="Right">
-            Reccomended app: <Hyperlink NavigateUri="http://getgreenshot.org/" RequestNavigate="Hyperlink_RequestNavigate">greenshot</Hyperlink>
-                </TextBlock>-->
-          </StackPanel>
-          <themes:TextPlaceholder
-                x:Name="editSnap"
-                Grid.Column="1"
-                Height="25"
-                HorizontalAlignment="Stretch"
-                MouseDoubleClick="editphoto_MouseDoubleClick"
-                Placeholder="{lex:Loc Key=SelectApp}"
-                ToolTip="{lex:Loc Key=SelectAppTooltip}"
-                ToolTipService.InitialShowDelay="20" />
-          <CheckBox
-                Name="useDefPhoto"
-                Grid.Row="1"
-                Grid.Column="1"
-                Grid.ColumnSpan="2"
-                HorizontalAlignment="Left"
-                Margin ="0,9,0,0"
-                Content="{lex:Loc Key=UseDefaultViewer}">
-          </CheckBox>
         </Grid>
       </GroupBox>
     </Grid>

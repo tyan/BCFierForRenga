@@ -26,7 +26,7 @@ namespace Bcfier.Windows
     {
       InitializeComponent();
 
-      ControlsToSave = new List<Control> { BCFusername, editSnap, useDefPhoto, Statuses, Types };
+      ControlsToSave = new List<Control> { BCFusername, Statuses, Types };
       foreach (var control in ControlsToSave)
         UserSettings.LoadControlSettings(control);
 
@@ -42,24 +42,6 @@ namespace Bcfier.Windows
     private void CancelBtnClick(object sender, RoutedEventArgs e)
     {
       DialogResult = false;
-    }
-
-    private void editphoto_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-      var initDir = "";
-      if (File.Exists(editSnap.Text))
-        initDir = Path.GetDirectoryName(editSnap.Text);
-      var openFileDialog1 = new Microsoft.Win32.OpenFileDialog();
-      openFileDialog1.Filter = "Executable (*.exe)|*.exe";
-      openFileDialog1.DefaultExt = ".exe";
-      openFileDialog1.InitialDirectory = (string.IsNullOrEmpty(initDir)) ? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) : initDir;
-      openFileDialog1.RestoreDirectory = true;
-      var result = openFileDialog1.ShowDialog(); // Show the dialog.
-
-      if (result == true) // Test result.
-      {
-        editSnap.Text = openFileDialog1.FileName;
-      }
     }
     private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
     {
