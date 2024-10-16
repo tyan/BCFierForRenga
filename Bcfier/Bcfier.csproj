@@ -143,9 +143,6 @@
     <Compile Include="Windows\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\SnapWin.xaml.cs">
-      <DependentUpon>SnapWin.xaml</DependentUpon>
-    </Compile>
     <DesignData Include="SampleBcfFile.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -203,10 +200,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\Settings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\SnapWin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

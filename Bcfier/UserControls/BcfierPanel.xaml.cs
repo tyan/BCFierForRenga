@@ -266,14 +266,7 @@ namespace Bcfier.UserControls
           MessageBox.Show("The selected Snapshot does not exist", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
-        if (!UserSettings.GetBool("useDefPhoto", true))
-        {
-          var dialog = new SnapWin(view.SnapshotPath);
-          dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-          dialog.Show();
-        }
-        else
-          Process.Start(view.SnapshotPath);
+        Process.Start(view.SnapshotPath);
       }
       catch (System.Exception ex1)
       {
