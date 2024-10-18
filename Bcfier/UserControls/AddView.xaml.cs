@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
+using Bcfier.Localization;
 
 namespace Bcfier.UserControls
 {
@@ -120,7 +121,7 @@ namespace Bcfier.UserControls
 
         if (!File.Exists(tempImg))
         {
-          MessageBox.Show("Snapshot is not a valit image, please try again.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(LocValueGetter.Get("InvalidImageMessage"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
         string customeditor = UserSettings.Get("editSnap");

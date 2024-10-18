@@ -12,6 +12,7 @@ using Component = Bcfier.Bcf.Bcf2.Component;
 using Point = Bcfier.Bcf.Bcf2.Point;
 using Bcfier.Data.Utils;
 using Bcfier.RengaPlugin.Data;
+using Bcfier.Localization;
 
 namespace Bcfier.RengaPlugin
 {
@@ -44,7 +45,7 @@ namespace Bcfier.RengaPlugin
       }
       catch (Exception ex1)
       {
-        app.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, "Error!", ex1.Message);
+        app.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, LocValueGetter.Get("Error"), ex1.Message);
       }
     }
 
@@ -72,7 +73,7 @@ namespace Bcfier.RengaPlugin
       }
       catch (System.Exception ex1)
       {
-        _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, "Error!", ex1.Message);
+        _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, LocValueGetter.Get("Error"), ex1.Message);
       }
     }
     /// <summary>
@@ -90,14 +91,14 @@ namespace Bcfier.RengaPlugin
         var issue = e.Parameter as Markup;
         if (issue == null)
         {
-          _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, "Error", "No Issue selected");
+          _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, LocValueGetter.Get("Error"), LocValueGetter.Get("NoIssue"));
           return;
         }
 
         var rengaActiveView = _App.ActiveView;
         if (rengaActiveView.Type != Renga.ViewType.ViewType_View3D)
         {
-          _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Info, "Info", "Unsupported view");
+          _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Info, LocValueGetter.Get("Info"), LocValueGetter.Get("Unsupported view"));
           return;
         }
 
@@ -118,7 +119,7 @@ namespace Bcfier.RengaPlugin
       }
       catch (System.Exception ex1)
       {
-        _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, "Error!", ex1.Message);
+        _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, LocValueGetter.Get("Error"), ex1.Message);
       }
     }
     #endregion

@@ -107,7 +107,7 @@
                   Margin="2,2,2,0"
                   VerticalAlignment="Bottom"
                   FontWeight="Bold"
-                  Content="{Binding Topic.Title, TargetNullValue='New Issue'}" />
+                  Content="{Binding Topic.Title, TargetNullValue={lex:Loc Key=NewIssue}}" />
               </Grid>
               <Border
                 Grid.Row="1"
@@ -182,7 +182,7 @@
           Style="{StaticResource AddViewCommentStyle}"
           BorderThickness="1,1,0,1"
           Command="data:Commands.AddIssue"
-          Content="{lex:Loc Key=AddIssue}"
+          Content="{lex:Loc Key=Add}"
           IconColor="Green"
           IconPath="{StaticResource IconAdd}"
           ToolTip="{lex:Loc Key=AddIssue}" />
@@ -204,11 +204,11 @@
           BorderThickness="0,1,1,1"
           Command="data:Commands.DeleteIssues"
           CommandParameter="{Binding ElementName=IssueList, Path=SelectedItems}"
-          Content="{Binding ElementName=IssueList, Path=SelectedItems.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='Delete %0% issue%s%'}"
+          Content="{Binding ElementName=IssueList, Path=SelectedItems.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter={lex:Loc Key=DeleteIssues}}"
           DockPanel.Dock="Left"
           IconColor="Red"
           IconPath="{StaticResource IconDelete}"
-          ToolTip="Delete selected" />
+          ToolTip="{lex:Loc Key=DeleteSelected}" />
       </UniformGrid>
       <DockPanel
         Grid.Row="3"

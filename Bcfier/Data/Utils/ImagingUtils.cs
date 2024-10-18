@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Bcfier.Localization;
 
 namespace Bcfier.Data.Utils
 {
@@ -35,9 +36,7 @@ namespace Bcfier.Data.Utils
           int newWidth = Convert.ToInt32(width / scale);
 
           MessageBoxResult answer = MessageBox.Show(
-            string.Format("Image size is {0}x{1}, "
-              + "such a big image could increase A LOT the BCF file size. "
-          + "Do you want me to resize it to {2}x{3} for you?", width, height, newWidth, newHeight), "Attention!",
+            string.Format(LocValueGetter.Get("ImageResizePrompt"), width, height, newWidth, newHeight), "Attention!",
               MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (answer == MessageBoxResult.Yes)
           {

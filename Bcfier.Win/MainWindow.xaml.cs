@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.UserControls;
 using WPFLocalizeExtension.Engine;
+using Bcfier.Localization;
 
 
 namespace Bcfier.Win
@@ -22,7 +23,7 @@ namespace Bcfier.Win
     {
       InitializeComponent();
 
-      LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo("en-US");
+      LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo("ru-RU");
 
       Bcfier.LabelVersion.Content = "BCFier for Windows " +
                    System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
@@ -58,7 +59,7 @@ namespace Bcfier.Win
         var issue = e.Parameter as Markup;
         if (issue == null)
         {
-          MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
 

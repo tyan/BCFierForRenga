@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
 using Bcfier.Data;
+using Bcfier.Localization;
 
 namespace Bcfier.Bcf
 {
@@ -356,7 +357,7 @@ namespace Bcfier.Bcf
       {
         if (bcffile.Issues.Count == 0)
         {
-          MessageBox.Show("The current BCF Report is empty.", "No Issue", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(LocValueGetter.Get("EmptyReport"), LocValueGetter.Get("SaveReport"), MessageBoxButton.OK, MessageBoxImage.Error);
           return false;
         }
         if (!Directory.Exists(bcffile.TempPath))

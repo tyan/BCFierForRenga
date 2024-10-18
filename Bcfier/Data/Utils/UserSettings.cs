@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Windows;
 using System.Windows.Controls;
 using Bcfier.Themes;
+using Bcfier.Localization;
 
 namespace Bcfier.Data.Utils
 {
@@ -105,7 +106,7 @@ namespace Bcfier.Data.Utils
       var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
 
       if (config == null)
-        MessageBox.Show("Error loading the Configuration file.", "Configuration Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show(LocValueGetter.Get("LoadingError"), LocValueGetter.Get("ConfigurationError"), MessageBoxButton.OK, MessageBoxImage.Error);
       return config;
     }
 

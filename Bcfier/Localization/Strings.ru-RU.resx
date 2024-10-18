@@ -117,11 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
   <data name="AddIssue" xml:space="preserve">
     <value>Добавить замечание</value>
   </data>
   <data name="Annotate" xml:space="preserve">
-    <value>Заметка</value>
+    <value>Редактировать</value>
   </data>
   <data name="AuthorName" xml:space="preserve">
     <value>Автор:</value>
@@ -135,8 +138,35 @@
   <data name="Comma" xml:space="preserve">
     <value>Через запятую</value>
   </data>
+  <data name="ConfigurationError" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удаление</value>
+  </data>
+  <data name="DeleteComment" xml:space="preserve">
+    <value>Вы уверены, что хотите удалить этот комментарий?</value>
+  </data>
+  <data name="DeleteIssues" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="DeleteLinkedComments" xml:space="preserve">
+    <value>Удалить комментарии, связанные с этим видом?</value>
+  </data>
+  <data name="DeleteSelected" xml:space="preserve">
+    <value>Удалить выбранные</value>
+  </data>
+  <data name="DeletionConfirmation" xml:space="preserve">
+    <value>Are you sure you want to delete {0} Issue{1}?\n{2}</value>
+  </data>
   <data name="DragAndDropText" xml:space="preserve">
     <value>Если добавить изображение с диска, то точка взгляда на модель добавлена не будет.</value>
+  </data>
+  <data name="EmptyReport" xml:space="preserve">
+    <value>В этом BCF-отчете нет замечаний.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>Общие</value>
@@ -144,14 +174,38 @@
   <data name="Help" xml:space="preserve">
     <value>Справка</value>
   </data>
+  <data name="ImageResizePrompt" xml:space="preserve">
+    <value>Размер изображения {0}x{1}, такой размер изображения увеличит размер BCF-файла. Хотите уменьшить размер до {2}x{3}?</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Информация</value>
+  </data>
   <data name="InvalidImageMessage" xml:space="preserve">
-    <value>Невалидное изображение</value>
+    <value>Файл поврежден. Пожалуйста, попробуйте еще раз.</value>
+  </data>
+  <data name="LoadingError" xml:space="preserve">
+    <value>Ошибка загрузки файла конфигурации</value>
+  </data>
+  <data name="ModifiedProject" xml:space="preserve">
+    <value> изменен. Сохранить отчет?</value>
   </data>
   <data name="NewBCF" xml:space="preserve">
     <value>Новый BCF</value>
   </data>
   <data name="NewBCFTooltip" xml:space="preserve">
     <value>Новый BCF-отчёт</value>
+  </data>
+  <data name="NewIssue" xml:space="preserve">
+    <value>Новое замечание</value>
+  </data>
+  <data name="NoComment" xml:space="preserve">
+    <value>Ни одного комментария не выбрано</value>
+  </data>
+  <data name="NoIssue" xml:space="preserve">
+    <value>Ни одного замечания не выбрано</value>
+  </data>
+  <data name="NoView" xml:space="preserve">
+    <value>Ни одного вида не выбрано</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
@@ -164,6 +218,9 @@
   </data>
   <data name="SaveAs" xml:space="preserve">
     <value>Сохранить как...</value>
+  </data>
+  <data name="SaveReport" xml:space="preserve">
+    <value>Сохранить</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Поиск</value>
@@ -200,6 +257,9 @@
   </data>
   <data name="TopicTypesList" xml:space="preserve">
     <value>АР, КР, ИОС</value>
+  </data>
+  <data name="UnsupportedView" xml:space="preserve">
+    <value>Неподдерживаемый вид</value>
   </data>
   <data name="UseDefaultViewer" xml:space="preserve">
     <value>Открывать изображения (.png) в средстве просмотра, выбранном по умолчанию </value>
