@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Bcfier.Localization;
 
 namespace Bcfier.Data.Utils
 {

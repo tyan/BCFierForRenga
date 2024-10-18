@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Windows.Controls;
 using Bcfier.Themes;
+using Bcfier.Localization;
 
 namespace Bcfier.Data.Utils
 {

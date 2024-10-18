@@ -117,14 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>New Issue</value>
+  </data>
+  <data name="AddComment" xml:space="preserve">
+    <value>New comment</value>
+  </data>
   <data name="AddIssue" xml:space="preserve">
-    <value>Add Issue</value>
+    <value>New Issue</value>
+  </data>
+  <data name="AddView" xml:space="preserve">
+    <value>New view</value>
   </data>
   <data name="Annotate" xml:space="preserve">
-    <value>Annotate</value>
+    <value>Edit</value>
   </data>
   <data name="AuthorName" xml:space="preserve">
     <value>Author Name:</value>
+  </data>
+  <data name="AuthorNameText" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="AutorNameText" xml:space="preserve">
     <value>Name</value>
@@ -138,17 +150,68 @@
   <data name="Comma" xml:space="preserve">
     <value>Comma separated</value>
   </data>
+  <data name="ConfigurationError" xml:space="preserve">
+    <value>Configuration Error</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteComment" xml:space="preserve">
+    <value>Are you sure you want to\nDelete this comment?</value>
+  </data>
+  <data name="DeleteIssues" xml:space="preserve">
+    <value>Delete %0% issue%s%</value>
+  </data>
+  <data name="DeleteLinkedComments" xml:space="preserve">
+    <value>Do you also want to delete the comments linked to the selected view?</value>
+  </data>
+  <data name="DeletionConfirmation" xml:space="preserve">
+    <value>Are you sure you want to delete {0} Issue{1}?\n{2}</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
   <data name="DragAndDropText" xml:space="preserve">
     <value>No model viewpoint is added when you add an image from a drive.</value>
+  </data>
+  <data name="EmptyReport" xml:space="preserve">
+    <value>The current BCF Report is empty.</value>
+  </data>
+  <data name="EnlargeView" xml:space="preserve">
+    <value>Enlarge view</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="GeneralComments" xml:space="preserve">
+    <value>Сonversation</value>
+  </data>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
   </data>
+  <data name="ImageResizePrompt" xml:space="preserve">
+    <value>Image size is {0}x{1}, such a big image could increase A LOT the BCF file size. Do you want me to resize it to {2}x{3} for you?</value>
+  </data>
   <data name="InvalidImageMessage" xml:space="preserve">
     <value>It's is not a valid image, please try again.</value>
+  </data>
+  <data name="IssueTitle" xml:space="preserve">
+    <value>Issue Title</value>
+  </data>
+  <data name="LoadingError" xml:space="preserve">
+    <value>Error loading the Configuration file.</value>
+  </data>
+  <data name="Merge" xml:space="preserve">
+    <value>Merge...</value>
+  </data>
+  <data name="MergeTooltip" xml:space="preserve">
+    <value>Merge one or more BCFs with the current one</value>
+  </data>
+  <data name="ModifiedProject" xml:space="preserve">
+    <value> has been modified.\nDo you want to save changes?</value>
   </data>
   <data name="NewBCF" xml:space="preserve">
     <value>New BCF</value>
@@ -156,17 +219,41 @@
   <data name="NewBCFTooltip" xml:space="preserve">
     <value>New BCF Report</value>
   </data>
+  <data name="NewIssue" xml:space="preserve">
+    <value>New Issue</value>
+  </data>
+  <data name="NoComment" xml:space="preserve">
+    <value>No Comment selected</value>
+  </data>
+  <data name="NoIssue" xml:space="preserve">
+    <value>No Issue selected</value>
+  </data>
+  <data name="NoView" xml:space="preserve">
+    <value>No View selected</value>
+  </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="Open" xml:space="preserve">
     <value>Open...</value>
   </data>
+  <data name="OpenBCF" xml:space="preserve">
+    <value>Open BCF file ({0})</value>
+  </data>
+  <data name="OpenView" xml:space="preserve">
+    <value>Open view »</value>
+  </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
   </data>
   <data name="SaveAs" xml:space="preserve">
     <value>Save as...</value>
+  </data>
+  <data name="SaveAsBCF" xml:space="preserve">
+    <value>Save as BCF file ({0})</value>
+  </data>
+  <data name="SaveReport" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search issues..</value>
@@ -203,6 +290,9 @@
   </data>
   <data name="TopicTypesList" xml:space="preserve">
     <value>Architecture, Structure, Mechanical, Electrical</value>
+  </data>
+  <data name="UnsupportedView" xml:space="preserve">
+    <value>Unsupported view</value>
   </data>
   <data name="UseDefaultViewer" xml:space="preserve">
     <value>Use default image verwer to open snapshots (.png)</value>

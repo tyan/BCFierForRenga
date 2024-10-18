@@ -15,6 +15,8 @@ using Bcfier.Data.Utils;
 using Bcfier.Windows;
 using Bcfier.Data;
 using Version = System.Version;
+using Bcfier.Localization;
+
 
 namespace Bcfier.UserControls
 {
@@ -118,7 +120,7 @@ namespace Bcfier.UserControls
         //var verbalStatus = values[4].ToString();
         if (issue == null)
         {
-          MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
 
@@ -157,17 +159,17 @@ namespace Bcfier.UserControls
         var issue = (Markup)values[1];
         if (issue == null)
         {
-          MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
         if (comment == null)
         {
-          MessageBox.Show("No Comment selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(LocValueGetter.Get("NoComment"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
         MessageBoxResult answer = MessageBox.Show(
-          "Are you sure you want to\nDelete this comment?",
-           "Delete Comment?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+          LocValueGetter.Get("DeleteComment"),
+           LocValueGetter.Get("Delete"), MessageBoxButton.YesNo, MessageBoxImage.Question);
         //MessageBoxResult answer = MessageBox.Show(
         //  String.Format("Are you sure you want to\nDelete {0} Comment{1}?", comments.Count, (comments.Count > 1) ? "s" : ""),
         //   "Delete Issue?", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -196,18 +198,18 @@ namespace Bcfier.UserControls
         var issue = (Markup)values[1];
         if (issue == null)
         {
-          MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
         if (view == null)
         {
-          MessageBox.Show("No View selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(LocValueGetter.Get("NoView"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
         var delComm = true;
 
-        MessageBoxResult answer = MessageBox.Show("Do you also want to delete the comments linked to the selected viewpoint?",
-           "Delete Viewpoint's Comments?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+        MessageBoxResult answer = MessageBox.Show(LocValueGetter.Get("DeleteLinkedComments"),
+           LocValueGetter.Get("Delete"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 
         if (answer == MessageBoxResult.Cancel)
           return;

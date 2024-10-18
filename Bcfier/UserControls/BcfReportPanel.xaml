@@ -106,7 +106,8 @@
                 <Label
                   Margin="2,2,2,0"
                   VerticalAlignment="Bottom"
-                  Content="{Binding Topic.Title, TargetNullValue='New Issue'}" />
+                  FontWeight="Bold"
+                  Content="{Binding Topic.Title, TargetNullValue={lex:Loc Key=NewIssue}}" />
               </Grid>
               <Border
                 Grid.Row="1"
@@ -181,7 +182,7 @@
           Style="{StaticResource AddViewCommentStyle}"
           BorderThickness="1,1,1,1"
           Command="data:Commands.AddIssue"
-          Content="{lex:Loc Key=AddIssue}"
+          Content="{lex:Loc Key=Add}"
           IconColor="{StaticResource BackgroundDark}"
           IconPath="{StaticResource IconAdd}"
           ToolTip="{lex:Loc Key=AddIssue}" />
@@ -203,11 +204,11 @@
           BorderThickness="1,1,1,1"
           Command="data:Commands.DeleteIssues"
           CommandParameter="{Binding ElementName=IssueList, Path=SelectedItems}"
-          Content="{Binding ElementName=IssueList, Path=SelectedItems.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='Delete %0% issue%s%'}"
+          Content="{Binding ElementName=IssueList, Path=SelectedItems.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter={lex:Loc Key=DeleteIssues}}"
           DockPanel.Dock="Left"
           IconColor="{StaticResource BackgroundDark}"
           IconPath="{StaticResource IconDelete}"
-          ToolTip="Delete selected" />
+          ToolTip="{lex:Loc Key=DeleteSelected}" />
       </UniformGrid>
       <DockPanel
         Grid.Row="3"
@@ -273,7 +274,7 @@
           BorderBrush="{StaticResource BackgroundDark}"
           FontSize="14"
           Binding.SourceUpdated="TextBox_OnTextChanged"
-          Placeholder="Issue Title"
+          Placeholder="{lex:Loc Key=IssueTitle}"
           Text="{Binding Topic.Title, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
         <StackPanel
           Grid.Row="1"
@@ -304,7 +305,7 @@
           BorderBrush="{StaticResource BackgroundDark}"
           AcceptsReturn="True"
           Binding.SourceUpdated="TextBox_OnTextChanged"
-          Placeholder="Description"
+          Placeholder="{lex:Loc Key=Description}"
           Text="{Binding Topic.Description, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
           TextWrapping="Wrap" />
         <themes:ButtonIcon
@@ -314,7 +315,7 @@
           Margin="5,0,0,0"
           BorderThickness="1,1,1,1"
           Click="AddCommentBtnClick"
-          Content="Add Comment"
+          Content="{lex:Loc Key=AddComment}"
           IconColor="{StaticResource BackgroundDark}"
           IconPath="{StaticResource IconAdd}" />
         <themes:ButtonIcon
@@ -324,9 +325,9 @@
           BorderThickness="1,1,1,1"
           Command="data:Commands.AddView"
           CommandParameter="{Binding ElementName=IssueList, Path=SelectedItem}"
-          Content="Add View"
+          Content="{lex:Loc Key=AddView}"
           IconColor="{StaticResource BackgroundDark}"
-          IconPath="{StaticResource IconAdd}"/>
+          IconPath="{StaticResource IconAdd}" />
       </Grid>
       <!-- <StackPanel Orientation="Horizontal" Grid.Row="1"  >
 

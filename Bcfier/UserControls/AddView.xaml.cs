@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
+using Bcfier.Localization;
 
 namespace Bcfier.UserControls
 {

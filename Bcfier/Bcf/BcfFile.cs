@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Data;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
+using Bcfier.Localization;
 
 namespace Bcfier.Bcf
 {
@@ -31,7 +32,7 @@ namespace Bcfier.Bcf
     public BcfFile()
     {
       _hasBeenSaved = true;
-      Filename = "New BCF Report";
+      Filename = LocValueGetter.Get("NewBCF");
       Id = Guid.NewGuid();
       TempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "BCFier", Id.ToString());
       Issues = new ObservableCollection<Markup>();

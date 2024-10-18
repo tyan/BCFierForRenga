@@ -5,6 +5,7 @@
   xmlns:data="clr-namespace:Bcfier.Data"
   xmlns:local="clr-namespace:Bcfier.Data.AttachedProperties"
   xmlns:themes="clr-namespace:Bcfier.Themes"
+  xmlns:lex="http://wpflocalizeextension.codeplex.com"
   xmlns:valueConverters="clr-namespace:Bcfier.Data.ValueConverters">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="../Themes/Icons.xaml" />
@@ -28,7 +29,7 @@
           Command="data:Commands.OpenView"
           CommandParameter="{Binding Viewpoint}"
           Cursor="Hand"
-          ToolTip="Open view »">
+          ToolTip="{lex:Loc Key=OpenView}">
           <Button.Template>
             <ControlTemplate>
               <!--  Crop the image vertically so it doesn't take too much space  -->
@@ -47,8 +48,9 @@
         <Label
           HorizontalAlignment="Stretch"
           HorizontalContentAlignment="Left"
+          Foreground="{StaticResource BackgroundDark}"
           FontSize="12"
-          Content="General Comments">
+          Content="{lex:Loc Key=GeneralComments}">
           <Label.Style>
             <Style TargetType="Label">
               <Setter Property="Visibility" Value="Collapsed" />
@@ -83,7 +85,7 @@
             Command="data:Commands.OpenSnapshot"
             CommandParameter="{Binding Viewpoint}"
             IconPath="{StaticResource IconExpand}"
-            ToolTip="Enlarge view" />
+            ToolTip="{lex:Loc Key=EnlargeView}" />
           <!--  CLOSE VIEW BUTTON  -->
           <themes:ButtonIcon
             Style="{StaticResource CloseButton}"
@@ -195,7 +197,7 @@
           local:CtrlEnterKeyDown.Command="data:Commands.AddComment"
           AcceptsReturn="True"
           KeyDown="UIElement_OnKeyDown"
-          Placeholder="Add a comment..."
+          Placeholder="{lex:Loc Key=AddComment}"
           TextWrapping="Wrap">
           <local:CtrlEnterKeyDown.CommandArgument>
             <MultiBinding Converter="{StaticResource MultiCommandConverter}">

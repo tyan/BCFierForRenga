@@ -84,9 +84,9 @@
       <themes:ButtonIcon
         x:Name="MergeBcfBtn"
         Style="{StaticResource CanSaveEnablerStyle}"
-        Content="Merge..."
+        Content="{lex:Loc Key=Merge}"
         IconPath="{StaticResource IconMergeFile}"
-        ToolTip="Merge one or more BCFs with the current one" />
+        ToolTip="{lex:Loc Key=MergeTooltip}" />
       <themes:ButtonIcon
         x:Name="SettingsBtn"
         Style="{StaticResource MainMenuButton}"
@@ -130,7 +130,7 @@
                 <Grid Name="Panel">
                   <ContentPresenter
                     x:Name="ContentSite"
-                    Margin="10,2"
+                    Margin="13,2"                    
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     ContentSource="Header" />
