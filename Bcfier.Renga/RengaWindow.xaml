@@ -10,7 +10,15 @@
   Height="700"
   Closing="Window_Closing"
   Icon="Assets/icon.ico"
-  Loaded="RengaWindow_OnLoaded">
+  Loaded="RengaWindow_OnLoaded"
+  Style="{DynamicResource Renga.WPF.Style.DialogWindow}">
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Renga.WPF.Styles;component/Themes/Renga.Implicit.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Window.Resources>
   <Window.CommandBindings>
     <CommandBinding Command="data:Commands.OpenView" Executed="OnOpenView" />
     <CommandBinding Command="data:Commands.AddView" Executed="OnAddView" />

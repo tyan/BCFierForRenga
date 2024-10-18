@@ -60,9 +60,10 @@
       Opacity=".70"
       Visibility="Collapsed" />
     <!--  MENU        ******************************************************************************************************************************  -->
-    <DockPanel Grid.ColumnSpan="3" Background="{StaticResource SecondaryLight}">
+    <DockPanel Grid.ColumnSpan="3" Background="{StaticResource BackgroundLight}" Margin="-13,-13,-13,0">
       <themes:ButtonIcon
         x:Name="NewBcfBtn"
+        Margin="13,0,0,0"
         Style="{StaticResource MainMenuButton}"
         Content="{lex:Loc Key=NewBCF}"
         IconPath="{StaticResource IconNewFile}"
@@ -101,6 +102,7 @@
         ToolTip="{lex:Loc Key=Help}" />
       <Label
         Name="LabelVersion"
+        Margin="0,0,13,0"
         HorizontalAlignment="Right"
         VerticalAlignment="Center"
         Foreground="{StaticResource BackgroundDark}"
@@ -116,7 +118,7 @@
       VerticalAlignment="Stretch"
       HorizontalContentAlignment="Stretch"
       VerticalContentAlignment="Stretch"
-      Background="{StaticResource BackgroundLight}"
+      Background="{StaticResource ListViewBackground}"
       BorderThickness="0"
       ItemsSource="{Binding BcfFiles}"
       SelectedIndex="{Binding SelectedReportIndex}">
@@ -135,10 +137,10 @@
                 </Grid>
                 <ControlTemplate.Triggers>
                   <Trigger Property="IsSelected" Value="True">
-                    <Setter TargetName="Panel" Property="Background" Value="{StaticResource PrimaryLight}" />
+                    <Setter TargetName="Panel" Property="Background" Value="{StaticResource ListViewBackground}" />
                   </Trigger>
                   <Trigger Property="IsSelected" Value="False">
-                    <Setter TargetName="Panel" Property="Background" Value="{StaticResource PrimaryDark}" />
+                    <Setter TargetName="Panel" Property="Background" Value="{StaticResource TabBackground}" />
                   </Trigger>
                 </ControlTemplate.Triggers>
               </ControlTemplate>
@@ -152,15 +154,16 @@
                 <Grid UseLayoutRounding="True">
                   <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
-                    <RowDefinition Height="5" />
+                    <RowDefinition Height="1" />
                     <RowDefinition Height="*" />
                   </Grid.RowDefinitions>
                   <TabPanel
                     Grid.Row="0"
                     Panel.ZIndex="1"
-                    Background="{StaticResource PrimaryDark}"
+                    Margin="-13,0,-13,0"
+                    Background="{StaticResource TabBackground}"
                     IsItemsHost="True" />
-                  <Border Grid.Row="1" Background="{StaticResource PrimaryLight}" />
+                  <Border Grid.Row="1" Background="{StaticResource ListViewBackground}" />
                   <Border
                     Grid.Row="2"
                     Panel.ZIndex="0"
@@ -179,12 +182,9 @@
         <DataTemplate>
           <StackPanel Margin="2,2,0,2" Orientation="Horizontal">
             <TextBlock
-              Foreground="White"
-              FontWeight="Bold"
               Text="{Binding Filename}" />
             <TextBlock
               VerticalAlignment="Center"
-              Foreground="White"
               Text="{Binding HasBeenSaved, Converter={StaticResource BoolStarConverter}}" />
             <themes:ButtonIcon
               Name="CloseButton"
@@ -193,7 +193,7 @@
               BorderThickness="0"
               Command="data:Commands.CloseBcf"
               CommandParameter="{Binding Id}"
-              IconColor="DarkGray"
+              IconColor="{StaticResource BackgroundDark}"
               IconMarginVertical="0"
               IconPath="{StaticResource IconXClose}"
               IconSizeVertical="8"
@@ -207,22 +207,6 @@
         </DataTemplate>
       </TabControl.ContentTemplate>
     </TabControl>
-    <TextBlock
-      Grid.Row="1"
-      Padding="40"
-      HorizontalAlignment="Center"
-      VerticalAlignment="Center"
-      Foreground="{StaticResource BackgroundDark}"
-      FontSize="40"
-      FontWeight="Bold"
-      TextAlignment="Center"
-      Visibility="{Binding ElementName=BcfTabControl, Path=HasItems, Converter={StaticResource BoolVisibConverter}, ConverterParameter='opposite'}">
-      Drag&amp;Drop one
-      <LineBreak />
-      or more BCF files
-      <LineBreak />
-      to open them
-    </TextBlock>
   </Grid>
 </UserControl>
 

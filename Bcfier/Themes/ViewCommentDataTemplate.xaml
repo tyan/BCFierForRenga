@@ -36,7 +36,6 @@
                 <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                   <Image
                     Name="ViewpointImage"
-                    Margin="0"
                     Source="{Binding Viewpoint.SnapshotPath, Converter={StaticResource PathToImageConv}}"
                     Stretch="Fill"
                     ToolTip="{Binding Guid}" />
@@ -47,10 +46,8 @@
         </Button>
         <Label
           HorizontalAlignment="Stretch"
-          HorizontalContentAlignment="Center"
-          Foreground="{StaticResource BackgroundDark}"
-          FontSize="20"
-          FontWeight="Bold"
+          HorizontalContentAlignment="Left"
+          FontSize="12"
           Content="General Comments">
           <Label.Style>
             <Style TargetType="Label">
@@ -106,7 +103,7 @@
         x:Name="CommentList"
         Grid.Row="1"
         Grid.ColumnSpan="2"
-        Padding="0,0,0,10"
+        Padding="0,5,0,0"
         Background="Transparent"
         BorderThickness="0"
         ItemsSource="{Binding Comments}"
@@ -123,12 +120,10 @@
               <DockPanel Grid.Row="0">
                 <Label
                   VerticalAlignment="Bottom"
-                  FontWeight="Bold"
                   Content="{Binding Author}" />
                 <Label
                   VerticalAlignment="Bottom"
                   FontSize="11"
-                  FontStyle="Italic"
                   Content="{Binding Date, Converter={StaticResource DateConverter}, ConverterParameter='relative'}"
                   ToolTip="{Binding Date, Converter={StaticResource DateConverter}}" />
                 <!--<Label
@@ -195,8 +190,8 @@
           Name="TextBoxComment"
           Grid.Row="1"
           Grid.Column="0"
-          BorderBrush="{StaticResource BackgroundDark}"
-          BorderThickness="1,1,0,1"
+          BorderBrush="{StaticResource PrimaryLight}"
+          BorderThickness="1,1,1,1"
           local:CtrlEnterKeyDown.Command="data:Commands.AddComment"
           AcceptsReturn="True"
           KeyDown="UIElement_OnKeyDown"
@@ -216,7 +211,7 @@
           Grid.Row="1"
           Grid.Column="1"
           Background="White"
-          BorderBrush="{StaticResource BackgroundDark}"
+          BorderBrush="{StaticResource BackgroundLight}"
           BorderThickness="0,1,1,1">
           <themes:ButtonIcon
             x:Name="AddCommButton"
@@ -226,8 +221,8 @@
             BorderThickness="0"
             Command="data:Commands.AddComment"
             DockPanel.Dock="Right"
-            IconColor="{StaticResource PrimaryLight}"
-            IconMargin="2,0,0,0"
+            IconColor="{StaticResource BackgroundDark}"
+            IconMargin="3,0,0,0"
             IconPath="{StaticResource IconSend}"
             ToolTip="Add comment">
             <Button.CommandParameter>
