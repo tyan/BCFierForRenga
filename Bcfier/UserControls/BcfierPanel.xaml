@@ -60,9 +60,10 @@
       Opacity=".70"
       Visibility="Collapsed" />
     <!--  MENU        ******************************************************************************************************************************  -->
-    <DockPanel Grid.ColumnSpan="3" Background="{StaticResource BackgroundLight}">
+    <DockPanel Grid.ColumnSpan="3" Background="{StaticResource BackgroundLight}" Margin="-13,-13,-13,0">
       <themes:ButtonIcon
         x:Name="NewBcfBtn"
+        Margin="13,0,0,0"
         Style="{StaticResource MainMenuButton}"
         Content="{lex:Loc Key=NewBCF}"
         IconPath="{StaticResource IconNewFile}"
@@ -101,6 +102,7 @@
         ToolTip="{lex:Loc Key=Help}" />
       <Label
         Name="LabelVersion"
+        Margin="0,0,13,0"
         HorizontalAlignment="Right"
         VerticalAlignment="Center"
         Foreground="{StaticResource BackgroundDark}"
@@ -116,7 +118,7 @@
       VerticalAlignment="Stretch"
       HorizontalContentAlignment="Stretch"
       VerticalContentAlignment="Stretch"
-      Background="{StaticResource PrimaryLight}"
+      Background="{StaticResource ListViewBackground}"
       BorderThickness="0"
       ItemsSource="{Binding BcfFiles}"
       SelectedIndex="{Binding SelectedReportIndex}">
@@ -158,6 +160,7 @@
                   <TabPanel
                     Grid.Row="0"
                     Panel.ZIndex="1"
+                    Margin="-13,0,-13,0"
                     Background="{StaticResource TabBackground}"
                     IsItemsHost="True" />
                   <Border Grid.Row="1" Background="{StaticResource ListViewBackground}" />
