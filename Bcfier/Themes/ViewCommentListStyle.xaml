@@ -15,8 +15,8 @@
             Margin="15,0,5,10"
             Padding="0"
             HorizontalAlignment="Stretch"
-            Background="{StaticResource BackgroundLight}"
-            BorderBrush="{StaticResource BackgroundDark}"
+            Background="{StaticResource ListViewBackground}"
+            BorderBrush="{StaticResource BackgroundLight}"
             BorderThickness="1"
             SnapsToDevicePixels="true">
             <ContentPresenter />

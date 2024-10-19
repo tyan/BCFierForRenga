@@ -17,7 +17,7 @@
   <Style x:Key="MainMenuButton" TargetType="themes:ButtonIcon">
     <Style.Setters>
       <Setter Property="IconColor" Value="{StaticResource PrimaryDark}" />
-      <Setter Property="HighlightColor" Value="{StaticResource SecondaryDark}" />
+      <Setter Property="HighlightColor" Value="{StaticResource SecondaryLight}" />
       <Setter Property="IsVertical" Value="True" />
       <Setter Property="BorderThickness" Value="0" />
       <Setter Property="DisabledIconColor" Value="{StaticResource SecondaryDark}" />
@@ -57,7 +57,7 @@
     BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
     TargetType="Button">
     <Style.Setters>
-      <Setter Property="BorderBrush" Value="{StaticResource BackgroundDark}" />
+      <Setter Property="BorderBrush" Value="{StaticResource BackgroundLight}" />
       <Setter Property="HorizontalAlignment" Value="Stretch" />
       <Setter Property="VerticalAlignment" Value="Stretch" />
     </Style.Setters>

@@ -26,12 +26,7 @@
               <Setter TargetName="Border" Property="Background" Value="Transparent" />
             </Trigger>
             <Trigger Property="IsSelected" Value="true">
-              <Setter TargetName="Border" Property="Background" Value="{StaticResource BackgroundLight}" />
-              <Setter TargetName="Border" Property="Effect">
-                <Setter.Value>
-                  <DropShadowEffect Opacity=".2" ShadowDepth="2" />
-                </Setter.Value>
-              </Setter>
+              <Setter TargetName="Border" Property="Background" Value="{StaticResource ListViewBackground}" />
             </Trigger>
           </ControlTemplate.Triggers>
 
