@@ -275,7 +275,7 @@
           FontSize="14"
           FontWeight="Bold"
           Binding.SourceUpdated="TextBox_OnTextChanged"
-          Placeholder="Issue Title"
+          Placeholder="{lex:Loc Key=IssueTitle}"
           Text="{Binding Topic.Title, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
         <StackPanel
           Grid.Row="1"
@@ -316,7 +316,7 @@
           Style="{StaticResource AddViewCommentStyle}"
           BorderThickness="0,1,1,1"
           Click="AddCommentBtnClick"
-          Content="Add Comment"
+          Content="{lex:Loc Key=AddComment}"
           IconColor="{StaticResource PrimaryLight}"
           IconPath="{StaticResource IconAdd}" />
         <themes:ButtonIcon
@@ -326,7 +326,7 @@
           BorderThickness="1,1,0,1"
           Command="data:Commands.AddView"
           CommandParameter="{Binding ElementName=IssueList, Path=SelectedItem}"
-          Content="Add View"
+          Content="{lex:Loc Key=AddView}"
           IconColor="{StaticResource PrimaryLight}"
           IconPath="{StaticResource IconAdd}" />
       </Grid>

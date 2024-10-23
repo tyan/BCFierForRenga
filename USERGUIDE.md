@@ -7,9 +7,9 @@ A “BCF report” or “BCF file” is a file containing one or more issues of 
 
 To create a new empty report just fire up BCFierForRenga and click on “New”, then you can start adding issues.
 
-BCFier allows you to have more than one BCF report open at the same time, and you can switch by clicking on the blue tabs. To open one or more BCF files just use the main menu button or Drag&Drop them on the main interface.
+BCFier allows you to have more than one BCF report open at the same time, and you can switch by clicking on the tabs. To open one or more BCF files click Open.
 
-BCFier supports BCF files version 1.0 and 2.0. Saved files will always use the latest version of BCF.
+BCFier supports BCF files version 2.0.
 
 ### Issues ###
 
@@ -17,11 +17,9 @@ To add a new Issue to a report, just click the “Add Issue” button, a new emp
 
 ### Views ###
 
-A View is the combination of a snapshot (just an image) and a viewpoint (the 3D information of the current view as camera position and elements visibility/selection status), BCF 2.0 introduced support for multiple views per issue and so does BCFier 2.
+A View is the combination of an image and a viewpoint (the 3D information of the current view as camera position and elements visibility/selection status). You can add multiple views in one issue.
 
 When adding a new View from BCFier Standalone Viewer no viewpoint will be added in the view therefore it will not contain 3D information.
-
-2D Views are not a feature part of BCF.
 
 ### Comments ###
 

@@ -120,8 +120,14 @@
   <data name="Add" xml:space="preserve">
     <value>Добавить</value>
   </data>
+  <data name="AddComment" xml:space="preserve">
+    <value>Добавить комментарий</value>
+  </data>
   <data name="AddIssue" xml:space="preserve">
     <value>Добавить замечание</value>
+  </data>
+  <data name="AddView" xml:space="preserve">
+    <value>Добавить вид</value>
   </data>
   <data name="Annotate" xml:space="preserve">
     <value>Редактировать</value>
@@ -165,11 +171,17 @@
   <data name="EmptyReport" xml:space="preserve">
     <value>В этом BCF-отчете нет замечаний.</value>
   </data>
+  <data name="EnlargeView" xml:space="preserve">
+    <value>Увеличить вид</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Ошибка</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>Общие</value>
+  </data>
+  <data name="GeneralComments" xml:space="preserve">
+    <value>Обсуждение</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Справка</value>
@@ -182,6 +194,9 @@
   </data>
   <data name="InvalidImageMessage" xml:space="preserve">
     <value>Файл поврежден. Пожалуйста, попробуйте еще раз.</value>
+  </data>
+  <data name="IssueTitle" xml:space="preserve">
+    <value>Заголовок</value>
   </data>
   <data name="LoadingError" xml:space="preserve">
     <value>Ошибка загрузки файла конфигурации</value>
@@ -212,6 +227,9 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>Открыть...</value>
+  </data>
+  <data name="OpenView" xml:space="preserve">
+    <value>Открыть вид »</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Удалить</value>
