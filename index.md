@@ -1,3 +1,6 @@
+<div style="overflow: hidden; border-radius: 5px; background: #f4f4f4; width: 50px; text-align: center; float: right; border: 1px solid #e0e0e0;">
+<a href="index_ru.html">pyc</a>
+</div>
 # About #
 
 **BCFier for Renga** is an open source plugin for working with BCF reports in Renga. A “BCF report” is a file containing one or more issues of a project. It is store on disk with the extension .bcf. You can use BCF files to collaborate with others on a Renga project.
@@ -13,9 +16,7 @@ With BCFier for Renga you can:
 
 ![](Assets/screenshot.png)
 
-# Renga Plugin #
-
-Check out the [User Guide](./USERGUIDE.html) on how to get started.
+Check out the [help](./HELP_EN.html) on how to get started.
 
 # Open Source #
  
