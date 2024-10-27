@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media.Media3D;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
@@ -98,7 +99,7 @@ namespace Bcfier.RengaPlugin.Data
       }
       catch (System.Exception ex1)
       {
-        app.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, "Error!", ex1.Message);
+        MessageBox.Show(ex1.Message, "Error!");
       }
 
       return null;
