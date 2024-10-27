@@ -44,7 +44,7 @@ namespace Bcfier.RengaPlugin
       }
       catch (Exception ex1)
       {
-        app.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, "Error!", ex1.Message);
+        MessageBox.Show(ex1.Message, "Error!");
       }
     }
 
@@ -72,7 +72,7 @@ namespace Bcfier.RengaPlugin
       }
       catch (System.Exception ex1)
       {
-        _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, "Error!", ex1.Message);
+        MessageBox.Show(ex1.Message, "Error!");
       }
     }
     /// <summary>
@@ -90,14 +90,14 @@ namespace Bcfier.RengaPlugin
         var issue = e.Parameter as Markup;
         if (issue == null)
         {
-          _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, "Error", "No Issue selected");
+          MessageBox.Show("No Issue selected", "Error");
           return;
         }
 
         var rengaActiveView = _App.ActiveView;
         if (rengaActiveView.Type != Renga.ViewType.ViewType_View3D)
         {
-          _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Info, "Info", "Unsupported view");
+          MessageBox.Show("Unsupported view", "Info");
           return;
         }
 
@@ -118,7 +118,7 @@ namespace Bcfier.RengaPlugin
       }
       catch (System.Exception ex1)
       {
-        _App.UI.ShowMessageBox(Renga.MessageIcon.MessageIcon_Error, "Error!", ex1.Message);
+        MessageBox.Show(ex1.Message, "Error!");
       }
     }
     #endregion
