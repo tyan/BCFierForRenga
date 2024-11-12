@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using Bcfier.Bcf.Bcf2;
+using Bcfier.Data.Utils;
 using Renga;
 
 namespace Bcfier.RengaPlugin
@@ -27,7 +28,7 @@ namespace Bcfier.RengaPlugin
       {
         image.SaveToFile(tempImg, Renga.ImageFormat.ImageFormat_PNG);
 
-        AddViewControl.AddViewpoint(tempImg);
+        AddViewControl.SnapshotImg.Source = ImagingUtils.ImageSourceFromPath(tempImg);
       }
       finally
       {

@@ -220,9 +220,6 @@ namespace Bcfier.Bcf
 
     public void MergeBcfFile(IEnumerable<BcfFile> bcfFiles)
     {
-      try
-      {
-
         foreach (var bcf in bcfFiles)
         {
           foreach (var mergedIssue in bcf.Issues)
@@ -268,23 +265,12 @@ namespace Bcfier.Bcf
                   newView.Viewpoint = newView.Guid + ".bcfv";
                   File.Move(sourceFile, newView.SnapshotPath);
                   issue.Viewpoints.Add(newView);
-
-
                 }
             }
           }
           Utils.DeleteDirectory(bcf.TempPath);
         }
         HasBeenSaved = false;
-
-
-
-      }
-      catch (System.Exception ex1)
-      {
-        MessageBox.Show("exception: " + ex1);
-      }
-
     }
 
     [field: NonSerialized]

@@ -52,31 +52,22 @@ namespace Bcfier.UserControls
     }
 
 
-    private bool SaveBcf(BcfFile bcf)
+    private bool AskAndSaveBcf(BcfFile bcf)
     {
-      try
-      {
-        if (BcfTabControl.SelectedIndex != -1 && bcf != null && !bcf.HasBeenSaved && bcf.Issues.Any())
-        {
+      if (bcf.HasBeenSaved || !bcf.Issues.Any())
+        return true;
 
-          MessageBoxResult answer = MessageBox.Show(bcf.Filename + " has been modified.\nDo you want to save changes?", "Save Report?",
-          MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
-          if (answer == MessageBoxResult.Yes)
-          {
-            _bcf.SaveFile(bcf);
-            return true;
-          }
-          if (answer == MessageBoxResult.Cancel)
-          {
-            return false;
-          }
-        }
-      }
-      catch (System.Exception ex1)
+      var answer = MessageBox.Show(bcf.Filename + " has been modified.\nDo you want to save changes?", "Save Report?",
+      MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
+      if (answer == MessageBoxResult.Yes)
       {
-        MessageBox.Show("exception: " + ex1);
+        _bcf.SaveFile(bcf);
+        return true;
       }
-      return true;
+      else if (answer == MessageBoxResult.No)
+        return true;
+      else
+        return false;
     }
 
     #region commands
@@ -91,25 +82,25 @@ namespace Bcfier.UserControls
         var issues = selItems.Cast<Markup>().ToList();
         if (!issues.Any())
         {
-          MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          Utils.ShowInfoMessageBox("No Issue selected.");
           return;
         }
-        MessageBoxResult answer = MessageBox.Show(
-            String.Format("Are you sure you want to delete {0} Issue{1}?\n{2}", 
-            issues.Count, 
-            (issues.Count > 1) ? "s" : "",
-            "\n - " + string.Join("\n - ", issues.Select(x => x.Topic.Title))),
-            String.Format("Delete Issue{0}?", (issues.Count > 1) ? "s" : ""), 
-            MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+        //Are you sure you want to delete comments? Number of comments to delete: 8
+
+        var deleteIssuesCaption = "Delete issues";
+        var deleteIssuesMessage = String.Format("Are you sure you want to delete issues?\nNumber of issues to delete: {0}", issues.Count);
+        var answer = MessageBox.Show(deleteIssuesMessage, deleteIssuesCaption, MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (answer == MessageBoxResult.No)
           return;
 
         SelectedBcf().RemoveIssues(issues);
 
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        // Log exception
+        Utils.ShowErrorMessageBox("Delete issue error.", ex);
       }
     }
 
@@ -117,7 +108,6 @@ namespace Bcfier.UserControls
     {
       try
       {
-
         if (SelectedBcf() == null)
           return;
         var values = (object[])e.Parameter;
@@ -131,7 +121,6 @@ namespace Bcfier.UserControls
           MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
-
 
         Comment c = new Comment();
         c.Guid = Guid.NewGuid().ToString();
@@ -149,11 +138,11 @@ namespace Bcfier.UserControls
         issue.Comment.Add(c);
 
         SelectedBcf().HasBeenSaved = false;
-
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        // Log exception
+        Utils.ShowErrorMessageBox("Add comment error.", ex);
       }
     }
     private void OnDeleteComment(object sender, ExecutedRoutedEventArgs e)
@@ -188,9 +177,10 @@ namespace Bcfier.UserControls
 
         SelectedBcf().RemoveComment(comment, issue);
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        // Log exception
+        Utils.ShowErrorMessageBox("Delete comment error.", ex);
       }
     }
 
@@ -226,9 +216,10 @@ namespace Bcfier.UserControls
 
         SelectedBcf().RemoveView(view, issue, delComm);
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        // Log exception
+        Utils.ShowErrorMessageBox("Delete view error.", ex);
       }
     }
     private void OnAddIssue(object sender, ExecutedRoutedEventArgs e)
@@ -238,14 +229,15 @@ namespace Bcfier.UserControls
 
         if (SelectedBcf() == null)
           return;
+
         var issue = new Markup(DateTime.Now);
         SelectedBcf().Issues.Add(issue);
         SelectedBcf().SelectedIssue = issue;
 
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        Utils.ShowErrorMessageBox("Add issue error.", ex);
       }
     }
     private void HasIssueSelected(object sender, CanExecuteRoutedEventArgs e)
@@ -263,16 +255,18 @@ namespace Bcfier.UserControls
         var view = e.Parameter as ViewPoint;
         if (view == null || !File.Exists(view.SnapshotPath))
         {
-          MessageBox.Show("The selected Snapshot does not exist", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          Utils.ShowErrorMessageBox("The selected Snapshot does not exist");
           return;
         }
         Process.Start(view.SnapshotPath);
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        Utils.ShowErrorMessageBox("Open snapshot error.", ex);
       }
     }
+
+    // TODO: remove this
     private void OnOpenComponents(object sender, ExecutedRoutedEventArgs e)
     {
       try
@@ -287,9 +281,8 @@ namespace Bcfier.UserControls
         dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         dialog.Show();
       }
-      catch (System.Exception ex1)
+      catch (System.Exception)
       {
-        MessageBox.Show("exception: " + ex1);
       }
     }
     private void OnCloseBcf(object sender, ExecutedRoutedEventArgs e)
@@ -302,12 +295,12 @@ namespace Bcfier.UserControls
           return;
         var bcf = bcfs.First();
 
-        if (SaveBcf(bcf))
+        if (AskAndSaveBcf(bcf))
           _bcf.CloseFile(bcf);
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        Utils.ShowErrorMessageBox("Close BCF error.", ex);
       }
     }
 
@@ -342,7 +335,7 @@ namespace Bcfier.UserControls
     {
       foreach (var bcf in _bcf.BcfFiles)
         // Something was not saved and user has discarded saving
-        if (!SaveBcf(bcf))
+        if (!AskAndSaveBcf(bcf))
           return false;
 
       _bcf.CloseAllFiles();
@@ -387,9 +380,9 @@ namespace Bcfier.UserControls
           }
         }
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        Utils.ShowErrorMessageBox("Open BCF error.", ex);
       }
     }
     private void Window_DragOver(object sender, DragEventArgs e)
@@ -413,9 +406,8 @@ namespace Bcfier.UserControls
           e.Handled = true;
         }
       }
-      catch (System.Exception ex1)
+      catch (System.Exception)
       {
-        MessageBox.Show("exception: " + ex1);
       }
     }
     #endregion

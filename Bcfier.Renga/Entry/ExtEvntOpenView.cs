@@ -98,7 +98,7 @@ namespace Bcfier.RengaPlugin.Entry
       }
       catch (Exception ex)
       {
-        MessageBox.Show(ex.Message, "Error!");
+        Utils.ShowErrorMessageBox("Unknown error.", ex);
       }
     }
   }

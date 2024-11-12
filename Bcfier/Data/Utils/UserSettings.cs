@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Windows;
 using System.Windows.Controls;
 using Bcfier.Themes;
 
@@ -23,7 +22,7 @@ namespace Bcfier.Data.Utils
           return string.Empty;
 
 
-        KeyValueConfigurationElement element = config.AppSettings.Settings[key];
+        var element = config.AppSettings.Settings[key];
         if (element != null)
         {
           string value = element.Value;
@@ -36,9 +35,9 @@ namespace Bcfier.Data.Utils
           config.Save(ConfigurationSaveMode.Modified);
         }
       }
-      catch (System.Exception ex1)
+      catch (System.Exception)
       {
-        MessageBox.Show("exception: " + ex1);
+        // Log exception
       }
       return string.Empty;
     }
@@ -64,9 +63,9 @@ namespace Bcfier.Data.Utils
         config.Save(ConfigurationSaveMode.Modified);
 
       }
-      catch (System.Exception ex1)
+      catch (System.Exception)
       {
-        MessageBox.Show("exception: " + ex1);
+        // Log exception
       }
     }
     /// <summary>
@@ -81,12 +80,12 @@ namespace Bcfier.Data.Utils
       try
       {
         //if it doesn't exist, use the optional default value
-        if(!Boolean.TryParse(Get(key), out value))
-        value = defValue;
+        if (!Boolean.TryParse(Get(key), out value))
+          value = defValue;
       }
-      catch (System.Exception ex1)
+      catch (System.Exception)
       {
-        MessageBox.Show("exception: " + ex1);
+        // Log exception
       }
       return value;
     }
@@ -101,15 +100,12 @@ namespace Bcfier.Data.Utils
       string _settings =
         System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BCFier",
           "settings.config");
-      var configMap = new ExeConfigurationFileMap {ExeConfigFilename = _settings};
+      var configMap = new ExeConfigurationFileMap { ExeConfigFilename = _settings };
       var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
-
-      if (config == null)
-        MessageBox.Show("Error loading the Configuration file.", "Configuration Error", MessageBoxButton.OK, MessageBoxImage.Error);
       return config;
     }
 
-     /// <summary>
+    /// <summary>
     /// Tries to set user controls to what they were last time the user used the app
     /// </summary>
     public static void LoadControlSettings(Control control)
@@ -167,9 +163,9 @@ namespace Bcfier.Data.Utils
             tabcontrol.SelectedIndex = value;
         }
       }
-      catch (Exception ex)
+      catch (System.Exception)
       {
-        Console.Write(ex.Message);
+        // Log exception
       }
     }
     /// <summary>
@@ -217,9 +213,9 @@ namespace Bcfier.Data.Utils
           Set(tabcontrol.Name, tabcontrol.SelectedIndex.ToString());
         }
       }
-      catch (Exception ex)
+      catch (System.Exception)
       {
-        Console.Write(ex.Message);
+        // Log exception
       }
     }
   }

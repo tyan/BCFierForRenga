@@ -28,24 +28,17 @@ namespace Bcfier.RengaPlugin
       InitializeComponent();
       Bcfier.LabelVersion.Content = "BCFier for Renga " +
                          System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-      try
+      _Handler = handler;
+      _App = app;
+
+      var applicationEvents = new Renga.ApplicationEventSource(_App);
+      applicationEvents.BeforeProjectClose += (eventArgs) =>
       {
-        _Handler = handler;
-        _App = app;
-        
-        var applicationEvents = new Renga.ApplicationEventSource(_App);
-        applicationEvents.BeforeProjectClose += (eventArgs) =>
-        {
-          if (Bcfier.TryCloseAllBcfs())
-            Close();
-          else
-            eventArgs.Prevent();
-        };
-      }
-      catch (Exception ex1)
-      {
-        MessageBox.Show(ex1.Message, "Error!");
-      }
+        if (Bcfier.TryCloseAllBcfs())
+          Close();
+        else
+          eventArgs.Prevent();
+      };
     }
 
     #region commands
@@ -70,9 +63,9 @@ namespace Bcfier.RengaPlugin
         _Handler.v = view.VisInfo;
         _Handler.Execute(_App);
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show(ex1.Message, "Error!");
+        Utils.ShowErrorMessageBox("Open view error.", ex);
       }
     }
     /// <summary>
@@ -116,9 +109,9 @@ namespace Bcfier.RengaPlugin
         }
 
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show(ex1.Message, "Error!");
+        Utils.ShowErrorMessageBox("Add view error.", ex);
       }
     }
     #endregion
