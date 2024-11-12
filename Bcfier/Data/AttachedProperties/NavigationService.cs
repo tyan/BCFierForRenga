@@ -81,9 +81,9 @@ namespace Bcfier.Data.AttachedProperties
       if (last_pos < new_text.Length)
         text_block.Inlines.Add(new Run(new_text.Substring(last_pos)));
       }
-      catch (System.Exception ex1)
+      catch (System.Exception)
       {
-        MessageBox.Show("exception: " + ex1);
+        // Log exception
       }
     }
 
@@ -91,12 +91,13 @@ namespace Bcfier.Data.AttachedProperties
     {
       var link = (Hyperlink)sender;
       // Do something with link.NavigateUri like:
-      try { 
+      try
+      {
         Process.Start(link.NavigateUri.ToString());
       }
-      catch (System.Exception ex1)
+      catch (System.Exception)
       {
-      Console.WriteLine(ex1.Message);
+        // Log exception
       }
     }
   }

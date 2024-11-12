@@ -80,11 +80,27 @@ namespace Bcfier.Data.Utils
             Directory.Delete(target_dir, false);
           }
         }
-        catch (System.Exception ex1)
-        {
-          MessageBox.Show("exception: " + ex1);
-        }
+      catch (System.Exception)
+      {
+        // Log exception
       }
-    
+    }
+    public static void ShowErrorMessageBox(string text, Exception ex = null)
+    {
+      var errorMessage = text;
+      if (ex != null)
+      {
+        errorMessage += Environment.NewLine;
+        errorMessage += Environment.NewLine;
+        errorMessage += ex.Message;
+      }
+
+      MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+
+    public static void ShowInfoMessageBox(string text)
+    {
+      MessageBox.Show(text, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
   }
 }

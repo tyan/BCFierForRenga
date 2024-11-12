@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Bcfier.Bcf.Bcf2;
 using WPFLocalizeExtension.Engine;
+using Bcfier.Data.Utils;
 
 
 namespace Bcfier.Win
@@ -67,9 +68,9 @@ namespace Bcfier.Win
           Bcfier.SelectedBcf().HasBeenSaved = false;
 
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        Utils.ShowErrorMessageBox("Add view error.", ex);
       }
     }
     #endregion

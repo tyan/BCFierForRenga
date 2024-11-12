@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System;
 using System.Windows;
+using Bcfier.Data.Utils;
 
 namespace Bcfier.RengaPlugin.Entry
 {
@@ -27,22 +28,15 @@ namespace Bcfier.RengaPlugin.Entry
       }
       catch (Exception ex)
       {
-        MessageBox.Show(ex.ToString());
+        Utils.ShowErrorMessageBox("Unknown error.", ex);
       }
     }
 
     public void Focus()
     {
-      try
-      {
-        if (Window == null) return;
-        Window.Activate();
-        Window.WindowState = WindowState.Normal;
-      }
-      catch (Exception ex)
-      {
-        MessageBox.Show(ex.ToString());
-      }
+      if (Window == null) return;
+      Window.Activate();
+      Window.WindowState = WindowState.Normal;
     }
     #endregion
   }

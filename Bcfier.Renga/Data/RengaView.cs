@@ -97,9 +97,9 @@ namespace Bcfier.RengaPlugin.Data
 
         return result;
       }
-      catch (System.Exception ex1)
+      catch (System.Exception ex)
       {
-        MessageBox.Show(ex1.Message, "Error!");
+        Utils.ShowErrorMessageBox("Create view point error.", ex);
       }
 
       return null;
