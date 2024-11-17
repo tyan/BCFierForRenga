@@ -21,7 +21,7 @@ namespace Bcfier.Bcf
   public class BcfContainer : INotifyPropertyChanged
   {
     private ObservableCollection<BcfFile> _bcfFiles { get; set; }
-    private int selectedReport { get; set; }
+    private int _selectedReport { get; set; }
 
     public BcfContainer()
     {
@@ -46,23 +46,20 @@ namespace Bcfier.Bcf
     {
       get
       {
-        return selectedReport;
+        return _selectedReport;
       }
 
       set
       {
-        selectedReport = value;
+        _selectedReport = value;
         NotifyPropertyChanged("SelectedReportIndex");
       }
     }
 
-
+    // Remove this
     public void NewFile()
     {
-      var newBcf = new BcfFile();
-      BcfFiles.Add(newBcf);
-      Directory.CreateDirectory(newBcf.TempPath);
-      SelectedReportIndex = BcfFiles.Count - 1;
+      AddBcf(new BcfFile());
     }
     public void SaveFile(BcfFile bcf)
     {
@@ -78,39 +75,39 @@ namespace Bcfier.Bcf
 
     public void OpenFile(string path)
     {
-      var newbcf = OpenBcfFile(path);
-      BcfOpened(newbcf);
+      var bcf = OpenBcfFile(path);
+      AddBcf(bcf);
     }
     public void OpenFile()
     {
-      var bcffiles = OpenBcfDialog();
-      if (bcffiles == null)
+      var bcfs = OpenBcfDialog();
+      if (bcfs == null)
         return;
-      foreach (var bcffile in bcffiles)
+      foreach (var bcf in bcfs)
       {
-        if (bcffile == null)
+        if (bcf == null)
           continue;
-        BcfOpened(bcffile);
+        AddBcf(bcf);
       }
     }
 
-    private void BcfOpened(BcfFile newbcf)
+    private void AddBcf(BcfFile newbcf)
     {
-      if (newbcf != null)
+      if (newbcf == null)
+        return;
+
+      BcfFiles.Add(newbcf);
+      SelectedReportIndex = BcfFiles.Count - 1;
+      if (newbcf.Issues.Any())
+        newbcf.SelectedIssue = newbcf.Issues.First();
+
+      foreach (var issue in newbcf.Issues)
       {
-        BcfFiles.Add(newbcf);
-        SelectedReportIndex = BcfFiles.Count - 1;
-        if (newbcf.Issues.Any())
-          newbcf.SelectedIssue = newbcf.Issues.First();
+        if (!Globals.OpenStatuses.Contains(issue.Topic.TopicStatus))
+          Globals.OpenStatuses.Add(issue.Topic.TopicStatus);
 
-        foreach (var issue in newbcf.Issues)
-        {
-          if (!Globals.OpenStatuses.Contains(issue.Topic.TopicStatus))
-            Globals.OpenStatuses.Add(issue.Topic.TopicStatus);
-
-          if (!Globals.OpenTypes.Contains(issue.Topic.TopicType))
-            Globals.OpenTypes.Add(issue.Topic.TopicType);
-        }
+        if (!Globals.OpenTypes.Contains(issue.Topic.TopicType))
+          Globals.OpenTypes.Add(issue.Topic.TopicType);
       }
     }
 
