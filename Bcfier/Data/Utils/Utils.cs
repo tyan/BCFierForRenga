@@ -92,7 +92,7 @@ namespace Bcfier.Data.Utils
       {
         errorMessage += Environment.NewLine;
         errorMessage += Environment.NewLine;
-        errorMessage += ex.Message;
+        errorMessage += ex;
       }
 
       MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);

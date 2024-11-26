@@ -6,10 +6,10 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using System.Xml.Serialization;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
 using Bcfier.Data;
+using System.Xml.Linq;
 
 namespace Bcfier.Bcf
 {
@@ -166,14 +166,9 @@ namespace Bcfier.Bcf
       }
     }
 
-    public static string FileExtension
-    {
-      get { return ".bcf"; }
-    }
-
     public static string FileFilter
     {
-      get { return String.Format("BIM Collaboration Format (*{0})|*{0}", FileExtension); }
+      get { return String.Format("BIM Collaboration Format (*{0})|*{0}", BcfSerializer.FileExtension); }
     }
 
     #region private methods
@@ -183,20 +178,27 @@ namespace Bcfier.Bcf
     /// <returns></returns>
     private static IEnumerable<BcfFile> OpenBcfDialog()
     {
-      var openFileDialog1 = new Microsoft.Win32.OpenFileDialog
+      try
       {
-        Title = String.Format("Open BCF file ({0})", FileExtension),
-        Filter = FileFilter,
-        DefaultExt = FileExtension,
-        Multiselect = true,
-        RestoreDirectory = true,
-        CheckFileExists = true,
-        CheckPathExists = true
-      };
-      var result = openFileDialog1.ShowDialog(); // Show the dialog.
+        var openFileDialog1 = new Microsoft.Win32.OpenFileDialog
+        {
+          Title = String.Format("Open BCF file ({0})", BcfSerializer.FileExtension),
+          Filter = FileFilter,
+          DefaultExt = BcfSerializer.FileExtension,
+          Multiselect = true,
+          RestoreDirectory = true,
+          CheckFileExists = true,
+          CheckPathExists = true
+        };
+        var result = openFileDialog1.ShowDialog(); // Show the dialog.
 
-      if (result == true) // Test result.
-        return openFileDialog1.FileNames.Select(OpenBcfFile).ToList();
+        if (result == true) // Test result.
+          return openFileDialog1.FileNames.Select(OpenBcfFile).ToList();
+      }
+      catch (Exception ex)
+      {
+        Utils.ShowErrorMessageBox("Failed to open one or more BCF files", ex);
+      }
 
       return null;
     }
@@ -208,91 +210,7 @@ namespace Bcfier.Bcf
     /// <returns></returns>
     private static BcfFile OpenBcfFile(string filePath)
     {
-      var file = new BcfFile();
-      if (!File.Exists(filePath) || !String.Equals(Path.GetExtension(filePath), FileExtension, StringComparison.InvariantCultureIgnoreCase))
-        return file;
-
-      file.Filename = Path.GetFileNameWithoutExtension(filePath);
-      file.Fullname = filePath;
-
-      using (ZipArchive archive = ZipFile.OpenRead(filePath))
-      {
-        archive.ExtractToDirectory(file.TempPath);
-      }
-
-      var dir = new DirectoryInfo(file.TempPath);
-
-      var projectFile = Path.Combine(file.TempPath, "project.bcfp");
-      if (File.Exists(projectFile))
-      {
-        var project = DeserializeProject(projectFile);
-        var g = Guid.NewGuid();
-        Guid.TryParse(project.Project.ProjectId, out g);
-        file.ProjectId = g;
-      }
-
-      //ADD ISSUES FOR EACH SUBFOLDER
-      foreach (var folder in dir.GetDirectories())
-      {
-        //An issue needs at least the markup file
-        var markupFile = Path.Combine(folder.FullName, "markup.bcf");
-        if (!File.Exists(markupFile))
-          continue;
-
-        var bcfissue = DeserializeMarkup(markupFile);
-
-
-        if (bcfissue == null)
-          continue;
-
-        //Is a BCF 2 file, has multiple viewpoints
-        if (bcfissue.Viewpoints != null && bcfissue.Viewpoints.Any())
-        {
-          foreach (var viewpoint in bcfissue.Viewpoints)
-          {
-            string viewpointpath = Path.Combine(folder.FullName, viewpoint.Viewpoint);
-            if (File.Exists(viewpointpath))
-            {
-              //deserializing the viewpoint into the issue
-              viewpoint.VisInfo = DeserializeViewpoint(viewpointpath);
-              viewpoint.SnapshotPath = Path.Combine(folder.FullName, viewpoint.Snapshot);
-            }
-          }
-        }
-        //Is a BCF 1 file, only one viewpoint
-        //there is no Viewpoints tag in the markup
-        //update it to BCF 2
-        else
-        {
-          bcfissue.Viewpoints = new ObservableCollection<ViewPoint>();
-          string viewpointFile = Path.Combine(folder.FullName, "viewpoint.bcfv");
-          if (File.Exists(viewpointFile))
-          {
-            bcfissue.Viewpoints.Add(new ViewPoint(true)
-            {
-              VisInfo = DeserializeViewpoint(viewpointFile),
-              SnapshotPath = Path.Combine(folder.FullName, "snapshot.png"),
-            });
-            //update the comments
-            foreach (var comment in bcfissue.Comment)
-            {
-              comment.Viewpoint = new CommentViewpoint();
-              comment.Viewpoint.Guid = bcfissue.Viewpoints.First().Guid;
-            }
-          }
-        }
-        bcfissue.Comment = new ObservableCollection<Comment>(bcfissue.Comment.OrderBy(x => x.Date));
-        bcfissue.Viewpoints = new ObservableCollection<ViewPoint>(bcfissue.Viewpoints.OrderBy(x => x.Index));
-
-        //register the collectionchanged events,
-        //it is needed since deserialization overwrites the ones set in the constructor
-        bcfissue.RegisterEvents();
-
-        //ViewComment stuff
-        file.Issues.Add(bcfissue);
-      }
-      file.Issues = new ObservableCollection<Markup>(file.Issues.OrderBy(x => x.Topic.Index));
-      return file;
+      return BcfSerializer.load(filePath);
     }
 
     /// <summary>
@@ -300,104 +218,17 @@ namespace Bcfier.Bcf
     /// </summary>
     /// <param name="bcffile"></param>
     /// <returns></returns>
-    private static bool SaveBcfFile(BcfFile bcffile)
+    private static bool SaveBcfFile(BcfFile bcf)
     {
-      if (bcffile.Issues.Count == 0)
-        return false;
-
-      if (!Directory.Exists(bcffile.TempPath))
-        Directory.CreateDirectory(bcffile.TempPath);
       // Show save file dialog box
-      string name = !string.IsNullOrEmpty(bcffile.Filename)
-          ? bcffile.Filename
+      var name = !string.IsNullOrEmpty(bcf.Filename)
+          ? bcf.Filename
           : "New BCF Report";
-      string filename = SaveBcfDialog(name);
-
+      var filename = SaveBcfDialog(name);
       // Process save file dialog box results
       if (string.IsNullOrWhiteSpace(filename))
         return false;
-      var bcfProject = new ProjectExtension
-      {
-        Project = new Project
-        {
-          Name = string.IsNullOrEmpty(bcffile.ProjectName) ? bcffile.Filename : bcffile.ProjectName,
-          ProjectId = bcffile.ProjectId.Equals(Guid.Empty) ? Guid.NewGuid().ToString() : bcffile.ProjectId.ToString()
-        },
-        ExtensionSchema = ""
-
-      };
-      var bcfVersion = new Bcf2.Version { VersionId = "2.1", DetailedVersion = "2.1" };
-
-      var serializerP = new XmlSerializer(typeof(ProjectExtension));
-      Stream writerP = new FileStream(Path.Combine(bcffile.TempPath, "project.bcfp"), FileMode.Create);
-      serializerP.Serialize(writerP, bcfProject);
-      writerP.Close();
-
-      var serializerVers = new XmlSerializer(typeof(Bcf2.Version));
-      Stream writerVers = new FileStream(Path.Combine(bcffile.TempPath, "bcf.version"), FileMode.Create);
-      serializerVers.Serialize(writerVers, bcfVersion);
-      writerVers.Close();
-
-      var serializerV = new XmlSerializer(typeof(VisualizationInfo));
-      var serializerM = new XmlSerializer(typeof(Markup));
-
-      var i = 0;
-      foreach (var issue in bcffile.Issues)
-      {
-        //set topic index
-        issue.Topic.Index = i;
-        issue.Topic.IndexSpecified = true;
-        i++;
-
-        // serialize the object, and close the TextWriter
-        string issuePath = Path.Combine(bcffile.TempPath, issue.Topic.Guid);
-        if (!Directory.Exists(issuePath))
-          Directory.CreateDirectory(issuePath);
-
-        //set viewpoint index
-        for (var l = 0; l < issue.Viewpoints.Count; l++)
-        {
-          issue.Viewpoints[l].Index = l;
-          issue.Viewpoints[l].IndexSpecified = true;
-        }
-
-        //BCF 1 compatibility
-        //there needs to be a view whose viewpoint and snapshot are named as follows and not with a guid
-        //uniqueness is still guarenteed by the guid field
-        if (issue.Viewpoints.Any() && (issue.Viewpoints.Count == 1 || issue.Viewpoints.All(o => o.Viewpoint != "viewpoint.bcfv")))
-        {
-          if (File.Exists(Path.Combine(issuePath, issue.Viewpoints[0].Viewpoint)))
-            File.Delete(Path.Combine(issuePath, issue.Viewpoints[0].Viewpoint));
-          issue.Viewpoints[0].Viewpoint = "viewpoint.bcfv";
-          if (File.Exists(Path.Combine(issuePath, issue.Viewpoints[0].Snapshot)))
-            File.Move(Path.Combine(issuePath, issue.Viewpoints[0].Snapshot), Path.Combine(issuePath, "snapshot.png"));
-          issue.Viewpoints[0].Snapshot = "snapshot.png";
-        }
-        //serialize markup with updated content
-        Stream writerM = new FileStream(Path.Combine(issuePath, "markup.bcf"), FileMode.Create);
-        serializerM.Serialize(writerM, issue);
-        writerM.Close();
-        //serialize views
-        foreach (var bcfViewpoint in issue.Viewpoints)
-        {
-          Stream writerV = new FileStream(Path.Combine(issuePath, bcfViewpoint.Viewpoint), FileMode.Create);
-          serializerV.Serialize(writerV, bcfViewpoint.VisInfo);
-          writerV.Close();
-        }
-      }
-
-      //overwrite, without doubts
-      if (File.Exists(filename))
-        File.Delete(filename);
-
-      //added encoder to address backslashes issue #11
-      //issue: https://github.com/teocomi/BCFier/issues/11
-      //ref: http://stackoverflow.com/questions/27289115/system-io-compression-zipfile-net-4-5-output-zip-in-not-suitable-for-linux-mac
-      ZipFile.CreateFromDirectory(bcffile.TempPath, filename, CompressionLevel.Optimal, false, new ZipEncoder());
-
-      bcffile.HasBeenSaved = true;
-      bcffile.Filename = Path.GetFileNameWithoutExtension(filename);
-      return true;
+      return BcfSerializer.save(bcf, filename);
     }
 
     /// <summary>
@@ -409,9 +240,9 @@ namespace Bcfier.Bcf
     {
       var saveFileDialog = new Microsoft.Win32.SaveFileDialog
       {
-        Title = String.Format("Save as BCF file ({0})", FileExtension),
+        Title = String.Format("Save as BCF file ({0})", BcfSerializer.FileExtension),
         FileName = filename,
-        DefaultExt = FileExtension,
+        DefaultExt = BcfSerializer.FileExtension,
         Filter = FileFilter
       };
 
@@ -419,40 +250,6 @@ namespace Bcfier.Bcf
       var result = saveFileDialog.ShowDialog();
       return result == true ? saveFileDialog.FileName : "";
     }
-
-    private static VisualizationInfo DeserializeViewpoint(string path)
-    {
-      VisualizationInfo output = null;
-
-      using (var viewpointFile = new FileStream(path, FileMode.Open))
-      {
-        var serializerS = new XmlSerializer(typeof(VisualizationInfo));
-        output = serializerS.Deserialize(viewpointFile) as VisualizationInfo;
-      }
-      return output;
-    }
-    private static Markup DeserializeMarkup(string path)
-    {
-      Markup output = null;
-      using (var markupFile = new FileStream(path, FileMode.Open))
-      {
-        var serializerM = new XmlSerializer(typeof(Markup));
-        output = serializerM.Deserialize(markupFile) as Markup;
-      }
-      return output;
-    }
-
-    private static ProjectExtension DeserializeProject(string path)
-    {
-      ProjectExtension output = null;
-      using (var markupFile = new FileStream(path, FileMode.Open))
-      {
-        var serializerM = new XmlSerializer(typeof(ProjectExtension));
-        output = serializerM.Deserialize(markupFile) as ProjectExtension;
-      }
-      return output;
-    }
-
 
     #endregion
 
