@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Bcfier.Localization;
 
 namespace Bcfier.Data.Utils
 {
@@ -95,12 +96,12 @@ namespace Bcfier.Data.Utils
         errorMessage += ex;
       }
 
-      MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+      MessageBox.Show(errorMessage, LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
     }
 
     public static void ShowInfoMessageBox(string text)
     {
-      MessageBox.Show(text, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+      MessageBox.Show(text, LocValueGetter.Get("Info"), MessageBoxButton.OK, MessageBoxImage.Information);
     }
   }
 }

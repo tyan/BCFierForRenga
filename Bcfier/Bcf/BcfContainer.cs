@@ -10,6 +10,7 @@ using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
 using Bcfier.Data;
 using System.Xml.Linq;
+using Bcfier.Localization;
 
 namespace Bcfier.Bcf
 {
@@ -182,7 +183,7 @@ namespace Bcfier.Bcf
       {
         var openFileDialog1 = new Microsoft.Win32.OpenFileDialog
         {
-          Title = String.Format("Open BCF file ({0})", BcfSerializer.FileExtension),
+          Title = String.Format(LocValueGetter.Get("OpenFile"), BcfSerializer.FileExtension),
           Filter = FileFilter,
           DefaultExt = BcfSerializer.FileExtension,
           Multiselect = true,
@@ -197,7 +198,7 @@ namespace Bcfier.Bcf
       }
       catch (Exception ex)
       {
-        Utils.ShowErrorMessageBox("Failed to open one or more BCF files", ex);
+        Utils.ShowErrorMessageBox(LocValueGetter.Get("FailedOpening"), ex);
       }
 
       return null;
@@ -223,7 +224,7 @@ namespace Bcfier.Bcf
       // Show save file dialog box
       var name = !string.IsNullOrEmpty(bcf.Filename)
           ? bcf.Filename
-          : "New BCF Report";
+          : LocValueGetter.Get("NewBCF");
       var filename = SaveBcfDialog(name);
       // Process save file dialog box results
       if (string.IsNullOrWhiteSpace(filename))
@@ -240,7 +241,7 @@ namespace Bcfier.Bcf
     {
       var saveFileDialog = new Microsoft.Win32.SaveFileDialog
       {
-        Title = String.Format("Save as BCF file ({0})", BcfSerializer.FileExtension),
+        Title = String.Format(LocValueGetter.Get("SaveAsBCF"), BcfSerializer.FileExtension),
         FileName = filename,
         DefaultExt = BcfSerializer.FileExtension,
         Filter = FileFilter
