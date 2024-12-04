@@ -117,14 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Новое замечание</value>
+  </data>
+  <data name="AddComment" xml:space="preserve">
+    <value>Новый комментарий</value>
+  </data>
+  <data name="AddingCommentError" xml:space="preserve">
+    <value>Ошибка добавления комментария.</value>
+  </data>
+  <data name="AddingIssueError" xml:space="preserve">
+    <value>Ошибка добавления замечания.</value>
+  </data>
   <data name="AddIssue" xml:space="preserve">
-    <value>Добавить замечание</value>
+    <value>Новое замечание</value>
+  </data>
+  <data name="AddView" xml:space="preserve">
+    <value>Новый вид</value>
   </data>
   <data name="Annotate" xml:space="preserve">
-    <value>Заметка</value>
+    <value>Редактировать</value>
   </data>
   <data name="AuthorName" xml:space="preserve">
     <value>Автор:</value>
+  </data>
+  <data name="AuthorNameText" xml:space="preserve">
+    <value>Имя</value>
   </data>
   <data name="Browse" xml:space="preserve">
     <value>Обзор...</value>
@@ -132,17 +150,92 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="ClosingFileError" xml:space="preserve">
+    <value>Ошибка закрытия BCF.</value>
+  </data>
   <data name="Comma" xml:space="preserve">
     <value>Через запятую</value>
   </data>
+  <data name="CommentDeletionError" xml:space="preserve">
+    <value>Ошибка удаления комментария.</value>
+  </data>
+  <data name="ConfigurationError" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удаление</value>
+  </data>
+  <data name="DeleteComment" xml:space="preserve">
+    <value>Вы уверены, что хотите удалить этот комментарий?</value>
+  </data>
+  <data name="DeleteIssueCaption" xml:space="preserve">
+    <value>Удаление замечаний</value>
+  </data>
+  <data name="DeleteIssues" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="DeleteLinkedComments" xml:space="preserve">
+    <value>Удалить комментарии, связанные с этим видом?</value>
+  </data>
+  <data name="DeleteSelected" xml:space="preserve">
+    <value>Удалить выбранные</value>
+  </data>
+  <data name="DeletionConfirmation" xml:space="preserve">
+    <value>Вы действительно хотите удалить замечания?</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
   <data name="DragAndDropText" xml:space="preserve">
-    <value>Если выбрать или перетащить изображение, точка взгляда добавлена не будет.</value>
+    <value>Если добавить изображение с диска, то точка взгляда на модель добавлена не будет.</value>
+  </data>
+  <data name="EditingError" xml:space="preserve">
+    <value>Ошибка редактирования вида.</value>
+  </data>
+  <data name="EmptyReport" xml:space="preserve">
+    <value>В этом BCF-отчете нет замечаний.</value>
+  </data>
+  <data name="EnlargeView" xml:space="preserve">
+    <value>Увеличить вид</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="FailedOpening" xml:space="preserve">
+    <value>Не получилось открыть один или несколько BCF-файлов</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>Общие</value>
   </data>
+  <data name="GeneralComments" xml:space="preserve">
+    <value>Обсуждение</value>
+  </data>
   <data name="Help" xml:space="preserve">
     <value>Справка</value>
+  </data>
+  <data name="ImageResizePrompt" xml:space="preserve">
+    <value>Размер изображения {0}x{1}, такой размер изображения увеличит размер BCF-файла. Хотите уменьшить размер до {2}x{3}?</value>
+  </data>
+  <data name="InvalidImageMessage" xml:space="preserve">
+    <value>Файл поврежден. Пожалуйста, попробуйте еще раз.</value>
+  </data>
+  <data name="IssueDeletionError" xml:space="preserve">
+    <value>Ошибка удаления замечания.</value>
+  </data>
+  <data name="IssueTitle" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="LoadingError" xml:space="preserve">
+    <value>Ошибка загрузки файла конфигурации</value>
+  </data>
+  <data name="Merge" xml:space="preserve">
+    <value>Объединить...</value>
+  </data>
+  <data name="MergeTooltip" xml:space="preserve">
+    <value>Объединить один или несколько BCF с текущим</value>
+  </data>
+  <data name="ModifiedProject" xml:space="preserve">
+    <value> изменен. Сохранить отчет?</value>
   </data>
   <data name="NewBCF" xml:space="preserve">
     <value>Новый BCF</value>
@@ -150,17 +243,53 @@
   <data name="NewBCFTooltip" xml:space="preserve">
     <value>Новый BCF-отчёт</value>
   </data>
+  <data name="NewIssue" xml:space="preserve">
+    <value>Новое замечание</value>
+  </data>
+  <data name="NoComment" xml:space="preserve">
+    <value>Ни одного комментария не выбрано</value>
+  </data>
+  <data name="NoIssue" xml:space="preserve">
+    <value>Ни одного замечания не выбрано</value>
+  </data>
+  <data name="NoView" xml:space="preserve">
+    <value>Ни одного вида не выбрано</value>
+  </data>
+  <data name="NullViewPoint" xml:space="preserve">
+    <value>Выбранная точка взгляда не имеет значения.</value>
+  </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="Open" xml:space="preserve">
     <value>Открыть...</value>
   </data>
+  <data name="OpenBCF" xml:space="preserve">
+    <value>Открыть ({0})</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Открыть BCF-файл ({0})</value>
+  </data>
+  <data name="OpeningSnapshotError" xml:space="preserve">
+    <value>Ошибка открытия изображения.</value>
+  </data>
+  <data name="OpenView" xml:space="preserve">
+    <value>Открыть вид »</value>
+  </data>
   <data name="Remove" xml:space="preserve">
     <value>Удалить</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
   <data name="SaveAs" xml:space="preserve">
     <value>Сохранить как...</value>
+  </data>
+  <data name="SaveAsBCF" xml:space="preserve">
+    <value>Сохранить как BCF-файл ({0})</value>
+  </data>
+  <data name="SaveReport" xml:space="preserve">
+    <value>Сохранить</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Поиск</value>
@@ -198,7 +327,22 @@
   <data name="TopicTypesList" xml:space="preserve">
     <value>АР, КР, ИОС</value>
   </data>
+  <data name="UnableLoading" xml:space="preserve">
+    <value>Невозможно загрузить файл.</value>
+  </data>
+  <data name="UnableViewAdding" xml:space="preserve">
+    <value>Невозможно добавить вид.</value>
+  </data>
+  <data name="UnexistingSnapshot" xml:space="preserve">
+    <value>Это изображение не существует.</value>
+  </data>
+  <data name="UnsupportedView" xml:space="preserve">
+    <value>Неподдерживаемый вид</value>
+  </data>
   <data name="UseDefaultViewer" xml:space="preserve">
     <value>Открывать изображения (.png) в средстве просмотра, выбранном по умолчанию </value>
+  </data>
+  <data name="ViewDeletionError" xml:space="preserve">
+    <value>Ошибка удаления вида.</value>
   </data>
 </root>

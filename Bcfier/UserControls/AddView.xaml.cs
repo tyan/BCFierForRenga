@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
+using Bcfier.Localization;
 
 namespace Bcfier.UserControls
 {
@@ -59,7 +60,7 @@ namespace Bcfier.UserControls
       catch (System.Exception ex)
       {
         // Log exception
-        Utils.ShowErrorMessageBox("Unable to load file.", ex);
+        Utils.ShowErrorMessageBox(LocValueGetter.Get("UnableLoading"), ex);
       }
     }
 
@@ -108,7 +109,7 @@ namespace Bcfier.UserControls
       catch (System.Exception ex)
       {
         // Log exception
-        Utils.ShowErrorMessageBox("Unable to add view.", ex);
+        Utils.ShowErrorMessageBox(LocValueGetter.Get("UnableViewAdding"), ex);
       }
     }
 
@@ -122,7 +123,7 @@ namespace Bcfier.UserControls
 
         if (!File.Exists(tempImg))
         {
-          MessageBox.Show("Snapshot is not a valid image, please try again.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(LocValueGetter.Get("InvalidImageMessage"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
 
@@ -144,7 +145,7 @@ namespace Bcfier.UserControls
       catch (System.Exception ex)
       {
         // Log exception
-        Utils.ShowErrorMessageBox("Editing snapshot error.", ex);
+        Utils.ShowErrorMessageBox(LocValueGetter.Get("EditingError"), ex);
       }
     }
     private bool IsProcessOpen(string name)

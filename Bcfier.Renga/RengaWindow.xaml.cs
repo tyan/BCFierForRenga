@@ -12,6 +12,7 @@ using Component = Bcfier.Bcf.Bcf2.Component;
 using Point = Bcfier.Bcf.Bcf2.Point;
 using Bcfier.Data.Utils;
 using Bcfier.RengaPlugin.Data;
+using Bcfier.Localization;
 
 namespace Bcfier.RengaPlugin
 {
