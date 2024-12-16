@@ -1,4 +1,8 @@
-# User Guide #
+<div style="overflow: hidden; border-radius: 5px; background: #f4f4f4; width: 50px; text-align: center; float: right; border: 1px solid #e0e0e0;">
+<a href="HELP_RU.html">рус</a>
+</div>
+
+# Help #
 
 
 ## BCF Report ##
@@ -7,9 +11,9 @@ A “BCF report” or “BCF file” is a file containing one or more issues of 
 
 To create a new empty report just fire up BCFierForRenga and click on “New”, then you can start adding issues.
 
-BCFier allows you to have more than one BCF report open at the same time, and you can switch by clicking on the blue tabs. To open one or more BCF files just use the main menu button or Drag&Drop them on the main interface.
+BCFier allows you to have more than one BCF report open at the same time, and you can switch by clicking on the tabs. To open one or more BCF files click Open.
 
-BCFier supports BCF files version 1.0 and 2.0. Saved files will always use the latest version of BCF.
+BCFier supports BCF files version 2.1.
 
 ### Issues ###
 
@@ -17,11 +21,11 @@ To add a new Issue to a report, just click the “Add Issue” button, a new emp
 
 ### Views ###
 
-A View is the combination of a snapshot (just an image) and a viewpoint (the 3D information of the current view as camera position and elements visibility/selection status), BCF 2.0 introduced support for multiple views per issue and so does BCFier 2.
+A View is the combination of an image and a viewpoint (the 3D information of the current view as camera position and elements visibility/selection status). You can add multiple views in one issue.
 
 When adding a new View from BCFier Standalone Viewer no viewpoint will be added in the view therefore it will not contain 3D information.
 
-2D Views are not a feature part of BCF.
+Please note that the visibility and selection of the components relies on their GUID (Global Unique ID), and will not be possible if this changes (or is lost) passing the model from a tool to another.
 
 ### Comments ###
 
@@ -35,25 +39,13 @@ Examples:
 
 [C:\Projects\Collaboration\MyProject.rnt]
 
-## Renga
+## BCFier for Renga
 
 BCFier for Renga is accessible via the Primary Panel.
 
 These will let the user create BCF Issues for the current view in the model.
 
-### Components ###
-
-As already mentioned views contain information on the current scene and therefore elements visibility and selection status (components).
-
-If most elements in the scene are hidden, BCFier will only store a list of the visible elements, otherwise a list of the hidden ones, this to improve performance.
-
-All selected items will always be stored in the component list as well.
-
-The full list of components contained in a view can be see by clicking the components icon after the view has been created.
-
-Please note that the visibility and selection of the components relies on their GUID (Global Unique ID), and will not be possible if this changes (or is lost) passing the model from a tool to another.
-
-## Installation ##
+### Installation ###
 
 Installation of the plugin is done by copying the folder with the plugin to the %RengaInstallationFolder%/Plugins. Detailed instructions are [here](https://help.rengabim.com/en/index.htm#plugins.htm). BCFier for Windows does not need any installation.
 

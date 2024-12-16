@@ -2,12 +2,12 @@
 using System.IO;
 using System.Windows;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Bcfier.Bcf.Bcf2;
 using WPFLocalizeExtension.Engine;
 using Bcfier.Data.Utils;
+using Bcfier.Localization;
 
 
 namespace Bcfier.Win
@@ -58,7 +58,7 @@ namespace Bcfier.Win
         var issue = e.Parameter as Markup;
         if (issue == null)
         {
-          MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
 

@@ -117,6 +117,7 @@
     <Compile Include="Data\ValueConverters\IntPluralConverter.cs" />
     <Compile Include="Data\ValueConverters\IntVisibConverter.cs" />
     <Compile Include="Data\ValueConverters\PathToImageConv.cs" />
+    <Compile Include="Localization\LocalizedValueGetter.cs" />
     <Compile Include="Localization\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
