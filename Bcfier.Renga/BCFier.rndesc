@@ -1,6 +1,6 @@
 ﻿<RengaPlugin>
 	<Name>BCFier for Renga</Name>
-	<Version>0.1</Version>
+	<Version>1.0</Version>
 	<RequiredAPIVersion>2.33</RequiredAPIVersion>
 	<Vendor>Evgeniy Tyan</Vendor>
 	<Copyright>Copyright © teocomi 2017, © tyan 2024. All rights reserved.</Copyright>
