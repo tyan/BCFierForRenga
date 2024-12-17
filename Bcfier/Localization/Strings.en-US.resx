@@ -133,7 +133,10 @@
     <value>New Issue</value>
   </data>
   <data name="AddView" xml:space="preserve">
-    <value>New view</value>
+    <value>New View</value>
+  </data>
+  <data name="AddViewError" xml:space="preserve">
+    <value>Add view error.</value>
   </data>
   <data name="Annotate" xml:space="preserve">
     <value>Edit</value>
@@ -159,6 +162,12 @@
   <data name="Comma" xml:space="preserve">
     <value>Comma separated</value>
   </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="CommentCount" xml:space="preserve">
+    <value>Comments: {0}</value>
+  </data>
   <data name="CommentDeletionError" xml:space="preserve">
     <value>Delete comment error.</value>
   </data>
@@ -175,10 +184,13 @@
     <value>Delete issues.</value>
   </data>
   <data name="DeleteIssues" xml:space="preserve">
-    <value>Delete %0% issue%s%</value>
+    <value>Delete issues</value>
   </data>
   <data name="DeleteLinkedComments" xml:space="preserve">
     <value>Do you also want to delete the comments linked to the selected view?</value>
+  </data>
+  <data name="DeleteView" xml:space="preserve">
+    <value>Delete view</value>
   </data>
   <data name="DeletionConfirmation" xml:space="preserve">
     <value>Are you sure you want to delete {0} Issue{1}?\n{2}</value>
@@ -204,6 +216,9 @@
   <data name="FailedOpening" xml:space="preserve">
     <value>Failed to open one or more BCF files</value>
   </data>
+  <data name="FailedViewOpening" xml:space="preserve">
+    <value>Failed to open view</value>
+  </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
   </data>
@@ -216,11 +231,20 @@
   <data name="ImageResizePrompt" xml:space="preserve">
     <value>Image size is {0}x{1}, such a big image could increase A LOT the BCF file size. Do you want me to resize it to {2}x{3} for you?</value>
   </data>
+  <data name="Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
   <data name="InvalidImageMessage" xml:space="preserve">
     <value>It's is not a valid image, please try again.</value>
   </data>
   <data name="IssueDeletionError" xml:space="preserve">
     <value>Delete issue error.</value>
+  </data>
+  <data name="IssuesSelected" xml:space="preserve">
+    <value>Selected: {0}</value>
+  </data>
+  <data name="IssuesTotal" xml:space="preserve">
+    <value>Total: {0}</value>
   </data>
   <data name="IssueTitle" xml:space="preserve">
     <value>Issue Title</value>
@@ -336,6 +360,9 @@
   <data name="UnexistingSnapshot" xml:space="preserve">
     <value>The selected Snapshot does not exist</value>
   </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Unknown error.</value>
+  </data>
   <data name="UnsupportedView" xml:space="preserve">
     <value>Unsupported view</value>
   </data>
@@ -344,5 +371,8 @@
   </data>
   <data name="ViewDeletionError" xml:space="preserve">
     <value>Delete view error.</value>
+  </data>
+  <data name="ViewPointCount" xml:space="preserve">
+    <value>Views: {0}</value>
   </data>
 </root>
