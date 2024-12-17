@@ -135,6 +135,9 @@
   <data name="AddView" xml:space="preserve">
     <value>Новый вид</value>
   </data>
+  <data name="AddViewError" xml:space="preserve">
+    <value>Ошибка добавления вида.</value>
+  </data>
   <data name="Annotate" xml:space="preserve">
     <value>Редактировать</value>
   </data>
@@ -156,6 +159,9 @@
   <data name="Comma" xml:space="preserve">
     <value>Через запятую</value>
   </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Комментарий</value>
+  </data>
   <data name="CommentDeletionError" xml:space="preserve">
     <value>Ошибка удаления комментария.</value>
   </data>
@@ -163,7 +169,7 @@
     <value>Ошибка</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Удаление</value>
+    <value>Удалить</value>
   </data>
   <data name="DeleteComment" xml:space="preserve">
     <value>Вы уверены, что хотите удалить этот комментарий?</value>
@@ -179,6 +185,9 @@
   </data>
   <data name="DeleteSelected" xml:space="preserve">
     <value>Удалить выбранные</value>
+  </data>
+  <data name="DeleteView" xml:space="preserve">
+    <value>Удалить вид</value>
   </data>
   <data name="DeletionConfirmation" xml:space="preserve">
     <value>Вы действительно хотите удалить замечания?</value>
@@ -204,6 +213,9 @@
   <data name="FailedOpening" xml:space="preserve">
     <value>Не получилось открыть один или несколько BCF-файлов</value>
   </data>
+  <data name="FailedViewOpening" xml:space="preserve">
+    <value>Ошибка открытия вида.</value>
+  </data>
   <data name="General" xml:space="preserve">
     <value>Общие</value>
   </data>
@@ -215,6 +227,9 @@
   </data>
   <data name="ImageResizePrompt" xml:space="preserve">
     <value>Размер изображения {0}x{1}, такой размер изображения увеличит размер BCF-файла. Хотите уменьшить размер до {2}x{3}?</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Информация</value>
   </data>
   <data name="InvalidImageMessage" xml:space="preserve">
     <value>Файл поврежден. Пожалуйста, попробуйте еще раз.</value>
@@ -335,6 +350,9 @@
   </data>
   <data name="UnexistingSnapshot" xml:space="preserve">
     <value>Это изображение не существует.</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Неизвестная ошибка.</value>
   </data>
   <data name="UnsupportedView" xml:space="preserve">
     <value>Неподдерживаемый вид</value>

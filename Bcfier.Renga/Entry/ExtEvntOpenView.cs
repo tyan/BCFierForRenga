@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
+using Bcfier.Localization;
 
 namespace Bcfier.RengaPlugin.Entry
 {
@@ -98,7 +99,7 @@ namespace Bcfier.RengaPlugin.Entry
       }
       catch (Exception ex)
       {
-        Utils.ShowErrorMessageBox("Unknown error.", ex);
+        Utils.ShowErrorMessageBox(LocValueGetter.Get("UnknownError"), ex);
       }
     }
   }

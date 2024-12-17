@@ -70,7 +70,7 @@ namespace Bcfier.Win
       }
       catch (System.Exception ex)
       {
-        Utils.ShowErrorMessageBox("Add view error.", ex);
+        Utils.ShowErrorMessageBox(LocValueGetter.Get("AddViewError"), ex);
       }
     }
     #endregion

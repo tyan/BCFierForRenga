@@ -12,6 +12,8 @@ using Component = Bcfier.Bcf.Bcf2.Component;
 using Point = Bcfier.Bcf.Bcf2.Point;
 using Bcfier.Data.Utils;
 using Bcfier.RengaPlugin.Data;
+using Bcfier.Localization;
+
 
 namespace Bcfier.RengaPlugin
 {
@@ -65,7 +67,7 @@ namespace Bcfier.RengaPlugin
       }
       catch (System.Exception ex)
       {
-        Utils.ShowErrorMessageBox("Open view error.", ex);
+        Utils.ShowErrorMessageBox(LocValueGetter.Get("FailedViewOpening"), ex);
       }
     }
     /// <summary>
@@ -83,14 +85,14 @@ namespace Bcfier.RengaPlugin
         var issue = e.Parameter as Markup;
         if (issue == null)
         {
-          MessageBox.Show("No Issue selected", "Error");
+          MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"));
           return;
         }
 
         var rengaActiveView = _App.ActiveView;
         if (rengaActiveView.Type != Renga.ViewType.ViewType_View3D)
         {
-          MessageBox.Show("Unsupported view", "Info");
+          MessageBox.Show(LocValueGetter.Get("UnsupportedView"), LocValueGetter.Get("Info"));
           return;
         }
 
@@ -111,7 +113,7 @@ namespace Bcfier.RengaPlugin
       }
       catch (System.Exception ex)
       {
-        Utils.ShowErrorMessageBox("Add view error.", ex);
+        Utils.ShowErrorMessageBox(LocValueGetter.Get("AddViewError"), ex);
       }
     }
     #endregion

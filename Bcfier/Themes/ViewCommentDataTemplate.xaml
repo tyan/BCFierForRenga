@@ -90,7 +90,7 @@
           <themes:ButtonIcon
             Style="{StaticResource CloseButton}"
             Command="data:Commands.DeleteViews"
-            ToolTip="Delete view">
+            ToolTip="{lex:Loc Key=DeleteView}">
             <Button.CommandParameter>
               <MultiBinding Converter="{StaticResource MultiCommandConverter}">
                 <Binding Path="Viewpoint" />
@@ -142,7 +142,7 @@
                 Grid.Row="0"
                 Style="{StaticResource CloseButton}"
                 Command="data:Commands.DeleteComments"
-                ToolTip="Delete comment">
+                ToolTip="{lex:Loc Key=Delete}">
                 <Button.CommandParameter>
                   <MultiBinding Converter="{StaticResource MultiCommandConverter}">
                     <Binding Path="" />

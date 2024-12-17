@@ -125,11 +125,11 @@
       rws:MarginSetter.Margin="9,0,0,0">
       <Button
         Click="SaveBtnClick"
-        Content="Save"
+        Content="{lex:Loc Key=OK}"
         IsDefault="True" />
       <Button
         Click="CancelBtnClick"
-        Content="Cancel" />
+        Content="{lex:Loc Key=Cancel}" />
     </StackPanel>
   </Grid>
 </Window>
