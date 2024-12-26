@@ -14,7 +14,7 @@
 - добавлять комментарии к замечаниям;
 - переключать виды.
 
-![](Assets/screenshot.png)
+![](Assets/screenshot_ru.png)
 
 О том, как работать с BCFier для Renga, читайте в [Справке](./HELP_RU.html).
 
