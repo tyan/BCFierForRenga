@@ -74,9 +74,9 @@
                   Grid.Row="0"
                   Grid.Column="0"
                   HorizontalAlignment="Left"
+                  Margin="5, 0, 0, 0"
                   Foreground="Gray"
                   FontSize="10"
-                  FontStyle="Italic"
                   Text="{lex:Loc Key=Comma}"
                   TextAlignment="Left"
                   TextWrapping="Wrap" />
@@ -99,9 +99,9 @@
                   Content="{lex:Loc Key=TopicTypes}" />
             <TextBlock
                   HorizontalAlignment="Left"
+                  Margin="5, 0, 0, 0"
                   Foreground="Gray"
                   FontSize="10"
-                  FontStyle="Italic"
                   Text="{lex:Loc Key=Comma}"
                   TextAlignment="Left"
                   TextWrapping="Wrap" />

@@ -243,11 +243,17 @@
   <data name="IssuesSelected" xml:space="preserve">
     <value>Выделено: {0}</value>
   </data>
+  <data name="IssueStatus" xml:space="preserve">
+    <value>Статус замечания</value>
+  </data>
   <data name="IssuesTotal" xml:space="preserve">
     <value>Всего: {0}</value>
   </data>
   <data name="IssueTitle" xml:space="preserve">
     <value>Заголовок</value>
+  </data>
+  <data name="IssueTopic" xml:space="preserve">
+    <value>Раздел</value>
   </data>
   <data name="LoadingError" xml:space="preserve">
     <value>Ошибка загрузки файла конфигурации</value>
@@ -337,7 +343,7 @@
     <value>Редактор изображений:</value>
   </data>
   <data name="TopicStatuses" xml:space="preserve">
-    <value>Статусы:</value>
+    <value>Статусы замечений:</value>
   </data>
   <data name="TopicStatusesList" xml:space="preserve">
     <value>Принято, Отклонено, В процессе, Решено</value>
@@ -346,7 +352,7 @@
     <value>Открыто, Закрыто, В работе, Решено</value>
   </data>
   <data name="TopicTypes" xml:space="preserve">
-    <value>Раздел</value>
+    <value>Разделы:</value>
   </data>
   <data name="TopicTypesList" xml:space="preserve">
     <value>АР, КР, ИОС</value>

@@ -275,28 +275,32 @@
           FontSize="14"
           Binding.SourceUpdated="TextBox_OnTextChanged"
           Placeholder="{lex:Loc Key=IssueTitle}"
-          Text="{Binding Topic.Title, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
-        <StackPanel
+          Text="{Binding Topic.Title, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
+          ToolTip="{lex:Loc Key=IssueTitle}"/>
+        <DockPanel
           Grid.Row="1"
-          Grid.ColumnSpan="2"
-          Orientation="Horizontal">
+          Grid.ColumnSpan="2">
+          <ComboBox 
+            Width="95" 
+            ItemsSource="{Binding Topic.TopicStatusesCollection}" 
+            SelectedItem="{Binding Topic.TopicStatus}"
+            ToolTip="{lex:Loc Key=IssueStatus}">
+          </ComboBox>
+          <ComboBox 
+            Margin="2" 
+            Width="95" 
+            ItemsSource="{Binding Topic.TopicTypesCollection}" 
+            SelectedItem="{Binding Topic.TopicType, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            ToolTip="{lex:Loc Key=IssueTopic}">
+          </ComboBox>
           <Label
             VerticalAlignment="Bottom"
             FontSize="11"
+            Width="120"
+            HorizontalAlignment="Right"
+            HorizontalContentAlignment="Right"
             Content="{Binding Topic.CreationDate, Converter={StaticResource DateConverter}}" />
-          <ComboBox Margin="2" Width="95" ItemsSource="{Binding Topic.TopicStatusesCollection}" SelectedItem="{Binding Topic.TopicStatus}"></ComboBox>
-          <ComboBox Margin="2" Width="95" ItemsSource="{Binding Topic.TopicTypesCollection}" SelectedItem="{Binding Topic.TopicType, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></ComboBox>
-          <!--<themes:TextPlaceholder
-            VerticalAlignment="Bottom"
-            BorderBrush="{StaticResource BackgroundDark}"
-            FontSize="11"
-            Width="100"
-            FontWeight="Bold"
-            Placeholder="Status"
-            Text="{Binding Topic.TopicType, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
-            ToolTip="Status" />-->
-
-        </StackPanel>
+        </DockPanel>
         <themes:TextPlaceholder
           Grid.Row="2"
           Grid.ColumnSpan="2"
@@ -329,21 +333,6 @@
           IconColor="{StaticResource BackgroundDark}"
           IconPath="{StaticResource IconAdd}" />
       </Grid>
-      <!-- <StackPanel Orientation="Horizontal" Grid.Row="1"  >
-
-        <Button Margin="5" Cursor="Hand" ToolTip="Click to open Snapshot"
-                Visibility="{Binding  ElementName=IssueList, Path=SelectedItems.Count, Converter={StaticResource IntVisibConverter}}"
-                HorizontalAlignment="Stretch"   Grid.Row="0" VerticalAlignment="Stretch" Height="60"  Name="OpenImageBtn"
-                Tag="{Binding snapshot}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-            <Grid>
-              <Image Height="60" Width="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                   Source="{Binding snapshot, Converter={StaticResource PathToImageConv}}" />
-            </Grid>
-          </Button>-->
-      <!--<StackPanel Orientation="Vertical">
-          </StackPanel>
-      </StackPanel>-->
-      <!--  VIEWPOINT  -->
       <ListView
         Name="ViewCommList"
         Grid.Row="1"
@@ -357,34 +346,6 @@
         ScrollViewer.CanContentScroll="False"
         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
         ScrollViewer.VerticalScrollBarVisibility="Hidden" />
-      <!--  VIEWPOINTS CONTROLS  -->
-      <!--<DockPanel  >
-        <util:ButtonIcon Command="data:Commands.AddView" CommandParameter="{Binding ElementName=IssueList, Path=SelectedItem}" ToolTip="Add View" DockPanel.Dock="Left" Name="AddViewBtn" Margin="2" Style="{StaticResource IssuesSelectedEnablerStyle}"
-                    Content="Add View" IconColor="Green" IconPath="{StaticResource IconAdd}"/>
-        <util:ButtonIcon Command="data:Commands.DeleteViews" ToolTip="Delete selected view" DockPanel.Dock="Left" Margin="2"  Name="DelViewBtn" HorizontalAlignment="Left"
-                    Style="{StaticResource ViewSelectedEnablerStyle}"
-                    Content="Delete View" IconColor="Red" IconPath="{StaticResource IconDelete}">
-          <Button.CommandParameter>
-            <MultiBinding Converter="{StaticResource MultiCommandConverter}">
-              <Binding ElementName="ViewpointList" Path="SelectedItems" />
-              <Binding ElementName="IssueList" Path="SelectedItem" />
-            </MultiBinding>
-          </Button.CommandParameter>
-        </util:ButtonIcon>
-        <util:ButtonIcon Command="data:Commands.OpenView" ToolTip="Open View in the 3D space"  Name="Open3DViewBtn" Margin="2" HorizontalAlignment="Stretch"
-                  Content="Open View" IconColor="#00A2E1" IconPath="{StaticResource IconView}"  Style="{StaticResource ViewSelectedEnablerStyle}">
-          <Button.CommandParameter>
-            <MultiBinding Converter="{StaticResource MultiCommandConverter}">
-              <Binding ElementName="ViewpointList" Path="SelectedItem" />
-              <Binding ElementName="IssueList" Path="SelectedItem" />
-            </MultiBinding>
-          </Button.CommandParameter>
-        </util:ButtonIcon>
-        <util:ButtonIcon Command="data:Commands.OpenComponents" CommandParameter="{Binding ElementName=ViewpointList, Path=SelectedItem}"
-                         ToolTip="Show list of elements attached to the view"  Name="ComponentsShowBtn" Margin="2" Content="Elements List"
-                            HorizontalAlignment="Left"  IconColor="#00A2E1" IconPath="{StaticResource IconList}"
-                           Style="{StaticResource ViewSelectedEnablerStyle}"/>
-      </DockPanel>-->
     </Grid>
   </Grid>
 </UserControl>
