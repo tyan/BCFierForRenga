@@ -243,11 +243,17 @@
   <data name="IssuesSelected" xml:space="preserve">
     <value>Selected: {0}</value>
   </data>
+  <data name="IssueStatus" xml:space="preserve">
+    <value>Issue status</value>
+  </data>
   <data name="IssuesTotal" xml:space="preserve">
     <value>Total: {0}</value>
   </data>
   <data name="IssueTitle" xml:space="preserve">
     <value>Issue Title</value>
+  </data>
+  <data name="IssueTopic" xml:space="preserve">
+    <value>Topic</value>
   </data>
   <data name="LoadingError" xml:space="preserve">
     <value>Error loading the Configuration file.</value>
@@ -337,7 +343,7 @@
     <value>Image Editor:</value>
   </data>
   <data name="TopicStatuses" xml:space="preserve">
-    <value>Topic Statuses:</value>
+    <value>Issue Statuses:</value>
   </data>
   <data name="TopicStatusesList" xml:space="preserve">
     <value>Open, Closed, In Progress, Resolved</value>
@@ -346,7 +352,7 @@
     <value>Open, Closed, In Progress, Resolved</value>
   </data>
   <data name="TopicTypes" xml:space="preserve">
-    <value>Topic Types:</value>
+    <value>Topics:</value>
   </data>
   <data name="TopicTypesList" xml:space="preserve">
     <value>Architecture, Structure, Mechanical, Electrical</value>
