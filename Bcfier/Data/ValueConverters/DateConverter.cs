@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using Bcfier.Data.Utils;
+using WPFLocalizeExtension.Engine;
 
 
 namespace Bcfier.Data.ValueConverters
@@ -16,20 +16,24 @@ namespace Bcfier.Data.ValueConverters
     {
       if (value == null)
         return "";
-      var date = new DateTime();
-      if (! DateTime.TryParse(value.ToString(), out date))
+
+      try
+      {
+        var dateTime = System.Convert.ToDateTime(value.ToString());
+        var timeSpan = DateTime.Now.Subtract(dateTime);
+        if (timeSpan.Days < 1 && DateTime.Now.Date == dateTime.Date)
+          return dateTime.ToString("t", LocalizeDictionary.CurrentCulture);
+        else
+          return dateTime.ToString("g", LocalizeDictionary.CurrentCulture);
+      }
+      catch (InvalidCastException)
+      {
         return "";
-
-      if (parameter!=null&&parameter.ToString() == "relative")
-        return RelativeDate.ToRelative(date);
-      else
-        return date.ToShortDateString() + " at " + date.ToShortTimeString();
-
+      }
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-
       throw new NotImplementedException();
     }
 

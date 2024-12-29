@@ -105,7 +105,6 @@
     <Compile Include="Data\AttachedProperties\NavigationService.cs" />
     <Compile Include="Data\Globals.cs" />
     <Compile Include="Data\Utils\IfcGuid.cs" />
-    <Compile Include="Data\Utils\RelativeDate.cs" />
     <Compile Include="Data\ValueConverters\DateConverter.cs" />
     <Compile Include="Data\Utils\ImagingUtils.cs" />
     <Compile Include="Data\ValueConverters\MultiCommandConverter.cs" />
@@ -114,7 +113,7 @@
     <Compile Include="Data\Utils\Utils.cs" />
     <Compile Include="Data\ValueConverters\BoolStarConverter.cs" />
     <Compile Include="Data\ValueConverters\BoolVisibConverter.cs" />
-    <Compile Include="Data\ValueConverters\IntPluralConverter.cs" />
+    <Compile Include="Data\ValueConverters\LocFormatValueConverter.cs" />
     <Compile Include="Data\ValueConverters\IntVisibConverter.cs" />
     <Compile Include="Data\ValueConverters\PathToImageConv.cs" />
     <Compile Include="Localization\LocalizedValueGetter.cs" />
@@ -220,7 +219,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Localization\Strings.en-US.resx" />
+    <EmbeddedResource Include="Localization\Strings.en-US.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\Strings.ru-RU.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

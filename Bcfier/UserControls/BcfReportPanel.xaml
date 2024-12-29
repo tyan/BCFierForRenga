@@ -28,7 +28,7 @@
         <ResourceDictionary Source="../Themes/ButtonStyles.xaml" />
         <ResourceDictionary Source="../Themes/ViewCommentDataTemplate.xaml" />
       </ResourceDictionary.MergedDictionaries>
-      <src:IntPluralConverter x:Key="IntPluralConverter" />
+      <src:LocFormatValueConverter x:Key="LocFormatValueConverter" />
       <src:DateConverter x:Key="DateConverter" />
       <src:IntVisibConverter x:Key="IntVisibConverter" />
       <src:PathToImageConv x:Key="PathToImageConv" />
@@ -131,13 +131,13 @@
                     Fill="{StaticResource BackgroundDark}"
                     Data="{StaticResource IconViewPoint}"
                     Stretch="Uniform"
-                    ToolTip="{Binding Viewpoints.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='%0% Viewpoint%s%'}"
+                    ToolTip="{Binding Viewpoints.Count, Converter={StaticResource LocFormatValueConverter}, ConverterParameter='ViewPointCount'}"
                     UseLayoutRounding="False" />
                   <Label
                     VerticalAlignment="Bottom"
                     FontSize="11"
                     Content="{Binding Viewpoints.Count}"
-                    ToolTip="{Binding Viewpoints.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='%0% Viewpoint%s%'}" />
+                    ToolTip="{Binding Viewpoints.Count, Converter={StaticResource LocFormatValueConverter}, ConverterParameter='ViewPointCount'}" />
                   <Path
                     Width="11"
                     Height="11"
@@ -146,13 +146,13 @@
                     Fill="{StaticResource BackgroundDark}"
                     Data="{StaticResource IconComment}"
                     Stretch="Uniform"
-                    ToolTip="{Binding Comment.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='%0% Comment%s%'}"
+                    ToolTip="{Binding Comment.Count, Converter={StaticResource LocFormatValueConverter}, ConverterParameter='CommentCount'}"
                     UseLayoutRounding="False" />
                   <Label
                     VerticalAlignment="Bottom"
                     FontSize="11"
                     Content="{Binding Comment.Count}"
-                    ToolTip="{Binding Comment.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='%0% Comment%s%'}" />
+                    ToolTip="{Binding Comment.Count, Converter={StaticResource LocFormatValueConverter}, ConverterParameter='CommentCount'}" />
                   <Label
                     VerticalAlignment="Bottom"
                     FontSize="11"
@@ -204,7 +204,7 @@
           BorderThickness="1,1,1,1"
           Command="data:Commands.DeleteIssues"
           CommandParameter="{Binding ElementName=IssueList, Path=SelectedItems}"
-          Content="{Binding ElementName=IssueList, Path=SelectedItems.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter={lex:Loc Key=DeleteIssues}}"
+          Content="{lex:Loc Key=DeleteIssues}"
           DockPanel.Dock="Left"
           IconColor="{StaticResource BackgroundDark}"
           IconPath="{StaticResource IconDelete}"
@@ -220,13 +220,13 @@
           Margin="5,0"
           HorizontalAlignment="Left"
           FontStyle="Italic"
-          Content="{Binding ElementName=IssueList, Path=Items.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='%0% Issue%s%'}"
+          Content="{Binding ElementName=IssueList, Path=Items.Count, Converter={StaticResource LocFormatValueConverter}, ConverterParameter='IssuesTotal'}"
           DockPanel.Dock="Left" />
         <Label
           Margin="0"
           HorizontalAlignment="Left"
           FontStyle="Italic"
-          Content="{Binding ElementName=IssueList, Path=SelectedItems.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='%0% Selected'}"
+          Content="{Binding ElementName=IssueList, Path=SelectedItems.Count, Converter={StaticResource LocFormatValueConverter}, ConverterParameter='IssuesSelected'}"
           DockPanel.Dock="Left" />
       </DockPanel>
     </Grid>
