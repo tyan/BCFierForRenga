@@ -9,7 +9,7 @@
 
 A “BCF report” or “BCF file” is a file containing one or more issues of a project. It is store on disk with the extension .bcf.
 
-To create a new empty report just fire up BCFierForRenga and click on “New”, then you can start adding issues.
+To create a new empty report just fire up BCFierForRenga and click on “New BCF”, then you can start adding issues.
 
 BCFier allows you to have more than one BCF report open at the same time, and you can switch by clicking on the tabs. To open one or more BCF files click Open.
 
@@ -17,7 +17,7 @@ BCFier supports BCF files version 2.1.
 
 ### Issues ###
 
-To add a new Issue to a report, just click the “Add Issue” button, a new empty Issue will be generated. You can now set a title and description and start adding Views and Comments.
+To add a new Issue to a report, just click the “New Issue” button, a new empty Issue will be generated. You can now set a title and description and start adding Views and Comments.
 
 ### Views ###
 
