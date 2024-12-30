@@ -6,7 +6,7 @@ Currently BCFierForRenga is composed of the:
 - Renga plugin
 - Standalone Windows Viewer
 
-**[Here](HELP_EN.md) you can find a Guide on how to use the installed version of BCFierForRenga**
+You can find BCFierForRenga help [here](https://tyan.github.io/BCFierForRenga/HELP_EN.html).
 
 ## Getting Started
 

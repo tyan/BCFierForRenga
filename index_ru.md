@@ -3,7 +3,7 @@
 </div>
 # O BCFier #
 
-**BCFier for Renga** - это плагин с открытым исходным кодом для работы с BCF-отчетами в Renga. BCF-отчет - это файл с расширением .bcf, который содержит одно или несколько замечаний по проекту. Вы можете использовать BCF-файлы для совместной работы над проектом в Renga.
+**BCFier for Renga** — это подключаемый модуль с открытым исходным кодом для работы с BCF-отчетами в Renga. BCF-отчет - это файл с расширением .bcf, который содержит замечания по проекту. Вы можете использовать BCF-файлы для совместной работы над проектом в Renga.
 
 С помощью BCFier для Renga вы можете:
 
@@ -20,8 +20,8 @@
 
 # Открытый исходный код #
  
-BCFierForRenga - это клиент [BCF](https://github.com/BuildingSMART/BCF-XML) для Renga с открытым исходным кодом. Этот проект основан на проекте [BCFier](https://github.com/teocomi/BCFier).
-Чтобы собрать плагин, просто форкните [repo](https://github.com/tyan/BCFierForRenga) и скачайте последнюю версию [Renga SDK](https://rengabim.com/sdk/).
+BCFierForRenga — это клиент [BCF](https://github.com/BuildingSMART/BCF-XML) для Renga с открытым исходным кодом. Этот проект основан на проекте [BCFier](https://github.com/teocomi/BCFier).
+Чтобы собрать подключаемый модуль, просто форкните [repo](https://github.com/tyan/BCFierForRenga) и скачайте последнюю версию [Renga SDK](https://rengabim.com/sdk/).
 
 # Вопросы и предложения #
 
