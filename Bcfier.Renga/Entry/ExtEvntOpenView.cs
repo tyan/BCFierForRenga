@@ -11,9 +11,7 @@ namespace Bcfier.RengaPlugin.Entry
 {
   public class ExtEvntOpenView
   {
-    public VisualizationInfo v;
-
-    public void Execute(Renga.IApplication app)
+    static public void Execute(Renga.IApplication app, VisualizationInfo viewInfo)
     {
       try
       {
@@ -25,23 +23,23 @@ namespace Bcfier.RengaPlugin.Entry
         if (camera == null)
           return;
 
-        if (v.PerspectiveCamera == null)
+        if (viewInfo.PerspectiveCamera == null)
           return;
 
         var rengaCameraPos = new Renga.FloatPoint3D();
-        var bcfCameraPos = v.PerspectiveCamera.CameraViewPoint;
+        var bcfCameraPos = viewInfo.PerspectiveCamera.CameraViewPoint;
         rengaCameraPos.X = (float)bcfCameraPos.X * 1000;
         rengaCameraPos.Y = (float)bcfCameraPos.Y * 1000;
         rengaCameraPos.Z = (float)bcfCameraPos.Z * 1000;
 
         var rengaFocusPoint = new Renga.FloatPoint3D();
-        var bcfCameraDirection = v.PerspectiveCamera.CameraDirection;
+        var bcfCameraDirection = viewInfo.PerspectiveCamera.CameraDirection;
         rengaFocusPoint.X = rengaCameraPos.X + (float)bcfCameraDirection.X * 1000;
         rengaFocusPoint.Y = rengaCameraPos.Y + (float)bcfCameraDirection.Y * 1000;
         rengaFocusPoint.Z = rengaCameraPos.Z + (float)bcfCameraDirection.Z * 1000;
 
         var rengaUpVector = new Renga.FloatVector3D();
-        var bcfUpVector = v.PerspectiveCamera.CameraUpVector;
+        var bcfUpVector = viewInfo.PerspectiveCamera.CameraUpVector;
         rengaUpVector.X = (float)bcfUpVector.X;
         rengaUpVector.Y = (float)bcfUpVector.Y;
         rengaUpVector.Z = (float)bcfUpVector.Z;
@@ -58,18 +56,18 @@ namespace Bcfier.RengaPlugin.Entry
         var otherIds = new List<int>();
         var defaultVisibility = false;
 
-        if (v.Components.Visibility == null)
+        if (viewInfo.Components.Visibility == null)
         {
           otherIds = allObjectIds.OfType<int>().ToList();
         }
         else
         {
-          if (v.Components.Visibility.DefaultVisibilitySpecified)
-            defaultVisibility = v.Components.Visibility.DefaultVisibility;
+          if (viewInfo.Components.Visibility.DefaultVisibilitySpecified)
+            defaultVisibility = viewInfo.Components.Visibility.DefaultVisibility;
 
           Func<string, bool> isExceptionObject = (string ifcGuid) =>
           {
-            return Array.Find(v.Components.Visibility.Exceptions, exception => exception.IfcGuid == ifcGuid) != null;
+            return Array.Find(viewInfo.Components.Visibility.Exceptions, exception => exception.IfcGuid == ifcGuid) != null;
           };
 
           foreach (int id in allObjectIds)
@@ -89,7 +87,7 @@ namespace Bcfier.RengaPlugin.Entry
         // Selection
         var selectedObjectsLocalIds = new List<int>();
 
-        foreach (var selectedComponent in v.Components.Selection)
+        foreach (var selectedComponent in viewInfo.Components.Selection)
         {
           var selectedObjectGlobalId = IfcGuid.FromIfcGUID(selectedComponent.IfcGuid);
           var selectedObjectLocalId = buildingModel.GetIdFromUniqueId(selectedObjectGlobalId);
