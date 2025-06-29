@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bcfier.Renga\Bcfier.Renga.csproj" />
     <ProjectReference Include="..\Bcfier\Bcfier.csproj" />
   </ItemGroup>
 
