@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
+using Renga;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.RengaPlugin.Entry;
 using System.ComponentModel;
@@ -87,8 +88,9 @@ namespace Bcfier.RengaPlugin
           return;
         }
 
+        var supportedViews = new List<ViewType> { ViewType.ViewType_View3D, ViewType.ViewType_Assembly, ViewType.ViewType_Drawing };
         var rengaActiveView = _App.ActiveView;
-        if (rengaActiveView.Type != Renga.ViewType.ViewType_View3D)
+        if (!supportedViews.Contains(rengaActiveView.Type))
         {
           MessageBox.Show(LocValueGetter.Get("UnsupportedView"), LocValueGetter.Get("Info"));
           return;
