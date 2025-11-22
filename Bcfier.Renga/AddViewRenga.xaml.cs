@@ -35,5 +35,10 @@ namespace Bcfier.RengaPlugin
         File.Delete(tempImg);
       }      
     }
+
+    private void AddViewControl_Loaded(object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 }

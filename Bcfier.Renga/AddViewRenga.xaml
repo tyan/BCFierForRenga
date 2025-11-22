@@ -12,7 +12,7 @@
   SizeToContent="WidthAndHeight"
   ResizeMode="NoResize"
   Style="{DynamicResource Renga.WPF.Style.DialogWindow}">
-  
+
   <Window.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -20,11 +20,10 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Window.Resources>
-  
+
   <Grid>
     <ctr:AddView
       x:Name="AddViewControl"
-      HorizontalAlignment="Stretch"
       HorizontalContentAlignment="Stretch" />
   </Grid>
 </Window>

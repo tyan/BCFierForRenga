@@ -42,28 +42,55 @@
         Margin="0, 0, 0, 13"
         Text="{lex:Loc Key=DragAndDropText}"
         TextWrapping="Wrap" />
-      <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0, 0, 0, 13" rws:MarginSetter.Margin="0,0,9,0">
-        <Button
-          HorizontalAlignment="Left"
-          Click="Button_LoadImage"
-          Content="{lex:Loc Key=Browse}" />
-        <Button
-          HorizontalAlignment="Left"
-          Click="EditSnapshot_Click"
-          Content="{lex:Loc Key=Annotate}" />
-        <Button
-          HorizontalAlignment="Left"
-          Click="Button_RemoveImage"
-          Content="{lex:Loc Key=Remove}" />
-      </StackPanel>
-      <Border Name="Border"
-                  Padding="0"
-                  BorderThickness="1"
-                  Background="{DynamicResource Renga.WPF.Styles.Brush.ControlBackground}"
-                  BorderBrush="{DynamicResource Renga.WPF.Styles.Brush.ControlBorder}" Grid.Row="2">
-        <Image x:Name="SnapshotImg">
-        </Image>
-      </Border>
+      <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <Button Margin="5" Click="Button_LoadImage" ToolTip="{lex:Loc Key=Browse}">
+          <Button.Style>
+            <Style TargetType="Button" >
+              <Setter Property="Background" Value="Transparent" />
+              <Setter Property="BorderThickness" Value="0" />
+            </Style>
+          </Button.Style>
+         <Button.Content>
+            <Image Source="../Assets/i24_open.png"/>
+           </Button.Content>
+        </Button>
+          <Button Margin="0,5,5,5" Click="EditSnapshot_Click"  ToolTip="{lex:Loc Key=Annotate}">
+          <Button.Style>
+            <Style TargetType="Button" >
+              <Setter Property="Background" Value="Transparent" />
+              <Setter Property="BorderThickness" Value="0" />
+            </Style>
+          </Button.Style>
+          <Button.Content>
+            <Image Source="../Assets/i24_edit.png"/>
+           </Button.Content>
+         </Button>
+        <Button Margin="0,5,5,5" Click="Button_RemoveImage" ToolTip="{lex:Loc Key=Remove}">
+          <Button.Style>
+            <Style TargetType="Button" >
+              <Setter Property="Background" Value="Transparent" />
+              <Setter Property="BorderThickness" Value="0" />
+            </Style>
+          </Button.Style>
+
+          <Button.Content>
+            <Image Source="../Assets/i24_delete.png"/>
+            </Button.Content>
+         </Button>
+            </StackPanel>
+      <Image
+        x:Name="SnapshotImg"
+        Grid.Row="2"
+        Margin="5">
+        <Image.Effect>
+          <DropShadowEffect
+            Opacity="0.5"
+            BlurRadius="10"
+            Direction="316"
+            ShadowDepth="1" />
+        </Image.Effect>
+      </Image>
+      <!--<Label x:Name="PathLabel" Content="Path" FontStyle="Italic" Height="20" Padding="0" Margin="5, 5" Grid.Row="2"  Foreground="#FF898989"  />-->
     </Grid>
     <StackPanel Grid.Row="1" Margin="0, 0, 0, 8" Orientation="Vertical" rws:MarginSetter.Margin="0,0,0,5">
       <TextBlock Name="TextBlockComment" Text="{lex:Loc Key=Comment}"/>
