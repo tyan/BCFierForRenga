@@ -117,6 +117,9 @@ namespace Bcfier.UserControls
     {
       try
       {
+        if (SnapshotImg.Source == null)
+          return;
+
         var editSnap = "mspaint";
         var tempImg = Path.Combine(Path.GetTempPath(), "BCFier", Path.GetTempFileName() + ".png");
         ImagingUtils.SaveImageSource(SnapshotImg.Source, tempImg);
