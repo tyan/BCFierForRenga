@@ -198,9 +198,6 @@
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
-  <data name="DragAndDropText" xml:space="preserve">
-    <value>No model viewpoint is added when you add an image from a drive.</value>
-  </data>
   <data name="EditingError" xml:space="preserve">
     <value>Editing snapshot error.</value>
   </data>

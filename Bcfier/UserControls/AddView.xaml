@@ -26,7 +26,6 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <Canvas
         Name="whitespace"
@@ -36,13 +35,7 @@
         Background="WhiteSmoke"
         Opacity=".70"
         Visibility="Collapsed" />
-      <TextBlock
-        Name="TextBlockInfo"
-        Grid.Row="0"
-        Margin="0, 0, 0, 13"
-        Text="{lex:Loc Key=DragAndDropText}"
-        TextWrapping="Wrap" />
-      <StackPanel Grid.Row="1" Orientation="Horizontal">
+      <StackPanel Grid.Row="0" Orientation="Horizontal">
         <Button Margin="5" Click="Button_LoadImage" ToolTip="{lex:Loc Key=Browse}">
           <Button.Style>
             <Style TargetType="Button" >
@@ -80,7 +73,7 @@
             </StackPanel>
       <Image
         x:Name="SnapshotImg"
-        Grid.Row="2"
+        Grid.Row="1"
         Margin="5">
         <Image.Effect>
           <DropShadowEffect

@@ -198,9 +198,6 @@
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
   </data>
-  <data name="DragAndDropText" xml:space="preserve">
-    <value>Если добавить изображение с диска, то точка взгляда на модель добавлена не будет.</value>
-  </data>
   <data name="EditingError" xml:space="preserve">
     <value>Ошибка редактирования вида.</value>
   </data>
