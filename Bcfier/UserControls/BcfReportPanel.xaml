@@ -7,7 +7,6 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:src="clr-namespace:Bcfier.Data.ValueConverters"
   xmlns:themes="clr-namespace:Bcfier.Themes"
-  xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
   xmlns:lex="http://wpflocalizeextension.codeplex.com"
   lex:LocalizeDictionary.DesignCulture="en-US"
   lex:ResxLocalizationProvider.DefaultAssembly="BCFier"
@@ -74,8 +73,6 @@
         SelectedIndex="0"
         SelectedItem="{Binding SelectedIssue}"
         SelectionMode="Extended"
-        dd:DragDrop.IsDragSource="True"
-        dd:DragDrop.IsDropTarget="True"
         >
         <ListView.ItemTemplate>
           <DataTemplate>
