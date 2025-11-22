@@ -25,7 +25,7 @@
   </Window.CommandBindings>
   <Grid>
     <ctr:BcfierPanel
-      x:Name="Bcfier"
+      x:Name="m_panel"
       HorizontalAlignment="Stretch"
       HorizontalContentAlignment="Stretch" />
   </Grid>

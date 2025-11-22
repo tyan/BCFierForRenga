@@ -28,7 +28,7 @@ namespace Bcfier.RengaPlugin
     public RengaWindow(Renga.IApplication app, ExtEvntOpenView handler)
     {
       InitializeComponent();
-      Bcfier.LabelVersion.Content = "BCFier for Renga " +
+      m_panel.LabelVersion.Content = "BCFier for Renga " +
                          System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
       _Handler = handler;
       _App = app;
@@ -36,7 +36,7 @@ namespace Bcfier.RengaPlugin
       var applicationEvents = new Renga.ApplicationEventSource(_App);
       applicationEvents.BeforeProjectClose += (eventArgs) =>
       {
-        if (Bcfier.TryCloseAllBcfs())
+        if (m_panel.TryCloseAllBcfs())
           Close();
         else
           eventArgs.Prevent();
@@ -55,7 +55,7 @@ namespace Bcfier.RengaPlugin
     {
       try
       {
-        if (Bcfier.SelectedBcf() == null)
+        if (m_panel.SelectedBcf() == null)
           return;
         
         var view = e.Parameter as ViewPoint;
@@ -67,7 +67,7 @@ namespace Bcfier.RengaPlugin
       }
       catch (System.Exception ex)
       {
-        Utils.ShowErrorMessageBox(LocValueGetter.Get("FailedViewOpening"), ex);
+        Bcfier.Data.Utils.Utils.ShowErrorMessageBox(LocValueGetter.Get("FailedViewOpening"), ex);
       }
     }
     /// <summary>
@@ -79,7 +79,7 @@ namespace Bcfier.RengaPlugin
     {
       try
       {
-        if (Bcfier.SelectedBcf() == null)
+        if (m_panel.SelectedBcf() == null)
           return;
         
         var issue = e.Parameter as Markup;
@@ -97,8 +97,8 @@ namespace Bcfier.RengaPlugin
         }
 
         var dialog = new AddViewRenga(
-          issue, 
-          Bcfier.SelectedBcf().TempPath, 
+          issue,
+          m_panel.SelectedBcf().TempPath, 
           _App.ActiveView as Renga.IScreenshotService);
         dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         dialog.ShowDialog();
@@ -107,13 +107,13 @@ namespace Bcfier.RengaPlugin
         {
           //generate and set the visinfo
           issue.Viewpoints.Last().VisInfo = RengaView.GenerateViewpoint(_App);
-          Bcfier.SelectedBcf().HasBeenSaved = false;
+          m_panel.SelectedBcf().HasBeenSaved = false;
         }
 
       }
       catch (System.Exception ex)
       {
-        Utils.ShowErrorMessageBox(LocValueGetter.Get("AddViewError"), ex);
+        Bcfier.Data.Utils.Utils.ShowErrorMessageBox(LocValueGetter.Get("AddViewError"), ex);
       }
     }
     #endregion
@@ -127,7 +127,7 @@ namespace Bcfier.RengaPlugin
     /// <param name="e"></param>
     private void Window_Closing(object sender, CancelEventArgs e)
     {
-      e.Cancel = !Bcfier.TryCloseAllBcfs();
+      e.Cancel = !m_panel.TryCloseAllBcfs();
     }
     #endregion
 
