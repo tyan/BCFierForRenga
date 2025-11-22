@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
-using Bcfier.Api;
 using Bcfier.Bcf;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
