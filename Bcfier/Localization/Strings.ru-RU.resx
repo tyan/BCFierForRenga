@@ -225,6 +225,9 @@
   <data name="Help" xml:space="preserve">
     <value>Справка</value>
   </data>
+  <data name="HelpGuideUrl" xml:space="preserve">
+    <value>https://tyan.github.io/BCFierForRenga/HELP_RU.html</value>
+  </data>
   <data name="ImageResizePrompt" xml:space="preserve">
     <value>Размер изображения {0}x{1}, такой размер изображения увеличит размер BCF-файла. Хотите уменьшить размер до {2}x{3}?</value>
   </data>
