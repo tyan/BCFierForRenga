@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
+using Renga;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.RengaPlugin.Entry;
 using System.ComponentModel;
@@ -22,15 +23,14 @@ namespace Bcfier.RengaPlugin
   /// </summary>
   public partial class RengaWindow : Window
   {
-    private ExtEvntOpenView _Handler;
     private Renga.IApplication _App;
 
-    public RengaWindow(Renga.IApplication app, ExtEvntOpenView handler)
+    public RengaWindow(Renga.IApplication app)
     {
       InitializeComponent();
       m_panel.LabelVersion.Content = "BCFier for Renga " +
                          System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-      _Handler = handler;
+      
       _App = app;
 
       var applicationEvents = new Renga.ApplicationEventSource(_App);
@@ -61,9 +61,8 @@ namespace Bcfier.RengaPlugin
         var view = e.Parameter as ViewPoint;
         if (view == null)
           return;
-        
-        _Handler.v = view.VisInfo;
-        _Handler.Execute(_App);
+
+        ExtEvntOpenView.Execute(_App, view.VisInfo);
       }
       catch (System.Exception ex)
       {
@@ -89,8 +88,9 @@ namespace Bcfier.RengaPlugin
           return;
         }
 
+        var supportedViews = new List<ViewType> { ViewType.ViewType_View3D, ViewType.ViewType_Assembly, ViewType.ViewType_Drawing };
         var rengaActiveView = _App.ActiveView;
-        if (rengaActiveView.Type != Renga.ViewType.ViewType_View3D)
+        if (!supportedViews.Contains(rengaActiveView.Type))
         {
           MessageBox.Show(LocValueGetter.Get("UnsupportedView"), LocValueGetter.Get("Info"));
           return;

@@ -87,6 +87,7 @@
     <Compile Include="Entry\ExtEvntOpenView.cs" />
     <Compile Include="Entry\AppMain.cs" />
     <Compile Include="Data\RengaView.cs" />
+    <Compile Include="Entry\RengaEntityPath.cs" />
     <Compile Include="RengaWindow.xaml.cs">
       <DependentUpon>RengaWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

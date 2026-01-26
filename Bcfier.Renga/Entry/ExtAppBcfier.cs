@@ -19,12 +19,9 @@ namespace Bcfier.RengaPlugin.Entry
         // If we do not have a dialog yet, create and show it  
         if (Window != null) return;
 
-        // A new handler to handle request posting by the dialog  
-        var handler = new ExtEvntOpenView();
-
         // We give the objects to the new dialog;  
         // The dialog becomes the owner responsible for disposing them, eventually.
-        Window = new RengaWindow(app, handler);
+        Window = new RengaWindow(app);
         Window.Show();
       }
       catch (Exception ex)
