@@ -95,9 +95,12 @@ namespace Bcfier.UserControls
           Issue.Comment.Add(c);
         }
         //first save the image, then update path
-        var path = Path.Combine(TempFolder, Issue.Topic.Guid, view.Snapshot);
-        ImagingUtils.SaveImageSource(SnapshotImg.Source, path);
-        view.SnapshotPath = path;
+        if (SnapshotImg.Source != null)
+        {
+          var path = Path.Combine(TempFolder, Issue.Topic.Guid, view.Snapshot);
+          ImagingUtils.SaveImageSource(SnapshotImg.Source, path);
+          view.SnapshotPath = path;
+        }
 
         //neede for UI binding
         Issue.Viewpoints.Add(view);
