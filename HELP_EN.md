@@ -43,7 +43,16 @@ Examples:
 
 BCFier for Renga is accessible via the Primary Panel.
 
-These will let the user create BCF Issues for the current view in the model.
+These will let the user create BCF Issues for the current view in the 3D View, Assembly style or Drawing.
+
+To create an issue regarding the objects in the assembly style or drawing:
+
+1. Select the object in the relevant tab.
+2. Create a new view.
+
+[!NOTE]
+If no object is selected when creating a view of an assembly style or drawing, the component tab of the project will not open when you switch to that view.
+
 
 ### Installation ###
 

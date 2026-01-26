@@ -8,9 +8,9 @@
 With BCFier for Renga you can:
 
 - Open and create BCF files
-- Add or remove issues
+- Add issues to model objects, assembly styles, and drawings
 - Add viewpoint screenshots with annotations
-- Save viewpoints with objects visibility state
+- Save viewpoints on the 3D view and assembly style with the state of visibility and selection of objects
 - Add issue comments
 - Navigate to the issue viewpoint
 
