@@ -90,7 +90,7 @@ namespace Bcfier.UserControls
         //Are you sure you want to delete comments? Number of comments to delete: 8
 
         var deleteIssuesCaption = LocValueGetter.Get("DeleteIssuesCaption");
-        var deleteIssuesMessage = String.Format(LocValueGetter.Get("DeletionConfirmation"), issues.Count);
+        var deleteIssuesMessage = LocValueGetter.Get("DeletionConfirmation");
         var answer = MessageBox.Show(deleteIssuesMessage, deleteIssuesCaption, MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (answer == MessageBoxResult.No)
           return;

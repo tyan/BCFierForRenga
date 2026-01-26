@@ -177,7 +177,7 @@
   <data name="DeleteComment" xml:space="preserve">
     <value>Вы уверены, что хотите удалить этот комментарий?</value>
   </data>
-  <data name="DeleteIssueCaption" xml:space="preserve">
+  <data name="DeleteIssuesCaption" xml:space="preserve">
     <value>Удаление замечаний</value>
   </data>
   <data name="DeleteIssues" xml:space="preserve">
@@ -186,14 +186,11 @@
   <data name="DeleteLinkedComments" xml:space="preserve">
     <value>Удалить комментарии, связанные с этим видом?</value>
   </data>
-  <data name="DeleteSelected" xml:space="preserve">
-    <value>Удалить выбранные</value>
-  </data>
   <data name="DeleteView" xml:space="preserve">
     <value>Удалить вид</value>
   </data>
   <data name="DeletionConfirmation" xml:space="preserve">
-    <value>Вы действительно хотите удалить замечания?</value>
+    <value>Вы действительно хотите удалить выбранные замечания?</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
@@ -380,5 +377,8 @@
   </data>
   <data name="ViewPointCount" xml:space="preserve">
     <value>Видов: {0}</value>
+  </data>
+  <data name="DeleteSelected" xml:space="preserve">
+    <value>Удалить выбранные</value>
   </data>
 </root>

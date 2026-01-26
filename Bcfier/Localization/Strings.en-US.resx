@@ -147,9 +147,6 @@
   <data name="AuthorNameText" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="AutorNameText" xml:space="preserve">
-    <value>Name</value>
-  </data>
   <data name="Browse" xml:space="preserve">
     <value>Browse...</value>
   </data>
@@ -180,7 +177,7 @@
   <data name="DeleteComment" xml:space="preserve">
     <value>Are you sure you want to delete this comment?</value>
   </data>
-  <data name="DeleteIssueCaption" xml:space="preserve">
+  <data name="DeleteIssuesCaption" xml:space="preserve">
     <value>Delete issues.</value>
   </data>
   <data name="DeleteIssues" xml:space="preserve">
@@ -193,7 +190,7 @@
     <value>Delete view</value>
   </data>
   <data name="DeletionConfirmation" xml:space="preserve">
-    <value>Are you sure you want to delete {0} Issue{1}?\n{2}</value>
+    <value>Are you sure you want to delete selected issues?</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
@@ -380,5 +377,8 @@
   </data>
   <data name="ViewPointCount" xml:space="preserve">
     <value>Views: {0}</value>
+  </data>
+  <data name="DeleteSelected" xml:space="preserve">
+    <value>Delete selected</value>
   </data>
 </root>
