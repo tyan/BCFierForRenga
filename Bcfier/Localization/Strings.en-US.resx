@@ -225,6 +225,9 @@
   <data name="Help" xml:space="preserve">
     <value>Help</value>
   </data>
+  <data name="HelpGuideUrl" xml:space="preserve">
+    <value>https://tyan.github.io/BCFierForRenga/HELP_EN.html</value>
+  </data>
   <data name="ImageResizePrompt" xml:space="preserve">
     <value>Image size is {0}x{1}, such a big image could increase A LOT the BCF file size. Do you want me to resize it to {2}x{3} for you?</value>
   </data>
