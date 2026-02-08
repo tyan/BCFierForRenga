@@ -96,6 +96,9 @@ namespace Bcfier.RengaPlugin.Entry
         if (app.Project == null)
           return;
 
+        if (viewInfo?.Components == null)
+          return;
+
         var owningModelAndView = GetModelAndView(app.Project, viewInfo.Components);
         
         var project = app.Project;
@@ -128,6 +131,8 @@ namespace Bcfier.RengaPlugin.Entry
 
           Func<string, bool> isExceptionObject = (string ifcGuid) =>
           {
+            if (viewInfo.Components.Visibility.Exceptions == null)
+              return false;
             return Array.Find(viewInfo.Components.Visibility.Exceptions, exception => exception.IfcGuid == ifcGuid) != null;
           };
 
@@ -148,11 +153,14 @@ namespace Bcfier.RengaPlugin.Entry
         // Selection
         var selectedObjectsLocalIds = new List<int>();
 
-        foreach (var selectedComponent in viewInfo.Components.Selection)
+        if (viewInfo.Components.Selection != null)
         {
-          var selectedObjectGlobalId = IfcGuid.FromIfcGUID(selectedComponent.IfcGuid);
-          var selectedObjectLocalId = model.GetIdFromUniqueId(selectedObjectGlobalId);
-          selectedObjectsLocalIds.Add(selectedObjectLocalId);
+          foreach (var selectedComponent in viewInfo.Components.Selection)
+          {
+            var selectedObjectGlobalId = IfcGuid.FromIfcGUID(selectedComponent.IfcGuid);
+            var selectedObjectLocalId = model.GetIdFromUniqueId(selectedObjectGlobalId);
+            selectedObjectsLocalIds.Add(selectedObjectLocalId);
+          }
         }
         app.Selection.SetSelectedObjects(selectedObjectsLocalIds.ToArray());
       }
