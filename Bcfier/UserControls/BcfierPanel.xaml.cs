@@ -52,6 +52,11 @@ namespace Bcfier.UserControls
       HelpBtn.Click += HelpBtnOnClick;
     }
 
+    private void SaveAs_Click(object sender, RoutedEventArgs e)
+    {
+      _bcf.SaveAsFile(SelectedBcf());
+    }
+
 
     private bool AskAndSaveBcf(BcfFile bcf)
     {

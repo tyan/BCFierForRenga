@@ -68,12 +68,21 @@
         Content="{lex:Loc Key=NewBCF}"
         IconPath="{StaticResource IconNewFile}"
         ToolTip="{lex:Loc Key=NewBCFTooltip}" />
-      <themes:ButtonIcon
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+        <themes:ButtonIcon
         x:Name="SaveBcfBtn"
         Style="{StaticResource CanSaveEnablerStyle}"
-        Content="{lex:Loc Key=SaveAs}"
+        Content="{lex:Loc Key=Save}"
         IconPath="{StaticResource IconSaveFile}"
-        ToolTip="{lex:Loc Key=SaveAs}" />
+        ToolTip="{lex:Loc Key=Save}" />
+        <themes:ButtonIcon
+        x:Name="SaveAsBcfBtn"
+        Style="{StaticResource CanSaveEnablerStyle}"
+        Content="{lex:Loc Key=SaveAs}"
+        IconPath="{StaticResource IconSaveAsFile}"
+        ToolTip="{lex:Loc Key=SaveAs}"
+        Click="SaveAs_Click" />
+      </StackPanel>
       <themes:ButtonIcon
         x:Name="OpenBcfBtn"
         Style="{StaticResource MainMenuButton}"

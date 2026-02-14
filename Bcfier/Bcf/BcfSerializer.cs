@@ -102,6 +102,7 @@ namespace Bcfier.Bcf
 
       bcf.HasBeenSaved = true;
       bcf.Filename = Path.GetFileNameWithoutExtension(filename);
+      bcf.Fullname = Path.GetFullPath(filename);
       return true;
     }
 
