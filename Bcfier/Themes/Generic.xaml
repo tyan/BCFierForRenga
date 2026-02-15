@@ -128,10 +128,10 @@
               </Border>
               <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                  <Setter TargetName="ButtonBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type themes:ButtonIcon}}, Path=HighlightColor, TargetNullValue='#AADAF6'}" />
+                  <Setter TargetName="ButtonBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type themes:ButtonIcon}}, Path=HighlightColor, TargetNullValue='#dce0e4'}" />
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                  <Setter TargetName="ButtonBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type themes:ButtonIcon}}, Path=HighlightColor, TargetNullValue='#94cdec'}" />
+                  <Setter TargetName="ButtonBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type themes:ButtonIcon}}, Path=HighlightColor, TargetNullValue='#dce0e4'}" />
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                   <Setter TargetName="MyContentPresenter" Property="Foreground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type themes:ButtonIcon}}, Path=DisabledIconColor, TargetNullValue='#808080'}" />

@@ -24,7 +24,7 @@
       <Setter Property="Foreground" Value="{StaticResource BackgroundDark}" />
     </Style.Setters>
   </Style>
-  
+
   <Style
     x:Key="SaveAsButtonStyle"
     BasedOn="{StaticResource MainMenuButton}"
@@ -59,18 +59,43 @@
   
   <Style
     x:Key="AddViewCommentStyle"
-    BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
     TargetType="Button">
-    <Style.Setters>
-      <Setter Property="BorderBrush" Value="{StaticResource BackgroundLight}" />
-      <Setter Property="HorizontalAlignment" Value="Stretch" />
-      <Setter Property="VerticalAlignment" Value="Stretch" />
-    </Style.Setters>
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="BorderBrush" Value="{StaticResource BackgroundLight}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Height="21"           
+                                Margin="{TemplateBinding Padding}" />
+          </Border>
+          <!-- Триггеры для состояний -->
+          <ControlTemplate.Triggers>
+            <!-- Наведение курсора -->
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="border" Property="Background" Value="{StaticResource SecondaryLight}" />
+            </Trigger>
+            <!-- Нажатие кнопки -->
+            <Trigger Property="IsPressed" Value="True">
+              <Setter TargetName="border" Property="Background" Value="{StaticResource SecondaryLight}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
   </Style>
   
   <Style
     x:Key="AddCommentEnablerStyle"
-    BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+    BasedOn="{StaticResource AddViewCommentStyle}"
     TargetType="Button">
     <Style.Triggers>
       <DataTrigger Binding="{Binding ElementName=IssueList, Path=SelectedItems.Count}" Value="0">

@@ -103,7 +103,7 @@
                       </Grid.RowDefinitions>
                       <Rectangle
                         Name="UpperHighlight"
-                        Fill="#75FFFFFF"
+                        Fill="#dce0e4"
                         Visibility="Collapsed" />
                       <GridViewRowPresenter
                         Grid.RowSpan="2"
@@ -114,7 +114,7 @@
                 </Border>
                 <ControlTemplate.Triggers>
                   <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#cbe8f6" />
+                    <Setter Property="Background" Value="#dce0e4" />
                   </Trigger>
                 </ControlTemplate.Triggers>
               </ControlTemplate>
