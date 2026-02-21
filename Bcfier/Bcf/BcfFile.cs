@@ -19,7 +19,7 @@ namespace Bcfier.Bcf
   {
     private Guid id;
     public string TempPath { get; set; }
-    public string Fullname { get; set; }
+    private string _fullname;
     public Guid ProjectId { get; set; }
     public string ProjectName { get; set; }
     private string _filename;
@@ -75,6 +75,16 @@ namespace Bcfier.Bcf
       {
         _filename = value;
         NotifyPropertyChanged("Filename");
+      }
+    }
+
+    public string Fullname
+    {
+      get { return _fullname; }
+      set
+      {
+        _fullname = value;
+        NotifyPropertyChanged("Fullname");
       }
     }
 
