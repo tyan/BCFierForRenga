@@ -26,7 +26,7 @@
   </Style>
   
   <Style
-    x:Key="CanSaveEnablerStyle"
+    x:Key="SaveAsButtonStyle"
     BasedOn="{StaticResource MainMenuButton}"
     TargetType="themes:ButtonIcon">
     <Style.Triggers>
@@ -35,6 +35,11 @@
       </DataTrigger>
     </Style.Triggers>
   </Style>
+  
+  <Style
+    x:Key="MergeButtonStyle"
+    BasedOn="{StaticResource SaveAsButtonStyle}"
+    TargetType="themes:ButtonIcon" />
   
   <Style x:Key="IssuesSelectedEnablerStyle" TargetType="Button">
     <Style.Triggers>
@@ -218,6 +223,33 @@
         <Setter Property="Background" Value="DarkSalmon" />
         <Setter Property="ToolTip" Value="Required Field" />
       </MultiDataTrigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style
+    x:Key="SaveButtonStyle"
+    BasedOn="{StaticResource MainMenuButton}"
+    TargetType="themes:ButtonIcon">
+    <Setter Property="IsEnabled" Value="False" />
+    <Style.Triggers>
+      <!-- Enable when there is a selected tab and the file has unsaved changes -->
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding ElementName=BcfTabControl, Path=SelectedItem.HasBeenSaved}" Value="False" />
+        </MultiDataTrigger.Conditions>
+        <Setter Property="IsEnabled" Value="True" />
+      </MultiDataTrigger>
+      <!-- Enable when file has never been saved yet (no Fullname) -->
+      <DataTrigger Binding="{Binding ElementName=BcfTabControl, Path=SelectedItem.Fullname}" Value="{x:Null}">
+        <Setter Property="IsEnabled" Value="True" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding ElementName=BcfTabControl, Path=SelectedItem.Fullname}" Value="">
+        <Setter Property="IsEnabled" Value="True" />
+      </DataTrigger>
+      <!-- Disable when no tab is selected -->
+      <DataTrigger Binding="{Binding ElementName=BcfTabControl, Path=SelectedIndex}" Value="-1">
+        <Setter Property="IsEnabled" Value="False" />
+      </DataTrigger>
     </Style.Triggers>
   </Style>
 </ResourceDictionary>

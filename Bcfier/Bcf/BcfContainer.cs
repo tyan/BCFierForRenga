@@ -63,7 +63,25 @@ namespace Bcfier.Bcf
     }
     public void SaveFile(BcfFile bcf)
     {
-      SaveBcfFile(bcf);
+      if (bcf == null)
+        return;
+
+      if (!string.IsNullOrEmpty(bcf.Fullname))
+      {
+        BcfSerializer.save(bcf, bcf.Fullname);
+      }
+      else
+      {
+        SaveAsBcfFile(bcf);
+      }
+    }
+
+    public void SaveAsFile(BcfFile bcf)
+    {
+      if (bcf == null)
+        return;
+
+      SaveAsBcfFile(bcf);
     }
     public void MergeFiles(BcfFile bcf)
     {
@@ -219,7 +237,7 @@ namespace Bcfier.Bcf
     /// </summary>
     /// <param name="bcffile"></param>
     /// <returns></returns>
-    private static bool SaveBcfFile(BcfFile bcf)
+    private static bool SaveAsBcfFile(BcfFile bcf)
     {
       // Show save file dialog box
       var name = !string.IsNullOrEmpty(bcf.Filename)

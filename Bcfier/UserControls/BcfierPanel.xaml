@@ -68,22 +68,30 @@
         Content="{lex:Loc Key=NewBCF}"
         IconPath="{StaticResource IconNewFile}"
         ToolTip="{lex:Loc Key=NewBCFTooltip}" />
-      <themes:ButtonIcon
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+        <themes:ButtonIcon
         x:Name="SaveBcfBtn"
-        Style="{StaticResource CanSaveEnablerStyle}"
-        Content="{lex:Loc Key=SaveAs}"
+        Style="{StaticResource SaveButtonStyle}"
+        Content="{lex:Loc Key=Save}"
         IconPath="{StaticResource IconSaveFile}"
-        ToolTip="{lex:Loc Key=SaveAs}" />
+        ToolTip="{lex:Loc Key=Save}" />
+        <themes:ButtonIcon
+        x:Name="SaveAsBcfBtn"
+        Style="{StaticResource SaveAsButtonStyle}"
+        Content="{lex:Loc Key=SaveAs}"
+        IconPath="{StaticResource IconSaveAsFile}"
+        ToolTip="{lex:Loc Key=SaveAs}"
+        Click="SaveAs_Click" />
+      </StackPanel>
       <themes:ButtonIcon
         x:Name="OpenBcfBtn"
         Style="{StaticResource MainMenuButton}"
         Content="{lex:Loc Key=Open}"
         IconPath="{StaticResource IconOpenFile}"
         ToolTip="{lex:Loc Key=Open}" />
-      <!--<themes:ButtonIcon ToolTip="Open a Web Project..."  x:Name="OpenProjectBtn" Content="Open Project" IconPath="{StaticResource IconOpenFile}" Style="{StaticResource MainMenuButton}"/>-->
       <themes:ButtonIcon
         x:Name="MergeBcfBtn"
-        Style="{StaticResource CanSaveEnablerStyle}"
+        Style="{StaticResource MergeButtonStyle}"
         Content="{lex:Loc Key=Merge}"
         IconPath="{StaticResource IconMergeFile}"
         ToolTip="{lex:Loc Key=MergeTooltip}" />
