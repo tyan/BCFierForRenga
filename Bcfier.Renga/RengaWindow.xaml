@@ -8,6 +8,8 @@
   Title="BCFier for Renga"
   Width="700"
   Height="700"
+  MinWidth="620"
+  MinHeight="520"
   Closing="Window_Closing"
   Icon="Assets/icon.ico"
   Loaded="RengaWindow_OnLoaded"
