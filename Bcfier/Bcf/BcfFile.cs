@@ -231,57 +231,62 @@ namespace Bcfier.Bcf
 
     public void MergeBcfFile(IEnumerable<BcfFile> bcfFiles)
     {
-        foreach (var bcf in bcfFiles)
+      // TODO: create directory with synchroniously with new file
+      // See: https://github.com/tyan/BCFierForRenga/issues/55
+      if (!Directory.Exists(TempPath))
+        return;
+
+      foreach (var bcf in bcfFiles)
+      {
+        foreach (var mergedIssue in bcf.Issues)
         {
-          foreach (var mergedIssue in bcf.Issues)
+          //it's a new issue
+          if (!Issues.Any(x => x.Topic != null && mergedIssue.Topic != null && x.Topic.Guid == mergedIssue.Topic.Guid))
           {
-            //it's a new issue
-            if (!Issues.Any(x => x.Topic != null && mergedIssue.Topic != null && x.Topic.Guid == mergedIssue.Topic.Guid))
+            string sourceDir = Path.Combine(bcf.TempPath, mergedIssue.Topic.Guid);
+            string destDir = Path.Combine(TempPath, mergedIssue.Topic.Guid);
+
+            Directory.Move(sourceDir, destDir);
+            //update path set for binding
+            foreach (var view in mergedIssue.Viewpoints)
             {
-              string sourceDir = Path.Combine(bcf.TempPath, mergedIssue.Topic.Guid);
-              string destDir = Path.Combine(TempPath, mergedIssue.Topic.Guid);
-
-              Directory.Move(sourceDir, destDir);
-              //update path set for binding
-              foreach (var view in mergedIssue.Viewpoints)
-              {
-                view.SnapshotPath = Path.Combine(TempPath, mergedIssue.Topic.Guid, view.Snapshot);
-              }
-              Issues.Add(mergedIssue);
-
+              view.SnapshotPath = Path.Combine(TempPath, mergedIssue.Topic.Guid, view.Snapshot);
             }
-            //it exists, let's loop comments and views
-            else
-            {
-              var issue = Issues.First(x => x.Topic.Guid == mergedIssue.Topic.Guid);
-              var newComments = mergedIssue.Comment.Where(x => issue.Comment.All(y => y.Guid != x.Guid)).ToList();
-              if (newComments.Any())
-                foreach (var newComment in newComments)
-                  issue.Comment.Add(newComment);
-              //sort comments
-              issue.Comment = new ObservableCollection<Comment>(issue.Comment.OrderByDescending(x => x.Date));
+            Issues.Add(mergedIssue);
 
-              var newViews = mergedIssue.Viewpoints.Where(x => issue.Viewpoints.All(y => y.Guid != x.Guid)).ToList();
-              if (newViews.Any())
-                foreach (var newView in newViews)
-                {
-                  //to avoid conflicts in case both contain a snapshot.png or viewpoint.bcfv
-                  //img to be merged
-                  string sourceFile = newView.SnapshotPath;
-                  //assign new safe name based on guid
-                  newView.Snapshot = newView.Guid + ".png";
-                  //set new temp path for binding
-                  newView.SnapshotPath = Path.Combine(TempPath, issue.Topic.Guid, newView.Snapshot);
-                  //assign new safe name based on guid
-                  newView.Viewpoint = newView.Guid + ".bcfv";
-                  File.Move(sourceFile, newView.SnapshotPath);
-                  issue.Viewpoints.Add(newView);
-                }
-            }
           }
-          Utils.DeleteDirectory(bcf.TempPath);
+          //it exists, let's loop comments and views
+          else
+          {
+            var issue = Issues.First(x => x.Topic.Guid == mergedIssue.Topic.Guid);
+            var newComments = mergedIssue.Comment.Where(x => issue.Comment.All(y => y.Guid != x.Guid)).ToList();
+            if (newComments.Any())
+              foreach (var newComment in newComments)
+                issue.Comment.Add(newComment);
+            //sort comments
+            issue.Comment = new ObservableCollection<Comment>(issue.Comment.OrderByDescending(x => x.Date));
+
+            var newViews = mergedIssue.Viewpoints.Where(x => issue.Viewpoints.All(y => y.Guid != x.Guid)).ToList();
+            if (newViews.Any())
+              foreach (var newView in newViews)
+              {
+                //to avoid conflicts in case both contain a snapshot.png or viewpoint.bcfv
+                //img to be merged
+                string sourceFile = newView.SnapshotPath;
+                //assign new safe name based on guid
+                newView.Snapshot = newView.Guid + ".png";
+                //set new temp path for binding
+                newView.SnapshotPath = Path.Combine(TempPath, issue.Topic.Guid, newView.Snapshot);
+                //assign new safe name based on guid
+                newView.Viewpoint = newView.Guid + ".bcfv";
+                File.Move(sourceFile, newView.SnapshotPath);
+                issue.Viewpoints.Add(newView);
+              }
+          }
         }
-        HasBeenSaved = false;
+        Utils.DeleteDirectory(bcf.TempPath);
+      }
+      HasBeenSaved = false;
     }
 
     [field: NonSerialized]
