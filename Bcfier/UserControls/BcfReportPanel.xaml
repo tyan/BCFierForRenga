@@ -184,17 +184,6 @@
           IconPath="{StaticResource IconAdd}"
           ToolTip="{lex:Loc Key=AddIssue}" />
         <themes:ButtonIcon
-          x:Name="AddIssuesBtn"
-          Margin="0,5,0,5"
-          Style="{StaticResource AddViewCommentStyle}"
-          BorderThickness="0,1,0,1"
-          Command="data:Commands.AddIssues"
-          Content="Batch Add"
-          IconColor="{StaticResource BackgroundDark}"
-          IconPath="{StaticResource IconAdd}"
-          ToolTip="Batch Add Issues"
-          Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolVisibConverter}}" />
-        <themes:ButtonIcon
           x:Name="DelIssueBtn"
           Margin="0,5,0,5"
           Style="{StaticResource AddViewCommentStyle}"
