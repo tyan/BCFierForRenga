@@ -55,7 +55,7 @@ namespace Bcfier.RengaPlugin.Tests
     public void parse_null_string_throws_argument_null_exception()
     {
       // given
-      string null_path = null;
+      string? null_path = null;
 
       // then
       Assert.That(() => RengaEntityPath.Parse(null_path),
