@@ -10,7 +10,7 @@
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary",
                 "/p:Configuration=Debug",
-                "/p:Platform=Any CPU"
+                "/p:Platform=x64"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -24,7 +24,7 @@
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary",
                 "/p:Configuration=Release",
-                "/p:Platform=Any CPU"
+                "/p:Platform=x64"
             ],
             "problemMatcher": "$msCompile"
         }
