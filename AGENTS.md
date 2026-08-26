@@ -2,6 +2,10 @@
 
 This project targets **Windows only**. All commands should be run in **PowerShell**.
 
+## Code style
+
+Code formatting and style rules are defined in the `.editorconfig` file at the repository root.
+
 ## Agent working files
 
 All temporary agent working artifacts must be saved into the `_agents/` folder.
