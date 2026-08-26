@@ -2,6 +2,10 @@
 
 This project targets **Windows only**. All commands should be run in **PowerShell**.
 
+## Agent working files
+
+All temporary agent working artifacts must be saved into the `_agents/` folder.
+
 ## Build
 
 MSBuild is used for building. The path to MSBuild depends on your Visual Studio installation (adjust as needed):
