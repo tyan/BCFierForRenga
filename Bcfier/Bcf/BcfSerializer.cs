@@ -1,4 +1,4 @@
-﻿using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Bcf2;
 using System;
 using System.Collections.ObjectModel;
 using System.IO.Compression;
@@ -74,9 +74,15 @@ namespace Bcfier.Bcf
           if (File.Exists(Path.Combine(issuePath, issue.Viewpoints[0].Viewpoint)))
             File.Delete(Path.Combine(issuePath, issue.Viewpoints[0].Viewpoint));
           issue.Viewpoints[0].Viewpoint = "viewpoint.bcfv";
-          if (File.Exists(Path.Combine(issuePath, issue.Viewpoints[0].Snapshot)))
-            File.Move(Path.Combine(issuePath, issue.Viewpoints[0].Snapshot), Path.Combine(issuePath, "snapshot.png"));
-          issue.Viewpoints[0].Snapshot = "snapshot.png";
+
+          //Snapshot is optional in the BCF schema, it may be missing entirely
+          var snapshot = issue.Viewpoints[0].Snapshot;
+          if (!string.IsNullOrEmpty(snapshot) && File.Exists(Path.Combine(issuePath, snapshot)))
+          {
+            if (!string.Equals(snapshot, "snapshot.png", StringComparison.InvariantCultureIgnoreCase))
+              File.Move(Path.Combine(issuePath, snapshot), Path.Combine(issuePath, "snapshot.png"));
+            issue.Viewpoints[0].Snapshot = "snapshot.png";
+          }
         }
         //serialize markup with updated content
         Stream writerM = new FileStream(Path.Combine(issuePath, "markup.bcf"), FileMode.Create);
@@ -160,42 +166,23 @@ namespace Bcfier.Bcf
     private static void DeserializeViewpoints(Markup issue, DirectoryInfo issueDirInfo)
     {
       //Is a BCF 2 file, has multiple viewpoints
-      if (issue.Viewpoints != null && issue.Viewpoints.Any())
+      if (issue.Viewpoints == null || issue.Viewpoints.Count == 0)
+        return;
+
+      foreach (var viewpoint in issue.Viewpoints)
       {
-        foreach (var viewpoint in issue.Viewpoints)
-        {
-          string viewpointpath = Path.Combine(issueDirInfo.FullName, viewpoint.Viewpoint);
-          if (File.Exists(viewpointpath))
-          {
-            //deserializing the viewpoint into the issue
-            viewpoint.VisInfo = DeserializeViewpoint(viewpointpath);
-            viewpoint.SnapshotPath = Path.Combine(issueDirInfo.FullName, viewpoint.Snapshot);
-          }
-        }
-      }
-      //Is a BCF 1 file, only one viewpoint
-      //there is no Viewpoints tag in the markup
-      //update it to BCF 2
-      else
-      {
-        issue.Viewpoints = new ObservableCollection<ViewPoint>();
-        string viewpointFile = Path.Combine(issueDirInfo.FullName, "viewpoint.bcfv");
-        if (File.Exists(viewpointFile))
-        {
-          issue.Viewpoints.Add(new ViewPoint(true)
-          {
-            VisInfo = DeserializeViewpoint(viewpointFile),
-            SnapshotPath = Path.Combine(issueDirInfo.FullName, "snapshot.png"),
-          });
-          //update the comments
-          foreach (var comment in issue.Comment)
-          {
-            comment.Viewpoint = new CommentViewpoint();
-            comment.Viewpoint.Guid = issue.Viewpoints.First().Guid;
-          }
-        }
+        string viewpointpath = Path.Combine(issueDirInfo.FullName, viewpoint.Viewpoint);
+        if (!File.Exists(viewpointpath))
+          throw new InvalidDataException($"Missing '{viewpoint.Viewpoint}' referenced in markup.");
+
+        //deserializing the viewpoint into the issue
+        viewpoint.VisInfo = DeserializeViewpoint(viewpointpath);
+
+        if (viewpoint.Snapshot != null)
+          viewpoint.SnapshotPath = Path.Combine(issueDirInfo.FullName, viewpoint.Snapshot);
       }
     }
+
     private static VisualizationInfo DeserializeViewpoint(string path)
     {
       using (var viewpointFile = new FileStream(path, FileMode.Open))
@@ -204,6 +191,7 @@ namespace Bcfier.Bcf
         return serializerS.Deserialize(viewpointFile) as VisualizationInfo;
       }
     }
+
     private static Markup DeserializeMarkup(string path)
     {
       using (var markupFile = new FileStream(path, FileMode.Open))

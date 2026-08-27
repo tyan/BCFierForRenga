@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -37,6 +37,18 @@ namespace Bcfier.Data.Utils
       image.EndInit();
       return image;
     }
+
+    public static BitmapImage DefaultSnapshotImage()
+    {
+      var image = new BitmapImage();
+      image.BeginInit();
+      image.UriSource = new Uri("pack://application:,,,/Bcfier;component/Assets/no_image.png");
+      image.CacheOption = BitmapCacheOption.OnLoad;
+      image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+      image.EndInit();
+      return image;
+    }
+
     public static BitmapSource ConvertBitmapTo96Dpi(BitmapImage bitmapImage)
     {
       double dpi = 96;

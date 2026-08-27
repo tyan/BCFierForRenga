@@ -250,7 +250,8 @@ namespace Bcfier.Bcf
             //update path set for binding
             foreach (var view in mergedIssue.Viewpoints)
             {
-              view.SnapshotPath = Path.Combine(TempPath, mergedIssue.Topic.Guid, view.Snapshot);
+              if (!string.IsNullOrEmpty(view.Snapshot))
+                view.SnapshotPath = Path.Combine(TempPath, mergedIssue.Topic.Guid, view.Snapshot);
             }
             Issues.Add(mergedIssue);
 
@@ -271,15 +272,19 @@ namespace Bcfier.Bcf
               foreach (var newView in newViews)
               {
                 //to avoid conflicts in case both contain a snapshot.png or viewpoint.bcfv
-                //img to be merged
-                string sourceFile = newView.SnapshotPath;
-                //assign new safe name based on guid
-                newView.Snapshot = newView.Guid + ".png";
-                //set new temp path for binding
-                newView.SnapshotPath = Path.Combine(TempPath, issue.Topic.Guid, newView.Snapshot);
                 //assign new safe name based on guid
                 newView.Viewpoint = newView.Guid + ".bcfv";
-                File.Move(sourceFile, newView.SnapshotPath);
+                //snapshot is optional in the BCF schema, it may be missing entirely
+                if (!string.IsNullOrEmpty(newView.SnapshotPath))
+                {
+                  //img to be merged
+                  string sourceFile = newView.SnapshotPath;
+                  //assign new safe name based on guid
+                  newView.Snapshot = newView.Guid + ".png";
+                  //set new temp path for binding
+                  newView.SnapshotPath = Path.Combine(TempPath, issue.Topic.Guid, newView.Snapshot);
+                  File.Move(sourceFile, newView.SnapshotPath);
+                }
                 issue.Viewpoints.Add(newView);
               }
           }

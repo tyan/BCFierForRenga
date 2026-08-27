@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using System.Globalization;
@@ -17,13 +18,13 @@ namespace Bcfier.Data.ValueConverters
     {
       try
       {
-        if (value == null)
-          return null;
+        var path = value?.ToString();
+        if (string.IsNullOrEmpty(path) || !File.Exists(path))
+          return ImagingUtils.DefaultSnapshotImage();
 
-        var path = value.ToString();
-        return !string.IsNullOrEmpty(path) ? ImagingUtils.BitmapFromPath(path) : null;
+        return ImagingUtils.BitmapFromPath(path);
       }
-      catch { return null; }
+      catch { return ImagingUtils.DefaultSnapshotImage(); }
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
