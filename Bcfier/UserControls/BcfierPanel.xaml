@@ -12,11 +12,6 @@
   lex:LocalizeDictionary.DesignCulture="en-US"
   lex:ResxLocalizationProvider.DefaultAssembly="BCFier"
   lex:ResxLocalizationProvider.DefaultDictionary="Strings"
-  AllowDrop="True"
-  DragEnter="Window_DragEnter"
-  DragLeave="Window_DragLeave"
-  DragOver="Window_DragOver"
-  Drop="Window_Drop"
   mc:Ignorable="d">
   <UserControl.Resources>
     <ResourceDictionary>
@@ -51,14 +46,6 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
-    <Canvas
-      Name="whitespace"
-      Grid.RowSpan="6"
-      Grid.ColumnSpan="6"
-      Panel.ZIndex="100"
-      Background="WhiteSmoke"
-      Opacity=".70"
-      Visibility="Collapsed" />
     <!--  MENU        ******************************************************************************************************************************  -->
     <DockPanel Grid.ColumnSpan="3" Background="{StaticResource BackgroundLight}" Margin="-13,-13,-13,0">
       <themes:ButtonIcon

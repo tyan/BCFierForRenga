@@ -366,61 +366,6 @@ namespace Bcfier.UserControls
 
     #endregion
 
-    #region drag&drop
-    private void Window_DragEnter(object sender, DragEventArgs e)
-    {
-      whitespace.Visibility = Visibility.Visible;
-    }
-    private void Window_DragLeave(object sender, DragEventArgs e)
-    {
-      whitespace.Visibility = Visibility.Hidden;
-    }
-    private void Window_Drop(object sender, DragEventArgs e)
-    {
-      try
-      {
-        whitespace.Visibility = Visibility.Hidden;
-        if (e.Data.GetDataPresent(DataFormats.FileDrop))
-        {
-          var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-          foreach (var f in files)
-          {
-            if (File.Exists(f))
-              _bcf.OpenFile(f);
-          }
-        }
-      }
-      catch (System.Exception ex)
-      {
-        Utils.ShowErrorMessageBox("Open BCF error.", ex);
-      }
-    }
-    private void Window_DragOver(object sender, DragEventArgs e)
-    {
-      try
-      {
-        var dropEnabled = true;
-
-        if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
-        {
-          var filenames = e.Data.GetData(DataFormats.FileDrop, true) as string[];
-          if (filenames.Any(x => Path.GetExtension(x).ToUpperInvariant() != BcfSerializer.FileExtension.ToUpperInvariant()))
-            dropEnabled = false;
-        }
-        else
-          dropEnabled = false;
-
-        if (!dropEnabled)
-        {
-          e.Effects = DragDropEffects.None;
-          e.Handled = true;
-        }
-      }
-      catch (System.Exception)
-      {
-      }
-    }
-    #endregion
     #region shortcuts
     public BcfFile SelectedBcf()
     {

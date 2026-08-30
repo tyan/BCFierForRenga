@@ -9,12 +9,7 @@
   lex:LocalizeDictionary.DesignCulture="en-US"
   lex:ResxLocalizationProvider.DefaultAssembly="BCFier"
   lex:ResxLocalizationProvider.DefaultDictionary="Strings"
-  Width="300"
-  AllowDrop="True"
-  DragEnter="Window_DragEnter"
-  DragLeave="Window_DragLeave"
-  DragOver="Window_DragOver"
-  Drop="Window_Drop">
+  Width="300">
 
   <UserControl.Resources>
     <!-- Шаблон для кнопок -->
@@ -54,14 +49,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
-      <Canvas
-        Name="whitespace"
-        Grid.RowSpan="8"
-        Grid.ColumnSpan="6"
-        Panel.ZIndex="100"
-        Background="WhiteSmoke"
-        Opacity=".70"
-        Visibility="Collapsed" />
+
       <StackPanel Grid.Row="0" Orientation="Horizontal">
         <Button Margin="5" Click="Button_LoadImage" ToolTip="{lex:Loc Key=Browse}">
           <Button.Style>
