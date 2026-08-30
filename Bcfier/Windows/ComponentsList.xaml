@@ -95,22 +95,9 @@
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}"
                   SnapsToDevicePixels="True">
-                  <Border Name="InnerBorder" BorderThickness="0">
-                    <Grid>
-                      <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                      </Grid.RowDefinitions>
-                      <Rectangle
-                        Name="UpperHighlight"
-                        Fill="#dce0e4"
-                        Visibility="Collapsed" />
-                      <GridViewRowPresenter
-                        Grid.RowSpan="2"
-                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                    </Grid>
-                  </Border>
+                  <GridViewRowPresenter
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                 </Border>
                 <ControlTemplate.Triggers>
                   <Trigger Property="IsSelected" Value="True">
