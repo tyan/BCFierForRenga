@@ -30,10 +30,8 @@
       Executed="OnDeleteIssues" />
     <CommandBinding Command="data:Commands.AddComment" Executed="OnAddComment" />
     <CommandBinding Command="data:Commands.DeleteComments" Executed="OnDeleteComment" />
-    <!--<CommandBinding Command="data:Commands.AddView" Executed="OnAddView" />-->
     <CommandBinding Command="data:Commands.AddIssue" Executed="OnAddIssue" />
     <CommandBinding Command="data:Commands.DeleteViews" Executed="OnDeleteView" />
-    <!--<CommandBinding Command="data:Commands.OpenView" Executed="OnOpenView" />-->
     <CommandBinding Command="data:Commands.OpenSnapshot" Executed="OnOpenSnapshot" />
     <CommandBinding Command="data:Commands.OpenComponents" Executed="OnOpenComponents" />
     <CommandBinding Command="data:Commands.CloseBcf" Executed="OnCloseBcf" />
