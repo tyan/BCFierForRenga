@@ -70,20 +70,7 @@
               </Style.Triggers>
             </Style>
           </StackPanel.Style>
-          <!-- components are now disabled
-          <themes:ButtonIcon
-            Style="{StaticResource OverlayButton}"
-            Command="data:Commands.OpenComponents"
-            CommandParameter="{Binding Viewpoint}"
-            IconPath="{StaticResource IconList}"
-            ToolTip="Show Components" />-->
-          <themes:ButtonIcon
-            Style="{StaticResource OverlayButton}"
-            Command="data:Commands.OpenSnapshot"
-            CommandParameter="{Binding Viewpoint}"
-            IconPath="{StaticResource IconExpand}"
-            ToolTip="{lex:Loc Key=EnlargeView}" />
-          <!--  CLOSE VIEW BUTTON  -->
+<!--  CLOSE VIEW BUTTON  -->
           <themes:ButtonIcon
             Style="{StaticResource CloseButton}"
             Command="data:Commands.DeleteViews"
@@ -101,7 +88,6 @@
       <ItemsControl
         x:Name="CommentList"
         Grid.Row="1"
-        Grid.ColumnSpan="2"
         Padding="0,5,0,0"
         Background="Transparent"
         BorderThickness="0"
@@ -110,7 +96,6 @@
         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
         <ItemsControl.ItemTemplate>
           <DataTemplate>
-            <!--<Border BorderBrush="{StaticResource BackgroundDark}" BorderThickness="0,0,0,1">-->
             <Grid>
               <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -125,15 +110,6 @@
                   FontSize="11"
                   Content="{Binding Date, Converter={StaticResource DateConverter}, ConverterParameter='relative'}"
                   ToolTip="{Binding Date, Converter={StaticResource DateConverter}}" />
-                <!--<Label
-                  VerticalAlignment="Bottom"
-                  FontSize="11"
-                  FontWeight="Bold"
-                  Content="{Binding Status}" />
-                <Label
-                  VerticalAlignment="Bottom"
-                  FontSize="11"
-                  Content="{Binding VerbalStatus}" />-->
               </DockPanel>
               <themes:ButtonIcon
                 Grid.Row="0"
@@ -154,7 +130,6 @@
                 local:NavigationService.Text="{Binding Comment1}"
                 TextWrapping="Wrap" />
             </Grid>
-            <!--</Border>-->
           </DataTemplate>
         </ItemsControl.ItemTemplate>
       </ItemsControl>
@@ -168,23 +143,6 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <!--<DockPanel Grid.ColumnSpan="2">
-          <ComboBox
-            Name="ComboBoxStatus"
-            Width="150"
-            Margin="0,0,5,5"
-            Background="White"
-            BorderBrush="{StaticResource BackgroundDark}"
-            ItemsSource="{x:Static utils:Globals.AvailStatuses}"
-            SelectedIndex="0" />
-          <themes:TextPlaceholder
-            x:Name="TextBoxVerbalStatus"
-            Margin="0,0,0,5"
-            HorizontalAlignment="Stretch"
-            BorderBrush="{StaticResource BackgroundDark}"
-            MaxLength="20"
-            Placeholder="Verbal Status (optional)" />
-        </DockPanel>-->
         <themes:TextPlaceholder
           Name="TextBoxComment"
           Grid.Row="1"
@@ -198,13 +156,11 @@
           TextWrapping="Wrap">
           <local:CtrlEnterKeyDown.CommandArgument>
             <MultiBinding Converter="{StaticResource MultiCommandConverter}">
-              <Binding Path="Viewpoint" />
-              <Binding ElementName="IssueList" Path="SelectedItem" />
-              <Binding ElementName="TextBoxComment" Path="Text" />
-              <!--<Binding ElementName="ComboBoxStatus" Path="SelectedValue" />
-              <Binding ElementName="TextBoxVerbalStatus" Path="Text" />-->
-            </MultiBinding>
-          </local:CtrlEnterKeyDown.CommandArgument>
+<Binding Path="Viewpoint" />
+                <Binding ElementName="IssueList" Path="SelectedItem" />
+                <Binding ElementName="TextBoxComment" Path="Text" />
+              </MultiBinding>
+            </local:CtrlEnterKeyDown.CommandArgument>
         </themes:TextPlaceholder>
         <Border
           Grid.Row="1"
@@ -226,12 +182,10 @@
             ToolTip="Add comment">
             <Button.CommandParameter>
               <MultiBinding Converter="{StaticResource MultiCommandConverter}">
-                <Binding Path="Viewpoint" />
-                <Binding ElementName="IssueList" Path="SelectedItem" />
-                <Binding ElementName="TextBoxComment" Path="Text" />
-                <!--<Binding ElementName="ComboBoxStatus" Path="SelectedValue" />
-                <Binding ElementName="TextBoxVerbalStatus" Path="Text" />-->
-              </MultiBinding>
+<Binding Path="Viewpoint" />
+                  <Binding ElementName="IssueList" Path="SelectedItem" />
+                  <Binding ElementName="TextBoxComment" Path="Text" />
+                </MultiBinding>
             </Button.CommandParameter>
           </themes:ButtonIcon>
         </Border>
