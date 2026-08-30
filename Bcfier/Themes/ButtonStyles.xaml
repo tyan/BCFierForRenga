@@ -41,14 +41,6 @@
     BasedOn="{StaticResource SaveAsButtonStyle}"
     TargetType="themes:ButtonIcon" />
   
-  <Style x:Key="IssuesSelectedEnablerStyle" TargetType="Button">
-    <Style.Triggers>
-      <DataTrigger Binding="{Binding ElementName=IssueList, Path=SelectedItems.Count}" Value="0">
-        <Setter Property="IsEnabled" Value="False" />
-      </DataTrigger>
-    </Style.Triggers>
-  </Style>
-  
   <Style x:Key="ImageNullSource" TargetType="Image">
     <Style.Triggers>
       <Trigger Property="Source" Value="{x:Null}">
@@ -107,90 +99,6 @@
     </Style.Triggers>
   </Style>
 
-  <Style x:Key="AddIssueWin" TargetType="Button">
-    <Style.Triggers>
-      <DataTrigger Binding="{Binding ElementName=TitleBox, Path=Text}" Value="{x:Static system:String.Empty}">
-        <Setter Property="IsEnabled" Value="False" />
-      </DataTrigger>
-    </Style.Triggers>
-  </Style>
-  
-  <Style x:Key="AnnotateSnapshot" TargetType="Button">
-    <Style.Triggers>
-      <DataTrigger Binding="{Binding ElementName=SnapshotImg, Path=Source}" Value="{x:Null}">
-        <Setter Property="IsEnabled" Value="False" />
-      </DataTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style x:Key="FieldSelectedEnablerStyle" TargetType="Button">
-    <Style.Triggers>
-      <DataTrigger Binding="{Binding ElementName=FieldList, Path=SelectedItems.Count}" Value="0">
-        <Setter Property="IsEnabled" Value="False" />
-      </DataTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style x:Key="ViewSelectedEnablerStyle" TargetType="Button">
-    <Style.Triggers>
-      <DataTrigger Binding="{Binding ElementName=ViewpointList, Path=SelectedItems.Count}" Value="0">
-        <Setter Property="IsEnabled" Value="False" />
-      </DataTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style x:Key="ProjectSelectedEnablerStyle" TargetType="Button">
-    <Style.Triggers>
-      <DataTrigger Binding="{Binding ElementName=ProjectCombo, Path=SelectedIndex}" Value="-1">
-        <Setter Property="IsEnabled" Value="False" />
-      </DataTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style x:Key="ProjectSelectedGridEnablerStyle" TargetType="Grid">
-    <Style.Triggers>
-      <DataTrigger Binding="{Binding ElementName=ProjectCombo, Path=SelectedIndex}" Value="-1">
-        <Setter Property="IsEnabled" Value="False" />
-      </DataTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style x:Key="CommentsSelectedEnablerStyle" TargetType="Button">
-    <Style.Triggers>
-      <DataTrigger Binding="{Binding ElementName=CommentList, Path=SelectedItems.Count}" Value="0">
-        <Setter Property="IsEnabled" Value="False" />
-      </DataTrigger>
-    </Style.Triggers>
-  </Style>
-  <Style x:Key="IssueCountEnablerStyle" TargetType="Button">
-    <Style.Triggers>
-      <DataTrigger Binding="{Binding ElementName=IssueList, Path=Items.Count}" Value="0">
-        <Setter Property="IsEnabled" Value="False" />
-      </DataTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style x:Key="Standardbutton" TargetType="{x:Type ToggleButton}">
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="ToggleButton">
-          <Border
-            Name="border"
-            Padding="2"
-            Background="Transparent"
-            BorderBrush="DarkGray"
-            BorderThickness="0"
-            CornerRadius="0">
-            <ContentPresenter
-              Name="content"
-              HorizontalAlignment="Left"
-              VerticalAlignment="Center" />
-          </Border>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  </Style>
-
   <Style x:Key="OverlayButton" TargetType="themes:ButtonIcon">
     <Style.Setters>
       <Setter Property="IsVertical" Value="True" />
@@ -220,36 +128,6 @@
     </Style.Setters>
   </Style>
 
-
-  <Style
-    x:Key="ChangeFieldButton"
-    BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-    TargetType="Button">
-    <Style.Triggers>
-      <Trigger Property="Content" Value="{x:Static system:String.Empty}">
-        <Setter Property="Background" Value="#EEEEEE" />
-      </Trigger>
-      <Trigger Property="Content" Value="{x:Null}">
-        <Setter Property="Background" Value="#EEEEEE" />
-      </Trigger>
-      <MultiDataTrigger>
-        <MultiDataTrigger.Conditions>
-          <Condition Binding="{Binding Path=Value.isRequired}" Value="True" />
-          <Condition Binding="{Binding Path=Value.display}" Value="{x:Static system:String.Empty}" />
-        </MultiDataTrigger.Conditions>
-        <Setter Property="Background" Value="DarkSalmon" />
-        <Setter Property="ToolTip" Value="Required Field" />
-      </MultiDataTrigger>
-      <MultiDataTrigger>
-        <MultiDataTrigger.Conditions>
-          <Condition Binding="{Binding Path=Value.isRequired}" Value="True" />
-          <Condition Binding="{Binding Path=Value.display}" Value="{x:Null}" />
-        </MultiDataTrigger.Conditions>
-        <Setter Property="Background" Value="DarkSalmon" />
-        <Setter Property="ToolTip" Value="Required Field" />
-      </MultiDataTrigger>
-    </Style.Triggers>
-  </Style>
 
   <Style
     x:Key="SaveButtonStyle"
