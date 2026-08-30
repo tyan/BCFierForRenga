@@ -12,7 +12,7 @@
         <ControlTemplate TargetType="ListBoxItem">
           <Border
             Name="Border"
-            Margin="15,0,5,10"
+            Margin="0,0,0,10"
             Padding="0"
             HorizontalAlignment="Stretch"
             Background="{StaticResource ListViewBackground}"

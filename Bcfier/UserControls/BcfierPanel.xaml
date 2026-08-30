@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
   x:Class="Bcfier.UserControls.BcfierPanel"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -12,11 +12,6 @@
   lex:LocalizeDictionary.DesignCulture="en-US"
   lex:ResxLocalizationProvider.DefaultAssembly="BCFier"
   lex:ResxLocalizationProvider.DefaultDictionary="Strings"
-  AllowDrop="True"
-  DragEnter="Window_DragEnter"
-  DragLeave="Window_DragLeave"
-  DragOver="Window_DragOver"
-  Drop="Window_Drop"
   mc:Ignorable="d">
   <UserControl.Resources>
     <ResourceDictionary>
@@ -35,12 +30,9 @@
       Executed="OnDeleteIssues" />
     <CommandBinding Command="data:Commands.AddComment" Executed="OnAddComment" />
     <CommandBinding Command="data:Commands.DeleteComments" Executed="OnDeleteComment" />
-    <!--<CommandBinding Command="data:Commands.AddView" Executed="OnAddView" />-->
     <CommandBinding Command="data:Commands.AddIssue" Executed="OnAddIssue" />
     <CommandBinding Command="data:Commands.DeleteViews" Executed="OnDeleteView" />
-    <!--<CommandBinding Command="data:Commands.OpenView" Executed="OnOpenView" />-->
     <CommandBinding Command="data:Commands.OpenSnapshot" Executed="OnOpenSnapshot" />
-    <CommandBinding Command="data:Commands.OpenComponents" Executed="OnOpenComponents" />
     <CommandBinding Command="data:Commands.CloseBcf" Executed="OnCloseBcf" />
   </UserControl.CommandBindings>
   <Grid Background="{StaticResource BackgroundLight}">
@@ -48,19 +40,8 @@
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
-    <Canvas
-      Name="whitespace"
-      Grid.RowSpan="6"
-      Grid.ColumnSpan="6"
-      Panel.ZIndex="100"
-      Background="WhiteSmoke"
-      Opacity=".70"
-      Visibility="Collapsed" />
     <!--  MENU        ******************************************************************************************************************************  -->
-    <DockPanel Grid.ColumnSpan="3" Background="{StaticResource BackgroundLight}" Margin="-13,-13,-13,0">
+    <DockPanel Background="{StaticResource BackgroundLight}" Margin="-13,-13,-13,0">
       <themes:ButtonIcon
         x:Name="NewBcfBtn"
         Margin="13,0,0,0"

@@ -62,30 +62,6 @@
   <!--  END TEXTPLACEHOLDER  -->
 
 
-  <!--  LABEL SELECTABLE  -->
-  <Style x:Key="{x:Type themes:LabelSelectable}" TargetType="{x:Type TextBox}">
-    <Setter Property="Background" Value="Transparent" />
-    <Setter Property="BorderBrush" Value="{x:Null}" />
-    <Setter Property="BorderThickness" Value="4" />
-    <Setter Property="IsTabStop" Value="False" />
-    <Setter Property="IsReadOnly" Value="True" />
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="{x:Type TextBoxBase}">
-          <Border
-            Name="Border"
-            Padding="2"
-            BorderThickness="1"
-            CornerRadius="2">
-
-            <ScrollViewer x:Name="PART_ContentHost" Margin="0" />
-          </Border>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  </Style>
-  <!--  END LABEL SELECTABLE  -->
-
   <!--  BUTTON ICON  -->
   <Style
     x:Key="{x:Type themes:ButtonIcon}"

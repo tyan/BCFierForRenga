@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -272,29 +272,6 @@ namespace Bcfier.UserControls
       }
     }
 
-    // TODO: remove this
-    private void OnOpenComponents(object sender, ExecutedRoutedEventArgs e)
-    {
-      try
-      {
-        var view = e.Parameter as ViewPoint;
-        if (view == null)
-        {
-          MessageBox.Show(LocValueGetter.Get("NullViewPoint"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
-          return;
-        }
-        //the .bcfv referenced in markup is missing in the archive, it is a broken file
-        if (view.VisInfo == null)
-          throw new InvalidDataException("Viewpoint .bcfv file is missing in the BCF archive.");
-        var dialog = new ComponentsList(view.VisInfo.Components);
-        dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-        dialog.Show();
-      }
-      catch (System.Exception ex)
-      {
-        Utils.ShowErrorMessageBox(LocValueGetter.Get("UnknownError"), ex);
-      }
-    }
     private void OnCloseBcf(object sender, ExecutedRoutedEventArgs e)
     {
       try
@@ -366,61 +343,6 @@ namespace Bcfier.UserControls
 
     #endregion
 
-    #region drag&drop
-    private void Window_DragEnter(object sender, DragEventArgs e)
-    {
-      whitespace.Visibility = Visibility.Visible;
-    }
-    private void Window_DragLeave(object sender, DragEventArgs e)
-    {
-      whitespace.Visibility = Visibility.Hidden;
-    }
-    private void Window_Drop(object sender, DragEventArgs e)
-    {
-      try
-      {
-        whitespace.Visibility = Visibility.Hidden;
-        if (e.Data.GetDataPresent(DataFormats.FileDrop))
-        {
-          var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-          foreach (var f in files)
-          {
-            if (File.Exists(f))
-              _bcf.OpenFile(f);
-          }
-        }
-      }
-      catch (System.Exception ex)
-      {
-        Utils.ShowErrorMessageBox("Open BCF error.", ex);
-      }
-    }
-    private void Window_DragOver(object sender, DragEventArgs e)
-    {
-      try
-      {
-        var dropEnabled = true;
-
-        if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
-        {
-          var filenames = e.Data.GetData(DataFormats.FileDrop, true) as string[];
-          if (filenames.Any(x => Path.GetExtension(x).ToUpperInvariant() != BcfSerializer.FileExtension.ToUpperInvariant()))
-            dropEnabled = false;
-        }
-        else
-          dropEnabled = false;
-
-        if (!dropEnabled)
-        {
-          e.Effects = DragDropEffects.None;
-          e.Handled = true;
-        }
-      }
-      catch (System.Exception)
-      {
-      }
-    }
-    #endregion
     #region shortcuts
     public BcfFile SelectedBcf()
     {

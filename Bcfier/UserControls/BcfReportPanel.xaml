@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
   x:Class="Bcfier.UserControls.BcfReportPanel"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -12,6 +12,7 @@
   lex:ResxLocalizationProvider.DefaultAssembly="BCFier"
   lex:ResxLocalizationProvider.DefaultDictionary="Strings"
   Background="White"
+  MinWidth="623"
   d:DataContext="{d:DesignData d:Source=../SampleBcfFile.xaml}"
   d:DesignHeight="1500"
   d:DesignWidth="900"
@@ -36,9 +37,9 @@
   </UserControl.Resources>
   <Grid Background="{StaticResource ListViewBackground}">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="40*" />
+      <ColumnDefinition Width="40*" MinWidth="300" MaxWidth="600" />
       <ColumnDefinition Width="3" />
-      <ColumnDefinition Width="60*" />
+      <ColumnDefinition Width="60*" MinWidth="320"/>
     </Grid.ColumnDefinitions>
     <!--  MAIN GRID - COLUMN 1  -->
     <Grid Background="{StaticResource ListViewBackground}">
@@ -48,10 +49,40 @@
         <RowDefinition Height="*" />
         <RowDefinition Height="auto" />
       </Grid.RowDefinitions>
+      <UniformGrid
+        Grid.Row="0"
+        Background="{StaticResource ListViewBackground}"
+        Height="24"
+        Rows="1"
+        Margin="9,9,9,0">
+        <themes:ButtonIcon
+          x:Name="AddIssueBtn"
+          Margin="0,0,9,0"
+          Style="{StaticResource AddViewCommentStyle}"
+          BorderThickness="1,1,1,1"
+          Command="data:Commands.AddIssue"
+          Content="{lex:Loc Key=Add}"
+          IconColor="{StaticResource BackgroundDark}"
+          IconPath="{StaticResource IconAdd}"
+          ToolTip="{lex:Loc Key=AddIssue}" />
+        <themes:ButtonIcon
+          x:Name="DelIssueBtn"
+          Margin="0,0,0,0"
+          Style="{StaticResource AddViewCommentStyle}"
+          BorderThickness="1,1,1,1"
+          Command="data:Commands.DeleteIssues"
+          CommandParameter="{Binding ElementName=IssueList, Path=SelectedItems}"
+          Content="{lex:Loc Key=DeleteIssues}"
+          DockPanel.Dock="Left"
+          IconColor="{StaticResource BackgroundDark}"
+          IconPath="{StaticResource IconDelete}"
+          ToolTip="{lex:Loc Key=DeleteSelected}" />
+      </UniformGrid>
       <themes:TextPlaceholder
         x:Name="SearchBox"
         Grid.Row="1"
-        Margin="0,0,0,5"
+        Height="24"
+        Margin="9,9,9,9"
         BorderBrush="{StaticResource BackgroundDark}"
         KeyDown="SearchBox_OnKeyDown"
         Placeholder="{lex:Loc Key=Search}"
@@ -60,7 +91,7 @@
       <ListView
         x:Name="IssueList"
         Grid.Row="2"
-        Margin="0"
+        Margin="9,0,9,0"
         Padding="0"
         Style="{StaticResource ListViewTheme}"
         Background="{StaticResource PrimaryLight}"
@@ -69,51 +100,35 @@
         IsSynchronizedWithCurrentItem="True"
         ItemContainerStyle="{StaticResource IssueListStyle}"
         ItemsSource="{Binding Issues}"
-        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
         SelectedIndex="0"
         SelectedItem="{Binding SelectedIssue}"
         SelectionMode="Extended"
+        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
         >
         <ListView.ItemTemplate>
           <DataTemplate>
-            <Grid>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-              </Grid.RowDefinitions>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="1*" />
-              </Grid.ColumnDefinitions>
-              <!--  Crop the image so it's squared  -->
-              <Grid
-                Grid.RowSpan="2"
-                MaxWidth="60"
-                MaxHeight="60"
-                Margin="0,0,5,0"
-                HorizontalAlignment="Stretch">
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                  <Image
-                    Style="{StaticResource ImageNullSource}"
-                    Source="{Binding Viewpoints[0].SnapshotPath, Converter={StaticResource PathToImageConv}, UpdateSourceTrigger=PropertyChanged}"
-                    Stretch="Fill" />
-                </StackPanel>
-              </Grid>
-              <Grid Grid.Row="0" Grid.Column="1">
-                <Label
+            <Border 
+              BorderBrush="{StaticResource BackgroundLight}"
+              BorderThickness="0,0,0,1">
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="auto" />
+                  <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="1*" />
+                  <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <!--  Crop the image so it's squared  -->
+                <Grid Grid.Row="0" Grid.Column="0">
+                  <TextBlock
                   Margin="2,2,2,0"
                   VerticalAlignment="Bottom"
                   FontWeight="Bold"
-                  Content="{Binding Topic.Title, TargetNullValue={lex:Loc Key=NewIssue}}" />
-              </Grid>
-              <Border
-                Grid.Row="1"
-                Grid.Column="1"
-                Padding="0,0,0,4"
-                HorizontalAlignment="Stretch"
-                BorderBrush="{StaticResource BackgroundLight}"
-                BorderThickness="0,0,0,1">
-                <DockPanel>
+                  TextTrimming="CharacterEllipsis"
+                  Text="{Binding Topic.Title, TargetNullValue={lex:Loc Key=NewIssue}}" />
+                </Grid>
+                <DockPanel Grid.Row="1" Grid.Column="0">
                   <Label
                     VerticalAlignment="Bottom"
                     FontSize="11"
@@ -158,8 +173,14 @@
                     ToolTip="Status" />
 
                 </DockPanel>
-              </Border>
-            </Grid>
+                <Grid Grid.Column="1" Grid.RowSpan="2" Width="96" Height="54" Margin="0,0,0,0">
+                  <Image
+                    Style="{StaticResource ImageNullSource}"
+                    Source="{Binding Viewpoints[0].SnapshotPath, Converter={StaticResource PathToImageConv}, UpdateSourceTrigger=PropertyChanged}"
+                    Stretch="Uniform" />
+                </Grid>
+              </Grid>
+            </Border>
             <DataTemplate.Triggers>
               <EventTrigger RoutedEvent="FrameworkElement.Loaded">
                 <BeginStoryboard Storyboard="{StaticResource FadeInStoryboard}" />
@@ -169,33 +190,6 @@
         </ListView.ItemTemplate>
       </ListView>
       <!--  DOCK PANELS ******************************************************************************************************************************  -->
-      <UniformGrid
-        Grid.Row="0"
-        Background="{StaticResource ListViewBackground}"
-        Rows="1">
-        <themes:ButtonIcon
-          x:Name="AddIssueBtn"
-          Margin="0,5,5,5"
-          Style="{StaticResource AddViewCommentStyle}"
-          BorderThickness="1,1,1,1"
-          Command="data:Commands.AddIssue"
-          Content="{lex:Loc Key=Add}"
-          IconColor="{StaticResource BackgroundDark}"
-          IconPath="{StaticResource IconAdd}"
-          ToolTip="{lex:Loc Key=AddIssue}" />
-        <themes:ButtonIcon
-          x:Name="DelIssueBtn"
-          Margin="0,5,0,5"
-          Style="{StaticResource AddViewCommentStyle}"
-          BorderThickness="1,1,1,1"
-          Command="data:Commands.DeleteIssues"
-          CommandParameter="{Binding ElementName=IssueList, Path=SelectedItems}"
-          Content="{lex:Loc Key=DeleteIssues}"
-          DockPanel.Dock="Left"
-          IconColor="{StaticResource BackgroundDark}"
-          IconPath="{StaticResource IconDelete}"
-          ToolTip="{lex:Loc Key=DeleteSelected}" />
-      </UniformGrid>
       <DockPanel
         Grid.Row="3"
         Grid.Column="0"
@@ -203,13 +197,13 @@
         HorizontalAlignment="Stretch"
         Background="{StaticResource ListViewBackground}">
         <Label
-          Margin="5,0"
+          Margin="9,0,9,0"
           HorizontalAlignment="Left"
           FontStyle="Italic"
           Content="{Binding ElementName=IssueList, Path=Items.Count, Converter={StaticResource LocFormatValueConverter}, ConverterParameter='IssuesTotal'}"
           DockPanel.Dock="Left" />
         <Label
-          Margin="0"
+          Margin="0,0,9,0"
           HorizontalAlignment="Left"
           FontStyle="Italic"
           Content="{Binding ElementName=IssueList, Path=SelectedItems.Count, Converter={StaticResource LocFormatValueConverter}, ConverterParameter='IssuesSelected'}"
@@ -240,9 +234,9 @@
       <Grid
         Grid.Row="0"
         Grid.ColumnSpan="4"
-        Margin="15,10,0,0">
+        Margin="9,9,9,9">
         <Grid.RowDefinitions>
-          <RowDefinition Height="Auto" />
+          <RowDefinition Height="24" />
           <RowDefinition Height="Auto" />
           <RowDefinition Height="Auto" />
           <RowDefinition Height="Auto" />
@@ -255,8 +249,9 @@
           x:Name="TextBox_Title"
           Grid.Row="0"
           Grid.ColumnSpan="2"
+          Height="24"
           Margin="0"
-          VerticalAlignment="Bottom"
+          VerticalAlignment="Stretch"
           BorderBrush="{StaticResource BackgroundDark}"
           FontSize="14"
           Binding.SourceUpdated="TextBox_OnTextChanged"
@@ -265,16 +260,23 @@
           ToolTip="{lex:Loc Key=IssueTitle}"/>
         <DockPanel
           Grid.Row="1"
-          Grid.ColumnSpan="2">
+          Grid.ColumnSpan="2"
+          Margin="0,9,0,0">
           <ComboBox 
-            Width="95" 
+            x:Name="ComboBox_Status"
+            Width="95"
+            Height="24"
+            BorderBrush="{StaticResource BackgroundDark}"
             ItemsSource="{Binding Topic.TopicStatusesCollection}" 
             SelectedItem="{Binding Topic.TopicStatus}"
             ToolTip="{lex:Loc Key=IssueStatus}">
           </ComboBox>
           <ComboBox 
-            Margin="2" 
-            Width="95" 
+            x:Name="ComboBox_Type"
+            Margin="9,0,0,0"
+            Width="95"
+            Height="24"
+            BorderBrush="{StaticResource BackgroundDark}"
             ItemsSource="{Binding Topic.TopicTypesCollection}" 
             SelectedItem="{Binding Topic.TopicType, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             ToolTip="{lex:Loc Key=IssueTopic}">
@@ -290,8 +292,9 @@
         <themes:TextPlaceholder
           Grid.Row="2"
           Grid.ColumnSpan="2"
+          MinHeight="24"
           MaxHeight="60"
-          Margin="0,0,0,5"
+          Margin="0,9,0,9"
           BorderBrush="{StaticResource BackgroundDark}"
           AcceptsReturn="True"
           Binding.SourceUpdated="TextBox_OnTextChanged"
@@ -302,7 +305,7 @@
           Grid.Row="3"
           Grid.Column="1"
           Style="{StaticResource AddViewCommentStyle}"
-          Margin="5,0,0,0"
+          Margin="9,0,0,0"
           BorderThickness="1,1,1,1"
           Click="AddCommentBtnClick"
           Content="{lex:Loc Key=AddComment}"
@@ -322,7 +325,7 @@
       <ListView
         Name="ViewCommList"
         Grid.Row="1"
-        Margin="0,5,-5,0"
+        Margin="9,0,9,9"
         HorizontalContentAlignment="Stretch"
         Style="{StaticResource ListViewTheme}"
         BorderThickness="0"
