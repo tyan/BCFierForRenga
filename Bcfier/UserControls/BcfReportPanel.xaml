@@ -92,12 +92,10 @@
                 MaxHeight="60"
                 Margin="0,0,5,0"
                 HorizontalAlignment="Stretch">
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                  <Image
-                    Style="{StaticResource ImageNullSource}"
-                    Source="{Binding Viewpoints[0].SnapshotPath, Converter={StaticResource PathToImageConv}, UpdateSourceTrigger=PropertyChanged}"
-                    Stretch="Fill" />
-                </StackPanel>
+                <Image
+                  Style="{StaticResource ImageNullSource}"
+                  Source="{Binding Viewpoints[0].SnapshotPath, Converter={StaticResource PathToImageConv}, UpdateSourceTrigger=PropertyChanged}"
+                  Stretch="Fill" />
               </Grid>
               <Grid Grid.Row="0" Grid.Column="1">
                 <Label
