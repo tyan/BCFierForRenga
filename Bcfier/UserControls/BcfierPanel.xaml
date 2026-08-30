@@ -43,11 +43,8 @@
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
     <!--  MENU        ******************************************************************************************************************************  -->
-    <DockPanel Grid.ColumnSpan="3" Background="{StaticResource BackgroundLight}" Margin="-13,-13,-13,0">
+    <DockPanel Background="{StaticResource BackgroundLight}" Margin="-13,-13,-13,0">
       <themes:ButtonIcon
         x:Name="NewBcfBtn"
         Margin="13,0,0,0"
