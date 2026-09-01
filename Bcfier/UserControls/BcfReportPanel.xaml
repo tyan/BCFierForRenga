@@ -69,7 +69,6 @@
         IsSynchronizedWithCurrentItem="True"
         ItemContainerStyle="{StaticResource IssueListStyle}"
         ItemsSource="{Binding Issues}"
-        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
         SelectedIndex="0"
         SelectedItem="{Binding SelectedIssue}"
         SelectionMode="Extended"
