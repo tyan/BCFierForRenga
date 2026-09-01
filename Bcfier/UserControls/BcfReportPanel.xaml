@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
   x:Class="Bcfier.UserControls.BcfReportPanel"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -94,7 +94,7 @@
                 <Image
                   Style="{StaticResource ImageNullSource}"
                   Source="{Binding Viewpoints[0].SnapshotPath, Converter={StaticResource PathToImageConv}, UpdateSourceTrigger=PropertyChanged}"
-                  Stretch="Fill" />
+                  Stretch="Uniform" />
               </Grid>
               <Grid Grid.Row="0" Grid.Column="1">
                 <Label
