@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
   x:Class="Bcfier.UserControls.BcfierPanel"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -33,7 +33,6 @@
     <CommandBinding Command="data:Commands.AddIssue" Executed="OnAddIssue" />
     <CommandBinding Command="data:Commands.DeleteViews" Executed="OnDeleteView" />
     <CommandBinding Command="data:Commands.OpenSnapshot" Executed="OnOpenSnapshot" />
-    <CommandBinding Command="data:Commands.OpenComponents" Executed="OnOpenComponents" />
     <CommandBinding Command="data:Commands.CloseBcf" Executed="OnCloseBcf" />
   </UserControl.CommandBindings>
   <Grid Background="{StaticResource BackgroundLight}">

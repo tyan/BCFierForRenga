@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +25,6 @@ namespace Bcfier.Data
     public static readonly RoutedCommand DeleteViews = new RoutedCommand("DeleteViews", typeof(Button));
     public static readonly RoutedCommand OpenView = new RoutedCommand("OpenView", typeof(Button));
     public static readonly RoutedCommand OpenSnapshot = new RoutedCommand("OpenSnapshot", typeof(Button));
-    public static readonly RoutedCommand OpenComponents = new RoutedCommand("OpenComponents", typeof(Button));
 
     public static readonly RoutedCommand CloseBcf = new RoutedCommand("CloseBcf", typeof(Button));
   }

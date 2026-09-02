@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -272,29 +272,6 @@ namespace Bcfier.UserControls
       }
     }
 
-    // TODO: remove this
-    private void OnOpenComponents(object sender, ExecutedRoutedEventArgs e)
-    {
-      try
-      {
-        var view = e.Parameter as ViewPoint;
-        if (view == null)
-        {
-          MessageBox.Show(LocValueGetter.Get("NullViewPoint"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
-          return;
-        }
-        //the .bcfv referenced in markup is missing in the archive, it is a broken file
-        if (view.VisInfo == null)
-          throw new InvalidDataException("Viewpoint .bcfv file is missing in the BCF archive.");
-        var dialog = new ComponentsList(view.VisInfo.Components);
-        dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-        dialog.Show();
-      }
-      catch (System.Exception ex)
-      {
-        Utils.ShowErrorMessageBox(LocValueGetter.Get("UnknownError"), ex);
-      }
-    }
     private void OnCloseBcf(object sender, ExecutedRoutedEventArgs e)
     {
       try
