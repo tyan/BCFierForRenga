@@ -70,7 +70,12 @@
               </Style.Triggers>
             </Style>
           </StackPanel.Style>
-<!--  CLOSE VIEW BUTTON  -->
+          <themes:ButtonIcon
+            Style="{StaticResource OverlayButton}"
+            Command="data:Commands.OpenSnapshot"
+            CommandParameter="{Binding Viewpoint}"
+            IconPath="{StaticResource IconExpand}"
+            ToolTip="{lex:Loc Key=EnlargeView}" />
           <themes:ButtonIcon
             Style="{StaticResource CloseButton}"
             Command="data:Commands.DeleteViews"
