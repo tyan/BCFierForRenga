@@ -18,15 +18,15 @@ namespace Bcfier.Bcf.ViewModel
   /// </summary>
   public class BcfContainerVM : INotifyPropertyChanged
   {
-    private ObservableCollection<BcfFile> _bcfFiles { get; set; }
+    private ObservableCollection<BcfFileVM> _bcfFiles { get; set; }
     private int _selectedReport { get; set; }
 
     public BcfContainerVM()
     {
-      BcfFiles = new ObservableCollection<BcfFile>();
+      BcfFiles = new ObservableCollection<BcfFileVM>();
     }
 
-    public ObservableCollection<BcfFile> BcfFiles
+    public ObservableCollection<BcfFileVM> BcfFiles
     {
       get
       {
@@ -57,16 +57,17 @@ namespace Bcfier.Bcf.ViewModel
     // Remove this
     public void NewFile()
     {
-      AddBcf(new BcfFile());
+      AddBcf(BcfFileVM.FromModel(new BcfFile()));
     }
-    public void SaveFile(BcfFile bcf)
+    public void SaveFile(BcfFileVM bcf)
     {
       if (bcf == null)
         return;
 
       if (!string.IsNullOrEmpty(bcf.Fullname))
       {
-        BcfSerializer.save(bcf, bcf.Fullname);
+        BcfSerializer.save(bcf.Model, bcf.Fullname);
+        bcf.HasBeenSaved = true;
       }
       else
       {
@@ -74,14 +75,14 @@ namespace Bcfier.Bcf.ViewModel
       }
     }
 
-    public void SaveAsFile(BcfFile bcf)
+    public void SaveAsFile(BcfFileVM bcf)
     {
       if (bcf == null)
         return;
 
       SaveAsBcfFile(bcf);
     }
-    public void MergeFiles(BcfFile bcf)
+    public void MergeFiles(BcfFileVM bcf)
     {
       var bcffiles = OpenBcfDialog();
       if (bcffiles == null)
@@ -107,7 +108,7 @@ namespace Bcfier.Bcf.ViewModel
       }
     }
 
-    private void AddBcf(BcfFile newbcf)
+    private void AddBcf(BcfFileVM newbcf)
     {
       if (newbcf == null)
         return;
@@ -127,7 +128,7 @@ namespace Bcfier.Bcf.ViewModel
       }
     }
 
-    public void CloseFile(BcfFile bcf)
+    public void CloseFile(BcfFileVM bcf)
     {
       _bcfFiles.Remove(bcf);
       Utils.DeleteDirectory(bcf.TempPath);
@@ -193,7 +194,7 @@ namespace Bcfier.Bcf.ViewModel
     /// Prompts a dialog to select one or more BCF files to open
     /// </summary>
     /// <returns></returns>
-    private static IEnumerable<BcfFile> OpenBcfDialog()
+    private static IEnumerable<BcfFileVM> OpenBcfDialog()
     {
       try
       {
@@ -225,9 +226,9 @@ namespace Bcfier.Bcf.ViewModel
     /// </summary>
     /// <param name="bcffile">Path to the .bcf file</param>
     /// <returns></returns>
-    private static BcfFile OpenBcfFile(string filePath)
+    private static BcfFileVM OpenBcfFile(string filePath)
     {
-      return BcfSerializer.load(filePath);
+      return BcfFileVM.FromModel(BcfSerializer.load(filePath));
     }
 
     /// <summary>
@@ -235,7 +236,7 @@ namespace Bcfier.Bcf.ViewModel
     /// </summary>
     /// <param name="bcffile"></param>
     /// <returns></returns>
-    private static bool SaveAsBcfFile(BcfFile bcf)
+    private static bool SaveAsBcfFile(BcfFileVM bcf)
     {
       // Show save file dialog box
       var name = !string.IsNullOrEmpty(bcf.Filename)
@@ -245,7 +246,10 @@ namespace Bcfier.Bcf.ViewModel
       // Process save file dialog box results
       if (string.IsNullOrWhiteSpace(filename))
         return false;
-      return BcfSerializer.save(bcf, filename);
+      var saved = BcfSerializer.save(bcf.Model, filename);
+      if (saved)
+        bcf.HasBeenSaved = true;
+      return saved;
     }
 
     /// <summary>

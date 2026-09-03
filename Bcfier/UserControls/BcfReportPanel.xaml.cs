@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Bcfier.Bcf;
+using Bcfier.Bcf.ViewModel;
 using Bcfier.Themes;
 
 
@@ -46,7 +47,7 @@ namespace Bcfier.UserControls
     {
       if (IssueList.SelectedIndex == -1)
         return;
-      var bcf = this.DataContext as BcfFile;
+      var bcf = this.DataContext as BcfFileVM;
       if (bcf == null)
         return;
       //if (e.Key != Key.Up && e.Key != Key.Down && e.Key != Key.Left && e.Key != Key.Right)

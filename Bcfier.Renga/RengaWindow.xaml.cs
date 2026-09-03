@@ -6,6 +6,7 @@ using System.Windows.Input;
 
 using Renga;
 using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.ViewModel;
 using Bcfier.RengaPlugin.Entry;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -58,7 +59,7 @@ namespace Bcfier.RengaPlugin
         if (m_panel.SelectedBcf() == null)
           return;
         
-        var view = e.Parameter as ViewPoint;
+        var view = e.Parameter as ViewPointVM;
         if (view == null)
           return;
 
@@ -81,7 +82,7 @@ namespace Bcfier.RengaPlugin
         if (m_panel.SelectedBcf() == null)
           return;
         
-        var issue = e.Parameter as Markup;
+        var issue = e.Parameter as MarkupVM;
         if (issue == null)
         {
           MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"));

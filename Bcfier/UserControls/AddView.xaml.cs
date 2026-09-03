@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.ViewModel;
 using Bcfier.Data.Utils;
 using Bcfier.Localization;
 
@@ -17,14 +18,14 @@ namespace Bcfier.UserControls
   public partial class AddView : UserControl
   {
     internal string TempFolder;
-    internal Markup Issue;
+    internal MarkupVM Issue;
 
     public AddView()
     {
       InitializeComponent();
     }
 
-    public AddView(Markup issue, string bcfTempFolder)
+    public AddView(MarkupVM issue, string bcfTempFolder)
     {
       InitializeComponent();
       Issue = issue;
@@ -74,7 +75,7 @@ namespace Bcfier.UserControls
     {
       try
       {
-        var view = new ViewPoint(!Issue.Viewpoints.Any());
+        var view = ViewPointVM.FromModel(new ViewPoint(!Issue.Viewpoints.Any()));
 
         if (!Directory.Exists(Path.Combine(TempFolder, Issue.Topic.Guid)))
           Directory.CreateDirectory(Path.Combine(TempFolder, Issue.Topic.Guid));
@@ -91,7 +92,8 @@ namespace Bcfier.UserControls
             Date = DateTime.Now,
             Viewpoint = new CommentViewpoint { Guid = view.Guid }
           };
-          Issue.Comment.Add(c);
+          Issue.Comment.Add(CommentVM.FromModel(c));
+          Issue.Model.Comment.Add(c);
         }
         //first save the image, then update path
         if (SnapshotImg.Source != null)
@@ -103,6 +105,7 @@ namespace Bcfier.UserControls
 
         //neede for UI binding
         Issue.Viewpoints.Add(view);
+        Issue.Model.Viewpoints.Add(view.Model);
 
         var win = Window.GetWindow(this);
         if (win != null)
