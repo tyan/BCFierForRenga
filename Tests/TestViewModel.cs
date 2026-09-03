@@ -107,19 +107,18 @@ namespace Tests
     public void topic_vm_proxies_scalars_and_option_collections()
     {
       // given
-      var model = new Topic();
-      model.TopicStatusesCollection.Clear();
-      model.TopicTypesCollection.Clear();
-      model.TopicStatusesCollection.Add("Open");
-      model.TopicStatusesCollection.Add("Closed");
-      model.TopicTypesCollection.Add("Clash");
-      var vm = TopicVM.FromModel(model);
+      var vm = TopicVM.FromModel(new Topic());
+      vm.TopicStatusesCollection.Clear();
+      vm.TopicTypesCollection.Clear();
+      vm.TopicStatusesCollection.Add("Open");
+      vm.TopicStatusesCollection.Add("Closed");
+      vm.TopicTypesCollection.Add("Clash");
 
       // when
       vm.Title = "NewTitle";
 
       // then
-      Assert.That(model.Title, Is.EqualTo("NewTitle"));
+      Assert.That(vm.Model.Title, Is.EqualTo("NewTitle"));
       Assert.That(vm.TopicStatusesCollection, Is.EquivalentTo(new[] { "Open", "Closed" }));
       Assert.That(vm.TopicTypesCollection, Is.EquivalentTo(new[] { "Clash" }));
     }

@@ -81,7 +81,6 @@
     <Compile Include="Bcf\Bcf2\Markup.cs" />
     <Compile Include="Bcf\Bcf2\Project.cs" />
     <Compile Include="Bcf\Bcf2\Version.cs" />
-    <Compile Include="Bcf\Bcf2\ViewComment.cs" />
     <Compile Include="Bcf\Bcf2\ViewPointExtended.cs" />
     <Compile Include="Bcf\Bcf2\Visinfo.cs" />
     <Compile Include="Bcf\ViewModel\BcfFileVM.cs" />

@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using Bcfier.Data;
 using System.Xml.Serialization;
 
 namespace Bcfier.Bcf.Bcf2
@@ -16,16 +11,16 @@ namespace Bcfier.Bcf.Bcf2
   [System.ComponentModel.DesignerCategoryAttribute("code")]
   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
   [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-  public partial class Markup : INotifyPropertyChanged
+  public partial class Markup
   {
 
     private List<HeaderFile> headerField;
 
     private Topic topicField;
 
-    private ObservableCollection<Comment> commentField;
+    private List<Comment> commentField;
 
-    private ObservableCollection<ViewPoint> viewpointsField;
+    private List<ViewPoint> viewpointsField;
 
 
     /// <remarks/>
@@ -48,83 +43,19 @@ namespace Bcfier.Bcf.Bcf2
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("Comment", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public ObservableCollection<Comment> Comment
+    public List<Comment> Comment
     {
       get { return this.commentField; }
-      set
-      {
-        this.commentField = value;
-        NotifyPropertyChanged("Comment");
-      }
+      set { this.commentField = value; }
     }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("Viewpoints", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public ObservableCollection<ViewPoint> Viewpoints
+    public List<ViewPoint> Viewpoints
     {
       get { return this.viewpointsField; }
-      set
-      {
-        this.viewpointsField = value;
-        NotifyPropertyChanged("Viewpoints");
-
-      }
+      set { this.viewpointsField = value; }
     }
-    /// <summary>
-    /// Generates ViewCommentobjects from View and Comments Dynamically
-    /// Could be removed by implmenting a proper MVVM model
-    /// But this approach simplifies things a lot 
-    /// </summary>
-
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public ObservableCollection<ViewComment> ViewComments
-    {
-      get
-      {
-        var viewCommentsField = new ObservableCollection<ViewComment>();
-        foreach (var viewpoint in Viewpoints)
-        {
-          var vc = new ViewComment
-          {
-            Viewpoint = viewpoint,
-            Comments = new ObservableCollection<Comment>(Comment.Where(x => x.Viewpoint != null && x.Viewpoint.Guid == viewpoint.Guid))
-          };
-          viewCommentsField.Add(vc);
-        }
-        var vcEmpty = new ViewComment
-        {
-          Comments =
-            new ObservableCollection<Comment>(Comment.Where(x => !Viewpoints.Any(v => x.Viewpoint != null && v.Guid == x.Viewpoint.Guid)))
-        };
-        viewCommentsField.Add(vcEmpty);
-        return viewCommentsField;
-      }
-    }
-
-    ////this might need to change
-    //[System.Xml.Serialization.XmlIgnoreAttribute()]
-    //public string LastCommentStatus
-    //{
-    //  get
-    //  {
-    //    if (Comment == null || !Comment.Any())
-    //      return "";
-
-    //    return Comment.LastOrDefault().Status;
-    //  }   
-    //}
-    ////this might need to change
-    //[System.Xml.Serialization.XmlIgnoreAttribute()]
-    //public string LastCommentVerbalStatus
-    //{
-    //  get
-    //  {
-    //    if (Comment == null || !Comment.Any())
-    //      return "";
-
-    //    return Comment.LastOrDefault().VerbalStatus;
-    //  }
-    //}
 
     //parameterless constructor needed
     public Markup()
@@ -134,34 +65,9 @@ namespace Bcfier.Bcf.Bcf2
     {
       Topic = new Topic();
 
-      Comment = new ObservableCollection<Comment>();
-      Viewpoints = new ObservableCollection<ViewPoint>();
-      RegisterEvents();
+      Comment = new List<Comment>();
+      Viewpoints = new List<ViewPoint>();
       Header = new List<HeaderFile> { new HeaderFile { Date = created, DateSpecified = true } };
-    }
-    //when Views or comments change refresh the ViewComments
-    public void RegisterEvents()
-    {
-      if (Viewpoints != null)
-        Viewpoints.CollectionChanged += delegate (object sender, NotifyCollectionChangedEventArgs args) { NotifyPropertyChanged("ViewComments"); };
-      if (Comment != null)
-        Comment.CollectionChanged += CommentOnCollectionChanged;
-    }
-
-    private void CommentOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
-    {
-      NotifyPropertyChanged("ViewComments");
-      //NotifyPropertyChanged("LastCommentStatus");
-      //NotifyPropertyChanged("LastCommentVerbalStatus");
-    }
-    [field: NonSerialized]
-    public event PropertyChangedEventHandler PropertyChanged;
-    private void NotifyPropertyChanged(String info)
-    {
-      if (PropertyChanged != null)
-      {
-        PropertyChanged(this, new PropertyChangedEventArgs(info));
-      }
     }
   }
 
@@ -256,7 +162,7 @@ namespace Bcfier.Bcf.Bcf2
   [System.SerializableAttribute()]
   [System.Diagnostics.DebuggerStepThroughAttribute()]
   [System.ComponentModel.DesignerCategoryAttribute("code")]
-  public partial class ViewPoint : INotifyPropertyChanged
+  public partial class ViewPoint
   {
 
     private string viewpointField;
@@ -325,16 +231,6 @@ namespace Bcfier.Bcf.Bcf2
         Snapshot = Guid + ".png";
       }
 
-    }
-
-    [field: NonSerialized]
-    public event PropertyChangedEventHandler PropertyChanged;
-    private void NotifyPropertyChanged(String info)
-    {
-      if (PropertyChanged != null)
-      {
-        PropertyChanged(this, new PropertyChangedEventArgs(info));
-      }
     }
   }
 
@@ -639,11 +535,7 @@ namespace Bcfier.Bcf.Bcf2
 
     private string topicTypeField;
 
-    private ObservableCollection<string> topicTypesCollection;
-
     private string topicStatusField;
-
-    private ObservableCollection<string> topicStatusesCollection;
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -860,39 +752,11 @@ namespace Bcfier.Bcf.Bcf2
       set { this.topicStatusField = value; }
     }
 
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public ObservableCollection<string> TopicTypesCollection
-    {
-      get { return topicTypesCollection; }
-      set { this.topicTypesCollection = value; }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public ObservableCollection<string> TopicStatusesCollection
-    {
-      get { return topicStatusesCollection; }
-      set { this.topicStatusesCollection = value; }
-    }
-
     public Topic()
     {
       Guid = System.Guid.NewGuid().ToString();
       CreationDate = DateTime.Now;
       ModifiedDate = CreationDate;
-
-      TopicStatusesCollection = new ObservableCollection<string>();
-      TopicTypesCollection = new ObservableCollection<string>();
-      foreach (var status in Globals.AvailStatuses)
-      {
-        TopicStatusesCollection.Add(status);
-      }
-      foreach (var type in Globals.AvailTypes)
-      {
-        TopicTypesCollection.Add(type);
-      }
-
-
     }
   }
 

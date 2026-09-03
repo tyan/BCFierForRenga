@@ -15,7 +15,6 @@ namespace Bcfier.Bcf.ViewModel
     public ViewPointVM(ViewPoint model)
     {
       Model = model;
-      SnapshotPath = model.SnapshotPath;
     }
 
     public static ViewPointVM FromModel(ViewPoint model)

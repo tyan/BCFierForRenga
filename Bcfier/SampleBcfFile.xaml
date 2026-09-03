@@ -11,11 +11,6 @@
           TopicStatus="Open"
           TopicType="Issue"
           Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." >
-          <bcf2:Topic.TopicTypesCollection>
-            <system:String>Issue</system:String>
-            <system:String>Problem</system:String>
-            <system:String>Solution</system:String>
-          </bcf2:Topic.TopicTypesCollection>
         </bcf2:Topic>
       </bcf2:Markup.Topic>
       <bcf2:Markup.Comment>
@@ -44,12 +39,12 @@
         <bcf2:ViewPoint
           Guid="3cc48663-ca13-4866-b90f-72bf53dabb9e"
           Snapshot="snapshot.png"
-          SnapshotPath="http://placehold.it/350x150"
+          
           Viewpoint="viewpoint.bcfv" />
         <bcf2:ViewPoint
           Guid="d917f96a-d460-4a15-9541-469b64229887"
           Snapshot="snapshot.png"
-          SnapshotPath="http://placehold.it/250x50"
+          
           Viewpoint="viewpoint.bcfv" />
       </bcf2:Markup.Viewpoints>
     </bcf2:Markup>
@@ -70,12 +65,12 @@
         <bcf2:ViewPoint
           Guid="3cc48663-ca13-4866-b90f-72bf53dabb9e"
           Snapshot="snapshot.png"
-          SnapshotPath="http://placehold.it/350x150"
+          
           Viewpoint="viewpoint.bcfv" />
         <bcf2:ViewPoint
           Guid="d917f96a-d460-4a15-9541-469b64229887"
           Snapshot="snapshot.png"
-          SnapshotPath="http://placehold.it/250x50"
+          
           Viewpoint="viewpoint.bcfv" />
       </bcf2:Markup.Viewpoints>
     </bcf2:Markup>
