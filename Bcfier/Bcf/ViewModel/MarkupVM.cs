@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -42,6 +43,17 @@ namespace Bcfier.Bcf.ViewModel
     private void OnChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
       NotifyPropertyChanged("ViewComments");
+    }
+
+    /// <summary>
+    /// Replaces the comments while keeping the same collection instance so that
+    /// change notifications keep flowing.
+    /// </summary>
+    public void ReplaceComments(IEnumerable<CommentVM> comments)
+    {
+      Comment.Clear();
+      foreach (var comment in comments)
+        Comment.Add(comment);
     }
 
     /// <summary>

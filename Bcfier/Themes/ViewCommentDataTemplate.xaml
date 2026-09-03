@@ -37,7 +37,7 @@
                   Name="ViewpointImage"
                   Source="{Binding Viewpoint.SnapshotPath, Converter={StaticResource PathToImageConv}}"
                   Stretch="Uniform"
-                  ToolTip="{Binding Guid}" />
+                  ToolTip="{Binding Viewpoint.Guid}" />
               </Grid>
             </ControlTemplate>
           </Button.Template>

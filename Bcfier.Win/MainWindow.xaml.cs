@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.ViewModel;
 using WPFLocalizeExtension.Engine;
 using Bcfier.Data.Utils;
 using Bcfier.Localization;
@@ -55,7 +56,7 @@ namespace Bcfier.Win
 
         if (Bcfier.SelectedBcf() == null)
           return;
-        var issue = e.Parameter as Markup;
+        var issue = e.Parameter as MarkupVM;
         if (issue == null)
         {
           MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.ViewModel;
 using Bcfier.Data.Utils;
 using Renga;
 
@@ -12,7 +13,7 @@ namespace Bcfier.RengaPlugin
   /// </summary>
   public partial class AddViewRenga : Window
   {
-    public AddViewRenga(Markup issue, string bcfTempFolder, Renga.IScreenshotService service)
+    public AddViewRenga(MarkupVM issue, string bcfTempFolder, Renga.IScreenshotService service)
     {
       this.InitializeComponent();
       AddViewControl.Issue = issue;
