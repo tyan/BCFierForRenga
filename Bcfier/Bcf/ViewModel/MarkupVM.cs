@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -24,11 +25,11 @@ namespace Bcfier.Bcf.ViewModel
     {
       Model = model;
       Topic = model.Topic != null ? TopicVM.FromModel(model.Topic) : null;
-      // The synced collections need a real model collection to mirror into. If the incoming
+// The synced collections need a real model collection to mirror into. If the incoming
       // model has null collections (only possible via the parameterless Markup ctor), attach
       // an empty one to the model; serialization-wise empty == absent, so the write is idempotent.
-      var modelViewpoints = model.Viewpoints ?? (model.Viewpoints = new ObservableCollection<ViewPoint>());
-      var modelComments = model.Comment ?? (model.Comment = new ObservableCollection<Comment>());
+      var modelViewpoints = model.Viewpoints ?? (model.Viewpoints = new List<ViewPoint>());
+      var modelComments = model.Comment ?? (model.Comment = new List<Comment>());
       Viewpoints = new ObservableCollectionVM<ViewPointVM, ViewPoint>(modelViewpoints, ViewPointVM.FromModel, v => v.Model);
       Comment = new ObservableCollectionVM<CommentVM, Comment>(modelComments, CommentVM.FromModel, c => c.Model);
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Bcfier.Bcf.ViewModel
@@ -10,10 +11,10 @@ namespace Bcfier.Bcf.ViewModel
   /// </summary>
   public class ObservableCollectionVM<TVm, TModel> : ObservableCollection<TVm>
   {
-    private readonly ObservableCollection<TModel> _model;
+    private readonly IList<TModel> _model;
     private readonly Func<TVm, TModel> _toModel;
 
-    public ObservableCollectionVM(ObservableCollection<TModel> model, Func<TModel, TVm> fromModel, Func<TVm, TModel> toModel)
+    public ObservableCollectionVM(IList<TModel> model, Func<TModel, TVm> fromModel, Func<TVm, TModel> toModel)
     {
       _model = model;
       _toModel = toModel;

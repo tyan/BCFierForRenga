@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Bcfier.Bcf.Bcf2;
+using Bcfier.Data;
 
 namespace Bcfier.Bcf.ViewModel
 {
@@ -19,16 +20,10 @@ namespace Bcfier.Bcf.ViewModel
 
       TopicStatusesCollection = new ObservableCollection<string>();
       TopicTypesCollection = new ObservableCollection<string>();
-      if (model.TopicStatusesCollection != null)
-      {
-        foreach (var status in model.TopicStatusesCollection)
-          TopicStatusesCollection.Add(status);
-      }
-      if (model.TopicTypesCollection != null)
-      {
-        foreach (var type in model.TopicTypesCollection)
-          TopicTypesCollection.Add(type);
-      }
+      foreach (var status in Globals.AvailStatuses)
+        TopicStatusesCollection.Add(status);
+      foreach (var type in Globals.AvailTypes)
+        TopicTypesCollection.Add(type);
     }
 
     public static TopicVM FromModel(Topic model)
