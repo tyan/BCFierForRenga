@@ -90,7 +90,7 @@
     <Compile Include="Bcf\ViewModel\TopicVM.cs" />
     <Compile Include="Bcf\ViewModel\ViewCommentVM.cs" />
     <Compile Include="Bcf\ViewModel\ViewPointVM.cs" />
-    <Compile Include="Bcf\BcfContainer.cs" />
+    <Compile Include="Bcf\ViewModel\BcfContainerVM.cs" />
     <Compile Include="Bcf\BcfFile.cs" />
     <Compile Include="Bcf\BcfSerializer.cs" />
     <Compile Include="Data\AttachedProperties\CtrlEnterKeyDown.cs" />
