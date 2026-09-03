@@ -35,7 +35,20 @@ namespace Bcfier.Bcf.ViewModel
 
     public static BcfFileVM FromModel(BcfFile model)
     {
-      return new BcfFileVM(model);
+      var vm = new BcfFileVM(model);
+      //recompute snapshot paths (UI state) from the model's relative snapshot names
+      foreach (var issue in vm.Issues)
+      {
+        if (issue.Model.Topic == null)
+          continue;
+        foreach (var view in issue.Viewpoints)
+        {
+          view.SnapshotPath = view.Snapshot != null
+            ? Path.Combine(model.TempPath, issue.Model.Topic.Guid, view.Snapshot)
+            : null;
+        }
+      }
+      return vm;
     }
 
     public bool HasBeenSaved

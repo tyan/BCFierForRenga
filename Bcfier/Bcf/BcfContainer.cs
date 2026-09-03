@@ -60,7 +60,9 @@ namespace Bcfier.Bcf
     // Remove this
     public void NewFile()
     {
-      AddBcf(BcfFileVM.FromModel(new BcfFile()));
+      var newBcf = BcfFileVM.FromModel(new BcfFile());
+      newBcf.Filename = LocValueGetter.Get("NewBCF");
+      AddBcf(newBcf);
     }
     public void SaveFile(BcfFileVM bcf)
     {
