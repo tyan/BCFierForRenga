@@ -87,8 +87,8 @@
               <!--  Crop the image so it's squared  -->
               <Grid
                 Grid.RowSpan="2"
-                MaxWidth="60"
-                MaxHeight="60"
+                MaxWidth="100"
+                MaxHeight="100"
                 Margin="0,0,5,0"
                 HorizontalAlignment="Stretch">
                 <Image
