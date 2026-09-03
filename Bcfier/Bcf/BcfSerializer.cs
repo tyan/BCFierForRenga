@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO.Compression;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 using System.Diagnostics;
 using System.Windows.Controls;
@@ -208,6 +209,19 @@ namespace Bcfier.Bcf
         var serializerM = new XmlSerializer(typeof(ProjectExtension));
         return serializerM.Deserialize(markupFile) as ProjectExtension;
       }
+    }
+  }
+
+  class ZipEncoder : UTF8Encoding
+  {
+    public ZipEncoder()
+    {
+
+    }
+    public override byte[] GetBytes(string s)
+    {
+      s = s.Replace("\\", "/");
+      return base.GetBytes(s);
     }
   }
 }

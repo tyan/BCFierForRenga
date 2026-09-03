@@ -1,4 +1,5 @@
-using Bcfier.Bcf;
+﻿using Bcfier.Bcf;
+using Bcfier.Bcf.ViewModel;
 using System;
 using System.IO;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Tests
     public void deserialize_bcf_without_snapshot_does_not_throw()
     {
       // given
-      var container = new BcfContainer();
+      var container = new BcfContainerVM();
 
       // when / then
       Assert.That(() => container.OpenFile(_noSnapshotBcfPath), Throws.Nothing);
@@ -32,7 +33,7 @@ namespace Tests
     public void deserialize_bcf_without_snapshot_leaves_snapshot_path_null()
     {
       // given
-      var container = new BcfContainer();
+      var container = new BcfContainerVM();
       container.OpenFile(_noSnapshotBcfPath);
 
       // when
@@ -46,7 +47,7 @@ namespace Tests
     public void load_bcf_preserves_issue_and_viewpoint_counts()
     {
       // given
-      var container = new BcfContainer();
+      var container = new BcfContainerVM();
       container.OpenFile(_noSnapshotBcfPath);
 
       // when
@@ -65,7 +66,7 @@ namespace Tests
     public void save_and_reload_preserves_issue_title_and_counts()
     {
       // given
-      var container = new BcfContainer();
+      var container = new BcfContainerVM();
       container.OpenFile(_noSnapshotBcfPath);
 
       var bcf = container.BcfFiles.Single();
@@ -78,7 +79,7 @@ namespace Tests
       container.SaveFile(bcf);
 
       // reload the saved file
-      var reloaded = new BcfContainer();
+      var reloaded = new BcfContainerVM();
       reloaded.OpenFile(outPath);
       var reloadedIssue = reloaded.BcfFiles.Single().Issues.Single();
 
@@ -92,7 +93,7 @@ namespace Tests
     public void save_bcf_without_snapshot_does_not_throw()
     {
       // given
-      var container = new BcfContainer();
+      var container = new BcfContainerVM();
       container.OpenFile(_noSnapshotBcfPath);
 
       var bcf = container.BcfFiles.Single();
@@ -108,7 +109,7 @@ namespace Tests
     public void save_and_reload_bcf_without_snapshot_leaves_snapshot_path_null()
     {
       // given
-      var container = new BcfContainer();
+      var container = new BcfContainerVM();
       container.OpenFile(_noSnapshotBcfPath);
 
       var bcf = container.BcfFiles.Single();
@@ -121,7 +122,7 @@ namespace Tests
       container.SaveFile(bcf);
 
       // reload the saved file
-      var reloaded = new BcfContainer();
+      var reloaded = new BcfContainerVM();
       reloaded.OpenFile(outPath);
 
       // then

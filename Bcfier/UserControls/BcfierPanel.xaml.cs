@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using Bcfier.Bcf;
 using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.ViewModel;
 using Bcfier.Data.Utils;
 using Bcfier.Windows;
 using Bcfier.Data;
@@ -25,7 +26,7 @@ namespace Bcfier.UserControls
   public partial class BcfierPanel : UserControl
   {
     //my data context
-    private readonly BcfContainer _bcf = new BcfContainer();
+    private readonly BcfContainerVM _bcf = new BcfContainerVM();
 
     public BcfierPanel()
     {
