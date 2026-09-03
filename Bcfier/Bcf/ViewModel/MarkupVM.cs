@@ -26,9 +26,9 @@ namespace Bcfier.Bcf.ViewModel
       Model = model;
       Topic = model.Topic != null ? TopicVM.FromModel(model.Topic) : null;
       Viewpoints = new ObservableCollection<ViewPointVM>(
-        (model.Viewpoints ?? new ObservableCollection<ViewPoint>()).Select(ViewPointVM.FromModel));
+        (model.Viewpoints ?? new List<ViewPoint>()).Select(ViewPointVM.FromModel));
       Comment = new ObservableCollection<CommentVM>(
-        (model.Comment ?? new ObservableCollection<Comment>()).Select(CommentVM.FromModel));
+        (model.Comment ?? new List<Comment>()).Select(CommentVM.FromModel));
 
       //when Views or comments change refresh the ViewComments grouping
       Viewpoints.CollectionChanged += OnChildrenChanged;

@@ -1,6 +1,5 @@
 using Bcfier.Bcf.Bcf2;
 using System;
-using System.Collections.ObjectModel;
 using System.IO.Compression;
 using System.IO;
 using System.Linq;
@@ -107,7 +106,6 @@ namespace Bcfier.Bcf
       //ref: http://stackoverflow.com/questions/27289115/system-io-compression-zipfile-net-4-5-output-zip-in-not-suitable-for-linux-mac
       ZipFile.CreateFromDirectory(bcf.TempPath, filename, CompressionLevel.Optimal, false, new ZipEncoder());
 
-      bcf.HasBeenSaved = true;
       bcf.Filename = Path.GetFileNameWithoutExtension(filename);
       bcf.Fullname = Path.GetFullPath(filename);
       return true;
@@ -148,19 +146,14 @@ namespace Bcfier.Bcf
         Trace.Assert(issue != null);
 
         DeserializeViewpoints(issue, dirInfo);
-        
-        issue.Comment = new ObservableCollection<Comment>(issue.Comment.OrderBy(x => x.Date));
-        issue.Viewpoints = new ObservableCollection<ViewPoint>(issue.Viewpoints.OrderBy(x => x.Index));
 
-        //register the collectionchanged events,
-        //it is needed since deserialization overwrites the ones set in the constructor
-        issue.RegisterEvents();
+        issue.Comment = issue.Comment.OrderBy(x => x.Date).ToList();
+        issue.Viewpoints = issue.Viewpoints.OrderBy(x => x.Index).ToList();
 
-        //ViewComment stuff
         bcf.Issues.Add(issue);
       }
 
-      bcf.Issues = new ObservableCollection<Markup>(bcf.Issues.OrderBy(x => x.Topic.Index));
+      bcf.Issues = bcf.Issues.OrderBy(x => x.Topic.Index).ToList();
       return bcf;
     }
 
@@ -178,9 +171,6 @@ namespace Bcfier.Bcf
 
         //deserializing the viewpoint into the issue
         viewpoint.VisInfo = DeserializeViewpoint(viewpointpath);
-
-        if (viewpoint.Snapshot != null)
-          viewpoint.SnapshotPath = Path.Combine(issueDirInfo.FullName, viewpoint.Snapshot);
       }
     }
 
