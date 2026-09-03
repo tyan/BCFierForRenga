@@ -84,6 +84,12 @@
     <Compile Include="Bcf\Bcf2\ViewComment.cs" />
     <Compile Include="Bcf\Bcf2\ViewPointExtended.cs" />
     <Compile Include="Bcf\Bcf2\Visinfo.cs" />
+    <Compile Include="Bcf\ViewModel\BcfFileVM.cs" />
+    <Compile Include="Bcf\ViewModel\CommentVM.cs" />
+    <Compile Include="Bcf\ViewModel\MarkupVM.cs" />
+    <Compile Include="Bcf\ViewModel\TopicVM.cs" />
+    <Compile Include="Bcf\ViewModel\ViewCommentVM.cs" />
+    <Compile Include="Bcf\ViewModel\ViewPointVM.cs" />
     <Compile Include="Bcf\BcfContainer.cs" />
     <Compile Include="Bcf\BcfFile.cs" />
     <Compile Include="Bcf\BcfSerializer.cs" />
