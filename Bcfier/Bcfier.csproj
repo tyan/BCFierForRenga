@@ -128,9 +128,6 @@
     <Compile Include="UserControls\AddView.xaml.cs">
       <DependentUpon>AddView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\ComponentsList.xaml.cs">
-      <DependentUpon>ComponentsList.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -185,10 +182,6 @@
     <Page Include="UserControls\AddView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\ComponentsList.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\Settings.xaml">
       <Generator>MSBuild:Compile</Generator>
