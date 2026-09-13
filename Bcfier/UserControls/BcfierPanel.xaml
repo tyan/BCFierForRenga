@@ -52,6 +52,7 @@
       <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
         <themes:ButtonIcon
         x:Name="SaveBcfBtn"
+        Visibility="Collapsed"
         Style="{StaticResource SaveButtonStyle}"
         Content="{lex:Loc Key=Save}"
         IconPath="{StaticResource IconSaveFile}"
