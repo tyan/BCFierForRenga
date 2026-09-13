@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -166,62 +165,6 @@ namespace Bcfier.UserControls
       }
       //otherwise we return a false
       return false;
-    }
-    #endregion
-
-    #region drag&drop
-    private void Window_DragEnter(object sender, DragEventArgs e)
-    {
-      whitespace.Visibility = Visibility.Visible;
-    }
-    private void Window_DragLeave(object sender, DragEventArgs e)
-    {
-      whitespace.Visibility = Visibility.Hidden;
-    }
-    private void Window_Drop(object sender, DragEventArgs e)
-    {
-      try
-      {
-        whitespace.Visibility = Visibility.Hidden;
-        if (!e.Data.GetDataPresent(DataFormats.FileDrop))
-          return;
-        var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-        if (!files.Any() || !File.Exists(files.First()))
-          return;
-
-        SnapshotImg.Source = ImagingUtils.ImageSourceFromPath(files.First());
-      }
-      catch (System.Exception)
-      {
-        // Log exception
-      }
-    }
-    private void Window_DragOver(object sender, DragEventArgs e)
-    {
-      try
-      {
-        var extensions = new List<string> { ".jpg", ".jpeg", ".gif", ".bmp", ".png", ".tif" };
-        var dropEnabled = true;
-
-        if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
-        {
-          var filenames = e.Data.GetData(DataFormats.FileDrop, true) as string[];
-          if (filenames.Count() != 1 || !extensions.Contains(Path.GetExtension(filenames.First()).ToLowerInvariant()))
-            dropEnabled = false;
-        }
-        else
-          dropEnabled = false;
-
-        if (!dropEnabled)
-        {
-          e.Effects = DragDropEffects.None;
-          e.Handled = true;
-        }
-      }
-      catch (System.Exception)
-      {
-        // Log exception
-      }
     }
     #endregion
 
