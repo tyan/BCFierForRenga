@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -93,19 +93,34 @@ namespace Bcfier.Bcf
 
     public void OpenFile(string path)
     {
-      var bcf = OpenBcfFile(path);
-      AddBcf(bcf);
+      try
+      {
+        var bcf = OpenBcfFile(path);
+        AddBcf(bcf);
+      }
+      catch (Exception ex)
+      {
+        Utils.ShowErrorMessageBox(LocValueGetter.Get("FailedOpening"), ex);
+      }
     }
+
     public void OpenFile()
     {
-      var bcfs = OpenBcfDialog();
-      if (bcfs == null)
-        return;
-      foreach (var bcf in bcfs)
+      try
       {
-        if (bcf == null)
-          continue;
-        AddBcf(bcf);
+        var bcfs = OpenBcfDialog();
+        if (bcfs == null)
+          return;
+        foreach (var bcf in bcfs)
+        {
+          if (bcf == null)
+            continue;
+          AddBcf(bcf);
+        }
+      }
+      catch (Exception ex)
+      {
+        Utils.ShowErrorMessageBox(LocValueGetter.Get("FailedOpening"), ex);
       }
     }
 
@@ -197,27 +212,20 @@ namespace Bcfier.Bcf
     /// <returns></returns>
     private static IEnumerable<BcfFile> OpenBcfDialog()
     {
-      try
+      var openFileDialog1 = new Microsoft.Win32.OpenFileDialog
       {
-        var openFileDialog1 = new Microsoft.Win32.OpenFileDialog
-        {
-          Title = String.Format(LocValueGetter.Get("OpenFile"), BcfSerializer.FileExtension),
-          Filter = FileFilter,
-          DefaultExt = BcfSerializer.FileExtension,
-          Multiselect = true,
-          RestoreDirectory = true,
-          CheckFileExists = true,
-          CheckPathExists = true
-        };
-        var result = openFileDialog1.ShowDialog(); // Show the dialog.
+        Title = String.Format(LocValueGetter.Get("OpenFile"), BcfSerializer.FileExtension),
+        Filter = FileFilter,
+        DefaultExt = BcfSerializer.FileExtension,
+        Multiselect = true,
+        RestoreDirectory = true,
+        CheckFileExists = true,
+        CheckPathExists = true
+      };
+      var result = openFileDialog1.ShowDialog(); // Show the dialog.
 
-        if (result == true) // Test result.
-          return openFileDialog1.FileNames.Select(OpenBcfFile).ToList();
-      }
-      catch (Exception ex)
-      {
-        Utils.ShowErrorMessageBox(LocValueGetter.Get("FailedOpening"), ex);
-      }
+      if (result == true) // Test result.
+        return openFileDialog1.FileNames.Select(OpenBcfFile).ToList();
 
       return null;
     }
