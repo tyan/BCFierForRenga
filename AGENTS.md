@@ -6,6 +6,10 @@ This project targets **Windows only**. All commands should be run in **PowerShel
 
 Code formatting and style rules are defined in the `.editorconfig` file at the repository root.
 
+- Avoid long single-line expressions that wrap during formatting. For complex arguments
+  (e.g. LINQ `Where` conditions passed to a constructor), declare an intermediate variable
+  with a semantic name and pass it to the constructor/method instead.
+
 ## Agent working files
 
 All temporary agent working artifacts must be saved into the `_agents/` folder.
