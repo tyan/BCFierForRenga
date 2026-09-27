@@ -4,6 +4,7 @@ using Bcfier.Bcf.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 
 namespace Tests
@@ -14,6 +15,22 @@ namespace Tests
     private static readonly Guid vp2Id = Guid.Parse("d917f96a-d460-4a15-9541-469b64229887");
     private static readonly Guid comment1Id = Guid.Parse("d6c8d1de-e197-4657-b7ae-6ea03b7f4a00");
     private static readonly Guid comment2Id = Guid.Parse("ba48f036-489c-4d4e-9340-8efd18f62b57");
+
+    private string _baseTemp;
+
+    [SetUp]
+    public void SetUp()
+    {
+      _baseTemp = Path.Combine(Path.GetTempPath(), "BCFierRemoveTests", Guid.NewGuid().ToString());
+      Directory.CreateDirectory(_baseTemp);
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+      if (Directory.Exists(_baseTemp))
+        Directory.Delete(_baseTemp, true);
+    }
 
     private static Markup BuildMarkupWithViewpoint(Guid? viewpointGuid)
     {
@@ -34,6 +51,21 @@ namespace Tests
         Date = DateTime.Now,
         Viewpoint = viewpointGuid.HasValue ? new CommentViewpoint { Guid = viewpointGuid.Value.ToString() } : null
       };
+    }
+
+    private static BcfFileVM CreateBcf(string tempPath)
+    {
+      Directory.CreateDirectory(tempPath);
+      return BcfFileVM.FromModel(new BcfFile { TempPath = tempPath });
+    }
+
+    private static MarkupVM AddIssue(BcfFileVM bcf, Guid topicGuid)
+    {
+      var markup = new Markup(DateTime.Now);
+      markup.Topic.Guid = topicGuid.ToString();
+      var vm = MarkupVM.FromModel(markup);
+      bcf.Issues.Add(vm);
+      return vm;
     }
 
     [Test]
@@ -262,6 +294,166 @@ namespace Tests
 
       // then
       Assert.That(changedProperty, Is.EqualTo("HasBeenSaved"));
+    }
+
+    [Test]
+    public void remove_comment_removes_from_vm_and_model()
+    {
+      // given
+      var topicGuid = Guid.NewGuid();
+      var toKeepCommentId = comment1Id;
+      var toRemoveCommentId = comment2Id;
+      var bcf = CreateBcf(Path.Combine(_baseTemp, "target"));
+      var issue = AddIssue(bcf, topicGuid);
+      var toKeepComment = CommentVM.FromModel(BuildComment(toKeepCommentId, "keep", null));
+      var toRemoveComment = CommentVM.FromModel(BuildComment(toRemoveCommentId, "remove", null));
+      issue.Comment.Add(toKeepComment);
+      issue.Comment.Add(toRemoveComment);
+
+      // when
+      bcf.RemoveComment(toRemoveComment, issue);
+
+      // then
+      Assert.That(issue.Comment.Select(c => c.Guid), Is.EqualTo(new[] { toKeepCommentId.ToString() }));
+      Assert.That(issue.Model.Comment.Select(c => c.Guid), Is.EqualTo(new[] { toKeepCommentId.ToString() }));
+      Assert.That(bcf.HasBeenSaved, Is.False);
+    }
+
+    [Test]
+    public void remove_comment_removes_multiple_comments()
+    {
+      // given
+      var topicGuid = Guid.NewGuid();
+      var bcf = CreateBcf(Path.Combine(_baseTemp, "target"));
+      var issue = AddIssue(bcf, topicGuid);
+      issue.Comment.Add(CommentVM.FromModel(BuildComment(comment1Id, "one", null)));
+      issue.Comment.Add(CommentVM.FromModel(BuildComment(comment2Id, "two", null)));
+
+      // when
+      bcf.RemoveComment(issue.Comment.ToList(), issue);
+
+      // then
+      Assert.That(issue.Comment, Is.Empty);
+      Assert.That(issue.Model.Comment, Is.Empty);
+      Assert.That(bcf.HasBeenSaved, Is.False);
+    }
+
+    [Test]
+    public void remove_view_removes_view_and_deletes_files()
+    {
+      // given
+      var topicGuid = Guid.NewGuid();
+      var targetTemp = Path.Combine(_baseTemp, "target");
+      var bcf = CreateBcf(targetTemp);
+      var issue = AddIssue(bcf, topicGuid);
+
+      var view = new ViewPoint(false);
+      var issueDir = Path.Combine(targetTemp, topicGuid.ToString());
+      Directory.CreateDirectory(issueDir);
+
+      var viewpointFile = Path.Combine(issueDir, view.Viewpoint);
+      File.WriteAllText(viewpointFile, "view");
+
+      var snapshotFile = Path.Combine(_baseTemp, view.Snapshot);
+      File.WriteAllText(snapshotFile, "img");
+
+      var viewVm = ViewPointVM.FromModel(view);
+      viewVm.SnapshotPath = snapshotFile;
+      issue.Viewpoints.Add(viewVm);
+
+      // when
+      bcf.RemoveView(viewVm, issue, false);
+
+      // then
+      Assert.That(issue.Viewpoints, Is.Empty);
+      Assert.That(issue.Model.Viewpoints, Is.Empty);
+      Assert.That(File.Exists(viewpointFile), Is.False);
+      Assert.That(File.Exists(snapshotFile), Is.False);
+      Assert.That(bcf.HasBeenSaved, Is.False);
+    }
+
+    [Test]
+    public void remove_view_with_delcomm_true_removes_linked_comments()
+    {
+      // given
+      var topicGuid = Guid.NewGuid();
+      var bcf = CreateBcf(Path.Combine(_baseTemp, "target"));
+      var issue = AddIssue(bcf, topicGuid);
+
+      var view = new ViewPoint(false);
+      issue.Viewpoints.Add(ViewPointVM.FromModel(view));
+      issue.Comment.Add(CommentVM.FromModel(BuildComment(comment1Id, "linked", Guid.Parse(view.Guid))));
+
+      // when
+      bcf.RemoveView(issue.Viewpoints[0], issue, true);
+
+      // then
+      Assert.That(issue.Viewpoints, Is.Empty);
+      Assert.That(issue.Comment, Is.Empty);
+      Assert.That(issue.Model.Comment, Is.Empty);
+    }
+
+    [Test]
+    public void remove_view_with_delcomm_false_detaches_linked_comments()
+    {
+      // given
+      var topicGuid = Guid.NewGuid();
+      var bcf = CreateBcf(Path.Combine(_baseTemp, "target"));
+      var issue = AddIssue(bcf, topicGuid);
+
+      var view = new ViewPoint(false);
+      issue.Viewpoints.Add(ViewPointVM.FromModel(view));
+      issue.Comment.Add(CommentVM.FromModel(BuildComment(comment1Id, "linked", Guid.Parse(view.Guid))));
+
+      // when
+      bcf.RemoveView(issue.Viewpoints[0], issue, false);
+
+      // then
+      Assert.That(issue.Viewpoints, Is.Empty);
+      Assert.That(issue.Comment, Has.Count.EqualTo(1));
+      Assert.That(issue.Comment[0].Viewpoint, Is.Null);
+      Assert.That(issue.Model.Comment.Single().Viewpoint, Is.Null);
+    }
+
+    [Test]
+    public void remove_view_leaves_comments_of_other_views_intact()
+    {
+      // given
+      var topicGuid = Guid.NewGuid();
+      var bcf = CreateBcf(Path.Combine(_baseTemp, "target"));
+      var issue = AddIssue(bcf, topicGuid);
+
+      var keptView = new ViewPoint(false);
+      var removedView = new ViewPoint(false);
+      issue.Viewpoints.Add(ViewPointVM.FromModel(keptView));
+      var removedViewVm = ViewPointVM.FromModel(removedView);
+      issue.Viewpoints.Add(removedViewVm);
+      issue.Comment.Add(CommentVM.FromModel(BuildComment(comment1Id, "linked", Guid.Parse(keptView.Guid))));
+
+      // when
+      bcf.RemoveView(removedViewVm, issue, true);
+
+      // then
+      Assert.That(issue.Viewpoints, Has.Count.EqualTo(1));
+      Assert.That(issue.Viewpoints[0].Guid, Is.EqualTo(keptView.Guid));
+      Assert.That(issue.Comment, Has.Count.EqualTo(1));
+      Assert.That(issue.Comment[0].Viewpoint.Guid, Is.EqualTo(keptView.Guid));
+    }
+
+    [Test]
+    public void remove_view_without_files_on_disk_does_not_throw()
+    {
+      // given
+      var topicGuid = Guid.NewGuid();
+      var bcf = CreateBcf(Path.Combine(_baseTemp, "target"));
+      var issue = AddIssue(bcf, topicGuid);
+      var view = new ViewPoint(false);
+      issue.Viewpoints.Add(ViewPointVM.FromModel(view));
+
+      // when / then
+      Assert.That(() => bcf.RemoveView(issue.Viewpoints[0], issue, false), Throws.Nothing);
+      Assert.That(issue.Viewpoints, Is.Empty);
+      Assert.That(issue.Model.Viewpoints, Is.Empty);
     }
   }
 }
