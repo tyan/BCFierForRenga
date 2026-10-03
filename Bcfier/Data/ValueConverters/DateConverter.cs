@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using WPFLocalizeExtension.Engine;
+using Bcfier.Localization;
 
 
 namespace Bcfier.Data.ValueConverters
@@ -22,9 +22,9 @@ namespace Bcfier.Data.ValueConverters
         var dateTime = System.Convert.ToDateTime(value.ToString());
         var timeSpan = DateTime.Now.Subtract(dateTime);
         if (timeSpan.Days < 1 && DateTime.Now.Date == dateTime.Date)
-          return dateTime.ToString("t", LocalizeDictionary.CurrentCulture);
+          return dateTime.ToString("t", LocValueGetter.Culture);
         else
-          return dateTime.ToString("g", LocalizeDictionary.CurrentCulture);
+          return dateTime.ToString("g", LocValueGetter.Culture);
       }
       catch (InvalidCastException)
       {
