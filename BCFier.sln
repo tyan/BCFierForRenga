@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bcfier", "Bcfier\Bcfier.csproj", "{503CE2C1-09D7-4F15-BB42-86196EE01ED4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bcfier.Win", "Bcfier.Win\Bcfier.Win.csproj", "{3C03085B-63AD-4890-AC2C-A4DE31AF1A6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bcfier.Win", "Bcfier.Win\Bcfier.Win.csproj", "{3C03085B-63AD-4890-AC2C-A4DE31AF1A6B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bcfier.Renga", "Bcfier.Renga\Bcfier.Renga.csproj", "{CAACABC7-4EE0-4390-848F-AB2153A4FD6E}"
 EndProject
