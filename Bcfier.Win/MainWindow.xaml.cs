@@ -24,6 +24,7 @@ namespace Bcfier.Win
       InitializeComponent();
 
       LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo("en-US");
+      LocValueGetter.SetCulture("en-US");
 
       Bcfier.LabelVersion.Content = "BCFier for Windows " +
                    System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
