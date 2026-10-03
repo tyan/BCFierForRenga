@@ -1,163 +1,51 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-    <ProjectGuid>{CAACABC7-4EE0-4390-848F-AB2153A4FD6E}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bcfier.RengaPlugin</RootNamespace>
     <AssemblyName>Bcfier.Renga</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <TargetFrameworkProfile />
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <StartAction>Program</StartAction>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <PlatformTarget>x64</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Platforms>x64</Platforms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Renga.WPF.Styles">
-      <HintPath>..\packages\Renga.WPF.Styles\Renga.WPF.Styles.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <COMFileReference Include="..\..\RengaSDK\tlb\RengaCOMAPI.tlb">
-    </COMFileReference>
     <Reference Include="Renga.NET.PluginUtility">
       <HintPath>..\..\RengaSDK\Net\Renga.NET.PluginUtility.dll</HintPath>
     </Reference>
+    <Reference Include="Renga.WPF.Styles">
+      <HintPath>..\packages\Renga.WPF.Styles\Renga.WPF.Styles.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\AssemblyVersionInfo.cs">
-      <Link>Properties\AssemblyVersionInfo.cs</Link>
-    </Compile>
-    <Compile Include="AddViewRenga.xaml.cs">
-      <DependentUpon>AddViewRenga.xaml</DependentUpon>
-    </Compile>
-    <Page Include="AddViewRenga.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="RengaWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="Entry\ExtAppBcfier.cs" />
-    <Compile Include="Entry\CmdMain.cs" />
-    <Compile Include="Entry\ExtEvntOpenView.cs" />
-    <Compile Include="Entry\AppMain.cs" />
-    <Compile Include="Data\RengaView.cs" />
-    <Compile Include="Entry\RengaEntityPath.cs" />
-    <Compile Include="RengaWindow.xaml.cs">
-      <DependentUpon>RengaWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <COMFileReference Include="..\..\RengaSDK\tlb\RengaCOMAPI.tlb" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="BCFier.rndesc">
+    <Compile Include="..\AssemblyVersionInfo.cs" Link="Properties\AssemblyVersionInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bcfier\Bcfier.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="BCFier.rndesc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <AppDesigner Include="Properties\" />
-    <!--None Include="Bcfier.Revit.addin">
+    <Content Include="Assets\BCFierIcon16x16.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None-->
+    </Content>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Bcfier\Bcfier.csproj">
-      <Project>{503ce2c1-09d7-4f15-bb42-86196ee01ed4}</Project>
-      <Name>Bcfier</Name>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
+
   <ItemGroup>
     <Resource Include="Assets\icon.ico" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="Assets\BCFierIcon16x16.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- MULTIVERSION POST BUILD EVENTS START -->
-  <!-- COPIES ALL DLLS AND .ADDIN MANIFEST TO THE RELATIVE REVIT ADDIN FOLDER -->
-  <Target Name="AfterBuild">
-    <CallTarget Condition="'$(Configuration)' == 'Debug-2022' Or '$(Configuration)' == 'Debug-2021' Or '$(Configuration)' == 'Debug-2020' Or '$(Configuration)' == 'Debug-2018' Or '$(Configuration)' == 'Debug-2019'" Targets="AfterBuildDebug" />
-  </Target>
-  <Target Name="AfterBuildDebug">
-    <ItemGroup>
-      <SourceDLLs Include="$(TargetDir)*.dll" />
-      <SourceManifest Include="$(TargetDir)*.addin" />
-    </ItemGroup>
-    <!--Copy SourceFiles="@(SourceDLLs)" DestinationFolder="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\$(ProjectName)\%(RecursiveDir)" /-->
-    <!--Copy SourceFiles="@(SourceManifest)" DestinationFolder="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\" /-->
-  </Target>
-  <!-- MULTIVERSION POST BUILD EVENTS END -->
+
 </Project>
