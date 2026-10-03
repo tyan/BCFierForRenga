@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using Renga;
-using WPFLocalizeExtension.Engine;
 
 
 namespace Bcfier.RengaPlugin.Entry
@@ -31,7 +30,6 @@ namespace Bcfier.RengaPlugin.Entry
       var ui = app.UI;
 
       var cultureName = app.GetCurrentLocale() == "ru_RU" ? "ru-RU" : "en-US";
-      LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo(cultureName);
       Bcfier.Localization.LocValueGetter.SetCulture(cultureName);
 
       var actionImage = ui.CreateImage();

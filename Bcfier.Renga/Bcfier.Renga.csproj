@@ -42,10 +42,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
-    <PackageReference Include="XAMLMarkupExtensions" Version="2.1.3" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="Renga.WPF.Styles">
       <HintPath>..\packages\Renga.WPF.Styles\Renga.WPF.Styles.dll</HintPath>
     </Reference>

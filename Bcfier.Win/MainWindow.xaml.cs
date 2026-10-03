@@ -6,7 +6,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Bcf.ViewModel;
-using WPFLocalizeExtension.Engine;
 using Bcfier.Data.Utils;
 using Bcfier.Localization;
 
@@ -23,7 +22,6 @@ namespace Bcfier.Win
     {
       InitializeComponent();
 
-      LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo("en-US");
       LocValueGetter.SetCulture("en-US");
 
       Bcfier.LabelVersion.Content = "BCFier for Windows " +
