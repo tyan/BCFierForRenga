@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <OutputType>Library</OutputType>
     <RootNamespace>Bcfier.RengaPlugin</RootNamespace>
@@ -14,13 +14,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Renga.NET.PluginUtility">
-      <HintPath>..\..\RengaSDK\Net\Renga.NET.PluginUtility.dll</HintPath>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Renga.NET8.PluginUtility">
+      <HintPath>..\..\RengaSDK\Net\Renga.NET8.PluginUtility.dll</HintPath>
     </Reference>
     <Reference Include="Renga.WPF.Styles">
       <HintPath>..\packages\Renga.WPF.Styles\Renga.WPF.Styles.dll</HintPath>
     </Reference>
-    <Reference Include="System.Configuration" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,5 +5,5 @@
 	<Vendor>Evgeniy Tyan</Vendor>
 	<Copyright>Copyright © teocomi 2017, © tyan 2024. All rights reserved.</Copyright>
 	<PluginFilename>Bcfier.Renga.dll</PluginFilename>
-	<PluginType>Net</PluginType>
+	<PluginType>Net8</PluginType>
 </RengaPlugin>

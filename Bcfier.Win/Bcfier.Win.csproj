@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Bcfier.Win</RootNamespace>
@@ -15,10 +15,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Renga.WPF.Styles">
       <HintPath>..\packages\Renga.WPF.Styles\Renga.WPF.Styles.dll</HintPath>
     </Reference>
-    <Reference Include="System.Configuration" />
   </ItemGroup>
 
   <ItemGroup>
