@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using Bcfier.Bcf;
 using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.ViewModel;
 using Bcfier.Data.Utils;
 using Bcfier.Windows;
 using Bcfier.Data;
@@ -58,7 +59,7 @@ namespace Bcfier.UserControls
     }
 
 
-    private bool AskAndSaveBcf(BcfFile bcf)
+    private bool AskAndSaveBcf(BcfFileVM bcf)
     {
       if (bcf.HasBeenSaved || !bcf.Issues.Any())
         return true;
@@ -85,7 +86,7 @@ namespace Bcfier.UserControls
           return;
 
         var selItems = e.Parameter as IList;
-        var issues = selItems.Cast<Markup>().ToList();
+        var issues = selItems.Cast<MarkupVM>().ToList();
         if (!issues.Any())
         {
           Utils.ShowInfoMessageBox(LocValueGetter.Get("NoIssue"));
@@ -117,8 +118,8 @@ namespace Bcfier.UserControls
         if (SelectedBcf() == null)
           return;
         var values = (object[])e.Parameter;
-        var view = values[0] as ViewPoint;
-        var issue = values[1] as Markup;
+        var view = values[0] as ViewPointVM;
+        var issue = values[1] as MarkupVM;
         var content = values[2].ToString();
         //var status = (values[3] == null) ? "" : values[3].ToString();
         //var verbalStatus = values[4].ToString();
@@ -141,7 +142,7 @@ namespace Bcfier.UserControls
         c.Viewpoint = new CommentViewpoint();
         c.Viewpoint.Guid = (view != null) ? view.Guid : "";
 
-        issue.Comment.Add(c);
+        issue.Comment.Add(CommentVM.FromModel(c));
 
         SelectedBcf().HasBeenSaved = false;
       }
@@ -158,9 +159,9 @@ namespace Bcfier.UserControls
         if (SelectedBcf() == null)
           return;
         var values = (object[])e.Parameter;
-        var comment = values[0] as Comment;
+        var comment = values[0] as CommentVM;
         //  var comments = selItems.Cast<Comment>().ToList();
-        var issue = (Markup)values[1];
+        var issue = (MarkupVM)values[1];
         if (issue == null)
         {
           MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
@@ -198,8 +199,8 @@ namespace Bcfier.UserControls
         if (SelectedBcf() == null)
           return;
         var values = (object[])e.Parameter;
-        var view = values[0] as ViewPoint;
-        var issue = (Markup)values[1];
+        var view = values[0] as ViewPointVM;
+        var issue = (MarkupVM)values[1];
         if (issue == null)
         {
           MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
@@ -236,8 +237,8 @@ namespace Bcfier.UserControls
         if (SelectedBcf() == null)
           return;
 
-        var issue = new Markup(DateTime.Now);
-        SelectedBcf().Issues.Add(issue);
+        var issue = new MarkupVM(new Markup(DateTime.Now));
+        SelectedBcf().AddIssue(issue);
         SelectedBcf().SelectedIssue = issue;
 
       }
@@ -258,7 +259,7 @@ namespace Bcfier.UserControls
     {
       try
       {
-        var view = e.Parameter as ViewPoint;
+        var view = e.Parameter as ViewPointVM;
         if (view == null || !File.Exists(view.SnapshotPath))
         {
           Utils.ShowErrorMessageBox(LocValueGetter.Get("UnexistingSnapshot"));
@@ -344,7 +345,7 @@ namespace Bcfier.UserControls
     #endregion
 
     #region shortcuts
-    public BcfFile SelectedBcf()
+    public BcfFileVM SelectedBcf()
     {
       if (BcfTabControl.SelectedIndex == -1 || _bcf.BcfFiles.Count <= BcfTabControl.SelectedIndex)
         return null;

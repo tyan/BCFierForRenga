@@ -27,22 +27,5 @@ namespace Bcfier.Bcf.Bcf2
         this._visInfoField = value;
       }
     }
-
-    private string _snapshotPath;
-
-    //used for an easier binding in the UI
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public string SnapshotPath
-    {
-      get
-      {
-        return this._snapshotPath;
-      }
-      set
-      {
-        this._snapshotPath = value;
-        NotifyPropertyChanged("SnapshotPath");
-      }
-    }
   }
 }
