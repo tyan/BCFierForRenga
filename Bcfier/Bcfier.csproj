@@ -32,9 +32,9 @@
   <ItemGroup>
     <Resource Include="Assets\icon.ico" />
     <Resource Include="Assets\no_image.png" />
-    <Content Include="Assets\i24_delete.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\i24_edit.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\i24_open.png" CopyToOutputDirectory="Always" />
+    <Resource Include="Assets\i24_delete.png" />
+    <Resource Include="Assets\i24_edit.png" />
+    <Resource Include="Assets\i24_open.png" />
   </ItemGroup>
 
   <ItemGroup>
