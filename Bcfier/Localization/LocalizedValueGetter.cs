@@ -1,21 +1,34 @@
-﻿using System;
+using System;
+using System.Globalization;
 using System.Reflection;
 using System.Resources;
-using WPFLocalizeExtension.Engine;
 
 namespace Bcfier.Localization
 {
   public class LocValueGetter
   {
-    static Lazy<ResourceManager> _resourceManager = new Lazy<ResourceManager>(() =>
+    private static readonly Lazy<ResourceManager> _resourceManager = new Lazy<ResourceManager>(() =>
     {
       var assembly = Assembly.GetExecutingAssembly();
       return new ResourceManager("BCFier.Localization.Strings", assembly);
     });
 
-    static public string Get(string key)
+    private static CultureInfo _culture = CultureInfo.CurrentUICulture;
+
+    public static CultureInfo Culture
     {
-      return _resourceManager.Value.GetString(key, LocalizeDictionary.Instance.Culture);
+      get { return _culture; }
+      set { _culture = value ?? CultureInfo.InvariantCulture; }
+    }
+
+    public static void SetCulture(string cultureName)
+    {
+      Culture = string.IsNullOrEmpty(cultureName) ? CultureInfo.InvariantCulture : new CultureInfo(cultureName);
+    }
+
+    public static string Get(string key)
+    {
+      return _resourceManager.Value.GetString(key, Culture);
     }
   }
 }

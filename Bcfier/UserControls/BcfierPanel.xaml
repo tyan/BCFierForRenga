@@ -8,10 +8,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:src="clr-namespace:Bcfier.Data.ValueConverters"
   xmlns:themes="clr-namespace:Bcfier.Themes"
-  xmlns:lex="http://wpflocalizeextension.codeplex.com"
-  lex:LocalizeDictionary.DesignCulture="en-US"
-  lex:ResxLocalizationProvider.DefaultAssembly="BCFier"
-  lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+  xmlns:loc="clr-namespace:Bcfier.Localization"
   mc:Ignorable="d">
   <UserControl.Resources>
     <ResourceDictionary>
@@ -46,50 +43,50 @@
         x:Name="NewBcfBtn"
         Margin="13,0,0,0"
         Style="{StaticResource MainMenuButton}"
-        Content="{lex:Loc Key=NewBCF}"
+        Content="{loc:Loc NewBCF}"
         IconPath="{StaticResource IconNewFile}"
-        ToolTip="{lex:Loc Key=NewBCFTooltip}" />
+        ToolTip="{loc:Loc NewBCFTooltip}" />
       <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
         <themes:ButtonIcon
         x:Name="SaveBcfBtn"
         Visibility="Collapsed"
         Style="{StaticResource SaveButtonStyle}"
-        Content="{lex:Loc Key=Save}"
+        Content="{loc:Loc Save}"
         IconPath="{StaticResource IconSaveFile}"
-        ToolTip="{lex:Loc Key=Save}" />
+        ToolTip="{loc:Loc Save}" />
         <themes:ButtonIcon
         x:Name="SaveAsBcfBtn"
         Style="{StaticResource SaveAsButtonStyle}"
-        Content="{lex:Loc Key=SaveAs}"
+        Content="{loc:Loc SaveAs}"
         IconPath="{StaticResource IconSaveAsFile}"
-        ToolTip="{lex:Loc Key=SaveAs}"
+        ToolTip="{loc:Loc SaveAs}"
         Click="SaveAs_Click" />
       </StackPanel>
       <themes:ButtonIcon
         x:Name="OpenBcfBtn"
         Style="{StaticResource MainMenuButton}"
-        Content="{lex:Loc Key=Open}"
+        Content="{loc:Loc Open}"
         IconPath="{StaticResource IconOpenFile}"
-        ToolTip="{lex:Loc Key=Open}" />
+        ToolTip="{loc:Loc Open}" />
       <themes:ButtonIcon
         x:Name="MergeBcfBtn"
         Style="{StaticResource MergeButtonStyle}"
-        Content="{lex:Loc Key=Merge}"
+        Content="{loc:Loc Merge}"
         IconPath="{StaticResource IconMergeFile}"
-        ToolTip="{lex:Loc Key=MergeTooltip}" />
+        ToolTip="{loc:Loc MergeTooltip}" />
       <themes:ButtonIcon
         x:Name="SettingsBtn"
         Style="{StaticResource MainMenuButton}"
-        Content="{lex:Loc Key=Settings}"
+        Content="{loc:Loc Settings}"
         IconPath="{StaticResource IconSettings}"
-        ToolTip="{lex:Loc Key=Settings}" />
+        ToolTip="{loc:Loc Settings}" />
       <themes:ButtonIcon
         x:Name="HelpBtn"
         HorizontalAlignment="Left"
         Style="{StaticResource MainMenuButton}"
-        Content="{lex:Loc Key=Help}"
+        Content="{loc:Loc Help}"
         IconPath="{StaticResource IconHelp}"
-        ToolTip="{lex:Loc Key=Help}" />
+        ToolTip="{loc:Loc Help}" />
       <Label
         Name="LabelVersion"
         Margin="0,0,13,0"

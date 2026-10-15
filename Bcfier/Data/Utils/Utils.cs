@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -49,7 +49,9 @@ namespace Bcfier.Data.Utils
 
       if (string.IsNullOrEmpty(username)) //EMPTY VALUE IN CONFIG
       {
+#pragma warning disable CA1416 // Validate platform compatibility
         string s = WindowsIdentity.GetCurrent().Name;
+#pragma warning restore CA1416 // Validate platform compatibility
         int stop = s.IndexOf("\\");
         username = (stop > -1) ? s.Substring(stop + 1, s.Length - stop - 1) : "Unknown User";
       }

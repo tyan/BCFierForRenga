@@ -265,7 +265,10 @@ namespace Bcfier.UserControls
           Utils.ShowErrorMessageBox(LocValueGetter.Get("UnexistingSnapshot"));
           return;
         }
-        Process.Start(view.SnapshotPath);
+
+        var processInfo = new ProcessStartInfo(view.SnapshotPath);
+        processInfo.UseShellExecute = true;
+        Process.Start(processInfo);
       }
       catch (System.Exception ex)
       {
@@ -331,14 +334,17 @@ namespace Bcfier.UserControls
     }
     private void HelpBtnOnClick(object sender, RoutedEventArgs routedEventArgs)
     {
-      string url = LocValueGetter.Get("HelpGuideUrl"); ;
       try
       {
-        Process.Start(url);
+        string url = LocValueGetter.Get("HelpGuideUrl"); ;
+        var processInfo = new ProcessStartInfo(url);
+        processInfo.UseShellExecute = true;
+
+        Process.Start(processInfo);
       }
-      catch (Win32Exception)
+      catch (System.Exception ex)
       {
-        Process.Start("IExplore.exe", url);
+        Utils.ShowErrorMessageBox(LocValueGetter.Get("UnknownError"), ex);
       }
     }
 

@@ -5,7 +5,7 @@
   xmlns:data="clr-namespace:Bcfier.Data"
   xmlns:local="clr-namespace:Bcfier.Data.AttachedProperties"
   xmlns:themes="clr-namespace:Bcfier.Themes"
-  xmlns:lex="http://wpflocalizeextension.codeplex.com"
+  xmlns:loc="clr-namespace:Bcfier.Localization"
   xmlns:valueConverters="clr-namespace:Bcfier.Data.ValueConverters">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="../Themes/Icons.xaml" />
@@ -29,7 +29,7 @@
           Command="data:Commands.OpenView"
           CommandParameter="{Binding Viewpoint}"
           Cursor="Hand"
-          ToolTip="{lex:Loc Key=OpenView}">
+          ToolTip="{loc:Loc OpenView}">
           <Button.Template>
             <ControlTemplate>
               <Grid MaxHeight="150" VerticalAlignment="Stretch">
@@ -47,7 +47,7 @@
           HorizontalContentAlignment="Left"
           Foreground="{StaticResource BackgroundDark}"
           FontSize="12"
-          Content="{lex:Loc Key=GeneralComments}">
+          Content="{loc:Loc GeneralComments}">
           <Label.Style>
             <Style TargetType="Label">
               <Setter Property="Visibility" Value="Collapsed" />
@@ -75,11 +75,11 @@
             Command="data:Commands.OpenSnapshot"
             CommandParameter="{Binding Viewpoint}"
             IconPath="{StaticResource IconExpand}"
-            ToolTip="{lex:Loc Key=EnlargeView}" />
+            ToolTip="{loc:Loc EnlargeView}" />
           <themes:ButtonIcon
             Style="{StaticResource CloseButton}"
             Command="data:Commands.DeleteViews"
-            ToolTip="{lex:Loc Key=DeleteView}">
+            ToolTip="{loc:Loc DeleteView}">
             <Button.CommandParameter>
               <MultiBinding Converter="{StaticResource MultiCommandConverter}">
                 <Binding Path="Viewpoint" />
@@ -120,7 +120,7 @@
                 Grid.Row="0"
                 Style="{StaticResource CloseButton}"
                 Command="data:Commands.DeleteComments"
-                ToolTip="{lex:Loc Key=Delete}">
+                ToolTip="{loc:Loc Delete}">
                 <Button.CommandParameter>
                   <MultiBinding Converter="{StaticResource MultiCommandConverter}">
                     <Binding Path="" />
@@ -157,7 +157,7 @@
           local:CtrlEnterKeyDown.Command="data:Commands.AddComment"
           AcceptsReturn="True"
           KeyDown="UIElement_OnKeyDown"
-          Placeholder="{lex:Loc Key=AddComment}"
+          Placeholder="{loc:Loc AddComment}"
           TextWrapping="Wrap">
           <local:CtrlEnterKeyDown.CommandArgument>
             <MultiBinding Converter="{StaticResource MultiCommandConverter}">

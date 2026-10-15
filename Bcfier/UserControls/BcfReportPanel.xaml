@@ -7,10 +7,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:src="clr-namespace:Bcfier.Data.ValueConverters"
   xmlns:themes="clr-namespace:Bcfier.Themes"
-  xmlns:lex="http://wpflocalizeextension.codeplex.com"
-  lex:LocalizeDictionary.DesignCulture="en-US"
-  lex:ResxLocalizationProvider.DefaultAssembly="BCFier"
-  lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+  xmlns:loc="clr-namespace:Bcfier.Localization"
   Background="White"
   MinWidth="623"
   d:DataContext="{d:DesignData d:Source=../SampleBcfFile.xaml}"
@@ -61,10 +58,10 @@
           Style="{StaticResource AddViewCommentStyle}"
           BorderThickness="1,1,1,1"
           Command="data:Commands.AddIssue"
-          Content="{lex:Loc Key=Add}"
+          Content="{loc:Loc Add}"
           IconColor="{StaticResource BackgroundDark}"
           IconPath="{StaticResource IconAdd}"
-          ToolTip="{lex:Loc Key=AddIssue}" />
+          ToolTip="{loc:Loc AddIssue}" />
         <themes:ButtonIcon
           x:Name="DelIssueBtn"
           Margin="0,0,0,0"
@@ -72,11 +69,11 @@
           BorderThickness="1,1,1,1"
           Command="data:Commands.DeleteIssues"
           CommandParameter="{Binding ElementName=IssueList, Path=SelectedItems}"
-          Content="{lex:Loc Key=DeleteIssues}"
+          Content="{loc:Loc DeleteIssues}"
           DockPanel.Dock="Left"
           IconColor="{StaticResource BackgroundDark}"
           IconPath="{StaticResource IconDelete}"
-          ToolTip="{lex:Loc Key=DeleteSelected}" />
+          ToolTip="{loc:Loc DeleteSelected}" />
       </UniformGrid>
       <themes:TextPlaceholder
         x:Name="SearchBox"
@@ -85,9 +82,9 @@
         Margin="9,9,9,9"
         BorderBrush="{StaticResource BackgroundDark}"
         KeyDown="SearchBox_OnKeyDown"
-        Placeholder="{lex:Loc Key=Search}"
+        Placeholder="{loc:Loc Search}"
         Text="{Binding TextSearch, UpdateSourceTrigger=PropertyChanged}"
-        ToolTip="{lex:Loc Key=SearchTooltip}" />
+        ToolTip="{loc:Loc SearchTooltip}" />
       <ListView
         x:Name="IssueList"
         Grid.Row="2"
@@ -126,7 +123,7 @@
                   VerticalAlignment="Bottom"
                   FontWeight="Bold"
                   TextTrimming="CharacterEllipsis"
-                  Text="{Binding Topic.Title, TargetNullValue={lex:Loc Key=NewIssue}}" />
+                  Text="{Binding Topic.Title, TargetNullValue={loc:Loc NewIssue}}" />
                 </Grid>
                 <DockPanel Grid.Row="1" Grid.Column="0">
                   <Label
@@ -255,9 +252,9 @@
           BorderBrush="{StaticResource BackgroundDark}"
           FontSize="14"
           Binding.SourceUpdated="TextBox_OnTextChanged"
-          Placeholder="{lex:Loc Key=IssueTitle}"
+          Placeholder="{loc:Loc IssueTitle}"
           Text="{Binding Topic.Title, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
-          ToolTip="{lex:Loc Key=IssueTitle}"/>
+          ToolTip="{loc:Loc IssueTitle}"/>
         <DockPanel
           Grid.Row="1"
           Grid.ColumnSpan="2"
@@ -269,7 +266,7 @@
             BorderBrush="{StaticResource BackgroundDark}"
             ItemsSource="{Binding Topic.TopicStatusesCollection}" 
             SelectedItem="{Binding Topic.TopicStatus}"
-            ToolTip="{lex:Loc Key=IssueStatus}">
+            ToolTip="{loc:Loc IssueStatus}">
           </ComboBox>
           <ComboBox 
             x:Name="ComboBox_Type"
@@ -279,7 +276,7 @@
             BorderBrush="{StaticResource BackgroundDark}"
             ItemsSource="{Binding Topic.TopicTypesCollection}" 
             SelectedItem="{Binding Topic.TopicType, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-            ToolTip="{lex:Loc Key=IssueTopic}">
+            ToolTip="{loc:Loc IssueTopic}">
           </ComboBox>
           <Label
             VerticalAlignment="Bottom"
@@ -298,7 +295,7 @@
           BorderBrush="{StaticResource BackgroundDark}"
           AcceptsReturn="True"
           Binding.SourceUpdated="TextBox_OnTextChanged"
-          Placeholder="{lex:Loc Key=Description}"
+          Placeholder="{loc:Loc Description}"
           Text="{Binding Topic.Description, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
           TextWrapping="Wrap" />
         <themes:ButtonIcon
@@ -308,7 +305,7 @@
           Margin="9,0,0,0"
           BorderThickness="1,1,1,1"
           Click="AddCommentBtnClick"
-          Content="{lex:Loc Key=AddComment}"
+          Content="{loc:Loc AddComment}"
           IconColor="{StaticResource BackgroundDark}"
           IconPath="{StaticResource IconAdd}" />
         <themes:ButtonIcon
@@ -318,7 +315,7 @@
           BorderThickness="1,1,1,1"
           Command="data:Commands.AddView"
           CommandParameter="{Binding ElementName=IssueList, Path=SelectedItem}"
-          Content="{lex:Loc Key=AddView}"
+          Content="{loc:Loc AddView}"
           IconColor="{StaticResource BackgroundDark}"
           IconPath="{StaticResource IconAdd}" />
       </Grid>

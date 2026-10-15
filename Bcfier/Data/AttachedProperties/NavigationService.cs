@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -89,11 +89,12 @@ namespace Bcfier.Data.AttachedProperties
 
     private static void OnUrlClick(object sender, RoutedEventArgs e)
     {
-      var link = (Hyperlink)sender;
-      // Do something with link.NavigateUri like:
       try
       {
-        Process.Start(link.NavigateUri.ToString());
+        var link = (Hyperlink)sender;
+        var processInfo = new ProcessStartInfo(link.NavigateUri.ToString());
+        processInfo.UseShellExecute = true;
+        Process.Start(processInfo);
       }
       catch (System.Exception)
       {
