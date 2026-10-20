@@ -13,7 +13,10 @@ namespace Bcfier.Bcf.Adapters
 
     public BcfProject Load(string path)
     {
-      throw new System.NotImplementedException("Bcf21FileAdapter.Load is implemented in step 2a.");
+      var bcf = BcfSerializer.load(path);
+      if (bcf == null)
+        return null;
+      return Bcf21Mapper.ToDomain(bcf);
     }
 
     public bool Save(BcfProject project, string path)
