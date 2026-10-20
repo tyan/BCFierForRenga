@@ -21,7 +21,10 @@ namespace Bcfier.Bcf.Adapters
 
     public bool Save(BcfProject project, string path)
     {
-      throw new System.NotImplementedException("Bcf21FileAdapter.Save is implemented in step 2b.");
+      if (project == null)
+        return false;
+      var bcf = Bcf21Mapper.ToBcf2(project);
+      return BcfSerializer.save(bcf, path);
     }
 
     public ProjectFormat Detect(string path)
