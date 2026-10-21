@@ -5,10 +5,7 @@
   xmlns:themes="clr-namespace:Bcfier.Themes"
   xmlns:rws="clr-namespace:Renga.WPF.Styles;assembly=Renga.WPF.Styles"
   xmlns:utils="clr-namespace:Bcfier.Data.Utils"
-  xmlns:lex="http://wpflocalizeextension.codeplex.com"
-  lex:LocalizeDictionary.DesignCulture="en-US"
-  lex:ResxLocalizationProvider.DefaultAssembly="BCFier"
-  lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+  xmlns:loc="clr-namespace:Bcfier.Localization"
   Width="300">
 
   <UserControl.Resources>
@@ -51,7 +48,7 @@
       </Grid.RowDefinitions>
 
       <StackPanel Grid.Row="0" Orientation="Horizontal">
-        <Button Margin="5" Click="Button_LoadImage" ToolTip="{lex:Loc Key=Browse}">
+        <Button Margin="5" Click="Button_LoadImage" ToolTip="{loc:Loc Browse}">
           <Button.Style>
             <Style TargetType="Button" BasedOn="{StaticResource SharedIconButtonStyle}">
               <Setter Property="Background" Value="Transparent" />
@@ -62,7 +59,7 @@
             <Image Source="../Assets/i24_open.png"/>
            </Button.Content>
         </Button>
-          <Button Margin="0,5,5,5" Click="EditSnapshot_Click"  ToolTip="{lex:Loc Key=Annotate}">
+          <Button Margin="0,5,5,5" Click="EditSnapshot_Click"  ToolTip="{loc:Loc Annotate}">
           <Button.Style>
             <Style TargetType="Button" BasedOn="{StaticResource SharedIconButtonStyle}">
               <Setter Property="Background" Value="Transparent" />
@@ -73,7 +70,7 @@
             <Image Source="../Assets/i24_edit.png"/>
            </Button.Content>
          </Button>
-        <Button Margin="0,5,5,5" Click="Button_RemoveImage" ToolTip="{lex:Loc Key=Remove}">
+        <Button Margin="0,5,5,5" Click="Button_RemoveImage" ToolTip="{loc:Loc Remove}">
           <Button.Style>
             <Style TargetType="Button" BasedOn="{StaticResource SharedIconButtonStyle}">
               <Setter Property="Background" Value="Transparent" />
@@ -100,7 +97,7 @@
       </Image>
     </Grid>
     <StackPanel Grid.Row="1" Margin="0, 0, 0, 8" Orientation="Vertical" rws:MarginSetter.Margin="0,0,0,5">
-      <TextBlock Name="TextBlockComment" Text="{lex:Loc Key=Comment}"/>
+      <TextBlock Name="TextBlockComment" Text="{loc:Loc Comment}"/>
       <TextBox x:Name="CommentBox" Height="70" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto">
       </TextBox>
     </StackPanel>
@@ -112,11 +109,11 @@
       rws:MarginSetter.Margin="9,0,0,0">
       <Button
         Click="Button_OK"
-        Content="{lex:Loc Key=OK}"
+        Content="{loc:Loc OK}"
         IsDefault="True" />
       <Button
         Click="Button_Cancel"
-        Content="{lex:Loc Key=Cancel}" />
+        Content="{loc:Loc Cancel}" />
     </StackPanel>
   </Grid>
 </UserControl>

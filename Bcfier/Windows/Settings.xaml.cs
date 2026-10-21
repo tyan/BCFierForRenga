@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -43,22 +43,5 @@ namespace Bcfier.Windows
     {
       DialogResult = false;
     }
-    private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-    {
-      try
-      {
-        Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
-      }
-      catch (Win32Exception)
-      {
-        Process.Start("IExplore.exe", e.Uri.AbsoluteUri);
-      }
-
-      e.Handled = true;
-    }
-
-
-
-
   }
 }
