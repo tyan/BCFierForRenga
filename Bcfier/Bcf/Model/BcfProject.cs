@@ -15,6 +15,12 @@ namespace Bcfier.Bcf.Model
     public string Fullname { get; set; }
     public string TempPath { get; set; }
 
+    /// <summary>
+    /// Concrete BCF persistence backend this project was loaded from; for new files it is
+    /// the default <see cref="ProjectFormat.Bcf21"/> and decides the save codec.
+    /// </summary>
+    public ProjectFormat SourceFormat { get; set; } = ProjectFormat.Bcf21;
+
     public List<BcfIssue> Issues { get; set; } = new List<BcfIssue>();
 
     public BcfProject()

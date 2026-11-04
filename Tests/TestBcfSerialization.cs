@@ -7,10 +7,10 @@ namespace Tests
 {
   public class TestDeserializeBcf_V_2_1_old
   {
-    private readonly string _noSnapshotBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "no_snapshot.bcf");
-    private readonly string _missingBcfvPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "missing_bcfv.bcf");
-    private readonly string _drawing2CommentsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "drawing_2comments_Maisonette.bcf");
-    private readonly string _twoViewsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "2views_Maisonette.bcf");
+    private readonly string _noSnapshotBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "NoSnapshot.bcf");
+    private readonly string _missingBcfvPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "MissingBcfv.bcf");
+    private readonly string _drawing2CommentsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "DrawingTwoCommentsMaisonette.bcf");
+    private readonly string _twoViewsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "TwoViewsMaisonette.bcf");
 
     [TearDown]
     public void CleanUp()
