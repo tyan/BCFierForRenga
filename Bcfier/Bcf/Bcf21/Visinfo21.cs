@@ -23,21 +23,25 @@ namespace Bcfier.Bcf.Bcf21 {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class VisualizationInfo {
-        
+
         private Components componentsField;
-        
+
         private OrthogonalCamera orthogonalCameraField;
-        
+
         private PerspectiveCamera perspectiveCameraField;
-        
+
+        // Not part of the official BCF 2.1 schema: BCFier extension to support 2D sheet
+        // views, declared via <ExtensionSchema> in project.bcfp. Tolerant readers ignore it.
+        private SheetCamera sheetCameraField;
+
         private Line[] linesField;
-        
+
         private ClippingPlane[] clippingPlanesField;
-        
+
         private VisualizationInfoBitmap[] bitmapField;
-        
+
         private string guidField;
-        
+
         /// <remarks/>
         public Components Components {
             get {
@@ -47,7 +51,7 @@ namespace Bcfier.Bcf.Bcf21 {
                 this.componentsField = value;
             }
         }
-        
+
         /// <remarks/>
         public OrthogonalCamera OrthogonalCamera {
             get {
@@ -57,7 +61,7 @@ namespace Bcfier.Bcf.Bcf21 {
                 this.orthogonalCameraField = value;
             }
         }
-        
+
         /// <remarks/>
         public PerspectiveCamera PerspectiveCamera {
             get {
@@ -67,34 +71,44 @@ namespace Bcfier.Bcf.Bcf21 {
                 this.perspectiveCameraField = value;
             }
         }
-        
+
+        /// <remarks/>
+        public SheetCamera SheetCamera {
+            get {
+                return this.sheetCameraField;
+            }
+            set {
+                this.sheetCameraField = value;
+            }
+        }
+
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
         public Line[] Lines {
             get {
-                return this.linesField;
+                return this.linesField ?? (this.linesField = new Line[0]);
             }
             set {
                 this.linesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
         public ClippingPlane[] ClippingPlanes {
             get {
-                return this.clippingPlanesField;
+                return this.clippingPlanesField ?? (this.clippingPlanesField = new ClippingPlane[0]);
             }
             set {
                 this.clippingPlanesField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Bitmap")]
         public VisualizationInfoBitmap[] Bitmap {
             get {
-                return this.bitmapField;
+                return this.bitmapField ?? (this.bitmapField = new VisualizationInfoBitmap[0]);
             }
             set {
                 this.bitmapField = value;
@@ -142,7 +156,7 @@ namespace Bcfier.Bcf.Bcf21 {
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
         public Component[] Selection {
             get {
-                return this.selectionField;
+                return this.selectionField ?? (this.selectionField = new Component[0]);
             }
             set {
                 this.selectionField = value;
@@ -163,7 +177,7 @@ namespace Bcfier.Bcf.Bcf21 {
         [System.Xml.Serialization.XmlArrayItemAttribute("Color", IsNullable=false)]
         public ComponentColoringColor[] Coloring {
             get {
-                return this.coloringField;
+                return this.coloringField ?? (this.coloringField = new ComponentColoringColor[0]);
             }
             set {
                 this.coloringField = value;
@@ -538,7 +552,7 @@ namespace Bcfier.Bcf.Bcf21 {
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
         public Component[] Exceptions {
             get {
-                return this.exceptionsField;
+                return this.exceptionsField ?? (this.exceptionsField = new Component[0]);
             }
             set {
                 this.exceptionsField = value;
@@ -629,7 +643,7 @@ namespace Bcfier.Bcf.Bcf21 {
         [System.Xml.Serialization.XmlElementAttribute("Component")]
         public Component[] Component {
             get {
-                return this.componentField;
+                return this.componentField ?? (this.componentField = new Component[0]);
             }
             set {
                 this.componentField = value;
@@ -733,11 +747,63 @@ namespace Bcfier.Bcf.Bcf21 {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
     [System.SerializableAttribute()]
     public enum BitmapFormat {
-        
+
         /// <remarks/>
         PNG,
-        
+
         /// <remarks/>
         JPG,
+    }
+
+    /// <summary>
+    /// Not part of the official BCF 2.1 schema: BCFier extension to support 2D sheet views,
+    /// declared via &lt;ExtensionSchema&gt; in project.bcfp. Tolerant readers ignore it.
+    /// </summary>
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class SheetCamera
+    {
+        private Point topLeftField;
+
+        private Point bottomRightField;
+
+        private int sheetIDField;
+
+        private string sheetNameField;
+
+        public SheetCamera()
+        {
+            this.topLeftField = new Point();
+            this.bottomRightField = new Point();
+        }
+
+        /// <remarks/>
+        public Point TopLeft
+        {
+            get { return this.topLeftField; }
+            set { this.topLeftField = value; }
+        }
+
+        /// <remarks/>
+        public Point BottomRight
+        {
+            get { return this.bottomRightField; }
+            set { this.bottomRightField = value; }
+        }
+
+        /// <remarks/>
+        public int SheetID
+        {
+            get { return this.sheetIDField; }
+            set { this.sheetIDField = value; }
+        }
+
+        /// <remarks/>
+        public string SheetName
+        {
+            get { return this.sheetNameField; }
+            set { this.sheetNameField = value; }
+        }
     }
 }

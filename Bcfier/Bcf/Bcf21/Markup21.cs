@@ -23,15 +23,15 @@ namespace Bcfier.Bcf.Bcf21 {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class Markup {
-        
+
         private HeaderFile[] headerField;
-        
+
         private Topic topicField;
-        
+
         private Comment[] commentField;
-        
+
         private ViewPoint[] viewpointsField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         [System.Xml.Serialization.XmlArrayItemAttribute("File", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
@@ -43,7 +43,7 @@ namespace Bcfier.Bcf.Bcf21 {
                 this.headerField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public Topic Topic {
@@ -54,23 +54,23 @@ namespace Bcfier.Bcf.Bcf21 {
                 this.topicField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Comment", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public Comment[] Comment {
             get {
-                return this.commentField;
+                return this.commentField ?? (this.commentField = new Comment[0]);
             }
             set {
                 this.commentField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Viewpoints", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ViewPoint[] Viewpoints {
             get {
-                return this.viewpointsField;
+                return this.viewpointsField ?? (this.viewpointsField = new ViewPoint[0]);
             }
             set {
                 this.viewpointsField = value;
@@ -510,7 +510,7 @@ namespace Bcfier.Bcf.Bcf21 {
         [System.Xml.Serialization.XmlElementAttribute("ReferenceLink", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string[] ReferenceLink {
             get {
-                return this.referenceLinkField;
+                return this.referenceLinkField ?? (this.referenceLinkField = new string[0]);
             }
             set {
                 this.referenceLinkField = value;
@@ -565,7 +565,7 @@ namespace Bcfier.Bcf.Bcf21 {
         [System.Xml.Serialization.XmlElementAttribute("Labels", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string[] Labels {
             get {
-                return this.labelsField;
+                return this.labelsField ?? (this.labelsField = new string[0]);
             }
             set {
                 this.labelsField = value;
@@ -697,18 +697,18 @@ namespace Bcfier.Bcf.Bcf21 {
         [System.Xml.Serialization.XmlElementAttribute("DocumentReference", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public TopicDocumentReference[] DocumentReference {
             get {
-                return this.documentReferenceField;
+                return this.documentReferenceField ?? (this.documentReferenceField = new TopicDocumentReference[0]);
             }
             set {
                 this.documentReferenceField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("RelatedTopic", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public TopicRelatedTopic[] RelatedTopic {
             get {
-                return this.relatedTopicField;
+                return this.relatedTopicField ?? (this.relatedTopicField = new TopicRelatedTopic[0]);
             }
             set {
                 this.relatedTopicField = value;
