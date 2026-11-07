@@ -9,11 +9,12 @@ using Bcfier.Bcf.Model;
 namespace Bcfier.Bcf.Adapters
 {
   /// <summary>
-  /// Adapter around the BCF 2.1 persistence (BcfSerializer + Bcf2.* / Bcf21 codec).
-  /// Handles both the legacy (schema-violating) and the schema-valid 2.1 variants;
-  /// <see cref="Detect"/> tells them apart and <see cref="Load"/> records the detected
-  /// sub-format on <see cref="BcfProject.SourceFormat"/> so the matching codec is used on save.
-  /// Lives in Bcfier.Bcf.Adapters (not in the domain model).
+  /// Adapter around BCF 2.1 persistence. Reads both the legacy (schema-violating) and the
+  /// schema-valid 2.1 variants — <see cref="Detect"/> tells them apart, <see cref="Load"/>
+  /// records the detected sub-format on <see cref="BcfProject.SourceFormat"/>.
+  /// Save ALWAYS writes schema-valid 2.1 (<see cref="Bcf21ValidSerializer"/>): legacy files
+  /// are migrated on first save; the legacy BcfSerializer is only a reader. Lives in
+  /// Bcfier.Bcf.Adapters (not in the domain model).
   /// </summary>
   public class Bcf21FileAdapter : IProjectAdapter
   {
@@ -22,10 +23,20 @@ namespace Bcfier.Bcf.Adapters
     public BcfProject Load(string path)
     {
       var detected = Detect(path);
-      var bcf = BcfSerializer.load(path);
-      if (bcf == null)
+
+      BcfProject project;
+      if (detected == ProjectFormat.Bcf21Legacy)
+      {
+        var legacy = BcfSerializer.load(path);
+        project = legacy != null ? Bcf21Mapper.ToDomain(legacy) : null;
+      }
+      else
+      {
+        var container = Bcf21ValidSerializer.Load(path);
+        project = container != null ? Bcf21ValidMapper.ToDomain(container) : null;
+      }
+      if (project == null)
         return null;
-      var project = Bcf21Mapper.ToDomain(bcf);
       project.SourceFormat = detected;
       return project;
     }
@@ -34,9 +45,12 @@ namespace Bcfier.Bcf.Adapters
     {
       if (project == null)
         return false;
-      var bcf = Bcf21Mapper.FromDomain(project);
-      
-      return BcfSerializer.save(bcf, path);
+      // Always schema-valid: legacy files are migrated on save (step 3 decision, 2026-11-07).
+      var container = Bcf21ValidMapper.ToContainer(project);
+      var saved = Bcf21ValidSerializer.Save(container, path);
+      if (saved)
+        project.SourceFormat = ProjectFormat.Bcf21;
+      return saved;
     }
 
     /// <summary>
