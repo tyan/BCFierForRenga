@@ -113,7 +113,8 @@ namespace Bcfier.Bcf.Adapters
       {
         Guid = ParseGuidOrEmpty(viewpoint.Guid),
         ViewpointFileName = viewpoint.Viewpoint,
-        SnapshotFileName = viewpoint.Snapshot
+        SnapshotFileName = viewpoint.Snapshot,
+        Data = ToDomain(viewpoint.VisInfo)
       };
     }
 
