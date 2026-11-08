@@ -5,6 +5,8 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Xml.Schema;
+using System.Xml.Linq;
 
 namespace Tests
 {
@@ -13,6 +15,7 @@ namespace Tests
     // legacy fixtures: used only where the legacy sub-format itself is under test (detection and load)
     private readonly string _legacyTwoViewsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "TwoViewsMaisonette.bcf");
     private readonly string _legacyDrawingTwoCommentsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "DrawingTwoCommentsMaisonette.bcf");
+    private readonly string _legacyCameraBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "CameraMaisonette.bcf");
     private readonly string _legacyMultipleMarkupsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "MultipleMarkups.bcf");
     private readonly string _noTopicBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "NoTopic.bcf");
 
@@ -450,8 +453,10 @@ namespace Tests
       var issue = reloaded.Issues.Single();
       Assert.That(issue.Viewpoints, Has.Count.EqualTo(2));
       Assert.That(issue.Viewpoints.All(v => v.Data != null), Is.True);
+      // legacy fixtures carry viewpoint payloads without a Guid attribute; the schema-valid
+      // save fills it (required by visinfo.xsd), so it must be non-empty after the round-trip
       Assert.That(issue.Viewpoints.Single(v => v.Guid == originalIssue.Viewpoints[0].Guid).Data.Guid,
-        Is.EqualTo(originalIssue.Viewpoints[0].Data.Guid));
+        Is.Not.Null.And.Not.Empty);
     }
 
     [Test]
@@ -557,6 +562,415 @@ namespace Tests
       // when / then: the invalid archive is rejected at load, not silently mapped to
       // an issue with a null Topic (a domain invariant)
       Assert.Throws<InvalidDataException>(() => adapter.Load(_noTopicBcfPath));
+    }
+
+    // --- step 3: save always schema-valid ---
+
+    [Test]
+    public void save_produces_xsd_valid_xml()
+    {
+      // given
+      var adapter = new Bcf21FileAdapter();
+      var project = CreateConformantProject();
+      var issue = project.Issues.Single();
+      issue.Viewpoints.Add(new BcfViewpoint
+      {
+        ViewpointFileName = "viewpoint.bcfv",
+        Data = new BcfViewpointData
+        {
+          Components = new BcfComponentsData
+          {
+            Visibility = new BcfComponentVisibilityData { DefaultVisibility = true },
+            Selection = { new BcfComponentData { IfcGuid = "0qGg0wkWnDpON43MgbjXly" } }
+          },
+          PerspectiveCamera = new BcfPerspectiveCameraData
+          {
+            CameraViewPoint = new BcfPointData { X = 0, Y = 0, Z = 1 },
+            CameraDirection = new BcfDirectionData { X = 0, Y = 0, Z = -1 },
+            CameraUpVector = new BcfDirectionData { X = 0, Y = 1, Z = 0 },
+            FieldOfView = 45
+          },
+          Lines = { new BcfLineData { StartPoint = new BcfPointData(), EndPoint = new BcfPointData { X = 1 } } },
+          ClippingPlanes = { new BcfClippingPlaneData { Location = new BcfPointData(), Direction = new BcfDirectionData { Z = -1 } } }
+        }
+      });
+      issue.Comments.Add(new BcfComment { Date = DateTime.Now, Author = "a@b.c", Comment = "hello" });
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "xsd_valid.bcf");
+
+      // when
+      Assert.That(adapter.Save(project, outPath), Is.True);
+
+      // then: every XML in the archive validates against the official release_2_1 XSDs
+      // (*.bcfv against the visinfo extended with the BCFier SheetCamera element)
+      AssertXsdValid(outPath);
+    }
+
+    [Test]
+    public void save_produces_xsd_valid_xml_with_sheet_camera()
+    {
+      // given: SheetCamera is a BCFier extension (declared via ExtensionSchema in project.bcfp)
+      var adapter = new Bcf21FileAdapter();
+      var project = CreateConformantProject();
+      project.Issues.Single().Viewpoints.Add(new BcfViewpoint
+      {
+        ViewpointFileName = "viewpoint.bcfv",
+        Data = new BcfViewpointData
+        {
+          PerspectiveCamera = new BcfPerspectiveCameraData
+          {
+            CameraViewPoint = new BcfPointData(),
+            CameraDirection = new BcfDirectionData { Z = -1 },
+            CameraUpVector = new BcfDirectionData { Y = 1 },
+            FieldOfView = 45
+          },
+          SheetCamera = new BcfSheetCameraData
+          {
+            TopLeft = new BcfPointData { X = 1, Y = 2 },
+            BottomRight = new BcfPointData { X = 3, Y = 4 },
+            SheetID = 7,
+            SheetName = "A-101"
+          }
+        }
+      });
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "xsd_valid_sheet.bcf");
+
+      // when
+      Assert.That(adapter.Save(project, outPath), Is.True);
+
+      // then
+      AssertXsdValid(outPath);
+    }
+
+    [Test]
+    public void save_declares_extension_schema()
+    {
+      // given
+      var adapter = new Bcf21FileAdapter();
+      var project = CreateConformantProject();
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "extension_schema.bcf");
+
+      // when
+      Assert.That(adapter.Save(project, outPath), Is.True);
+
+      // then: project.bcfp declares the BCFier extension
+      using (var archive = ZipFile.OpenRead(outPath))
+      {
+        var entry = archive.Entries.Single(e => e.Name == "project.bcfp");
+        string content;
+        using (var stream = entry.Open())
+        using (var reader = new StreamReader(stream))
+          content = reader.ReadToEnd();
+        Assert.That(content, Does.Contain("<ExtensionSchema>https://bcfier.com/schemas/bcfier-extension-2.1.xsd</ExtensionSchema>"));
+      }
+    }
+
+    [Test]
+    public void save_writes_no_empty_list_elements()
+    {
+      // given: a viewpoint without lines/planes/bitmaps and a topic without extras —
+      // the output must not contain empty <Lines/>, <ClippingPlanes/>, <Selection/> etc.
+      // (they violate the official schema, which requires at least one child element)
+      var adapter = new Bcf21FileAdapter();
+      var project = CreateConformantProject();
+      project.Issues.Single().Viewpoints.Add(new BcfViewpoint
+      {
+        ViewpointFileName = "viewpoint.bcfv",
+        Data = new BcfViewpointData
+        {
+          PerspectiveCamera = new BcfPerspectiveCameraData
+          {
+            CameraViewPoint = new BcfPointData(),
+            CameraDirection = new BcfDirectionData { Z = -1 },
+            CameraUpVector = new BcfDirectionData { Y = 1 },
+            FieldOfView = 45
+          }
+        }
+      });
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "no_empty_lists.bcf");
+      Assert.That(adapter.Save(project, outPath), Is.True);
+
+      // when
+      string visInfo;
+      using (var archive = ZipFile.OpenRead(outPath))
+      {
+        var entry = archive.Entries.Single(e => e.Name.EndsWith(".bcfv"));
+        using (var stream = entry.Open())
+        using (var reader = new StreamReader(stream))
+          visInfo = reader.ReadToEnd();
+      }
+
+      // then
+      Assert.That(visInfo, Does.Not.Contain("<Lines />"));
+      Assert.That(visInfo, Does.Not.Contain("<Lines/>"));
+      Assert.That(visInfo, Does.Not.Contain("<ClippingPlanes />"));
+      Assert.That(visInfo, Does.Not.Contain("<ClippingPlanes/>"));
+      Assert.That(visInfo, Does.Not.Contain("<Selection />"));
+      Assert.That(visInfo, Does.Not.Contain("<Selection/>"));
+      Assert.That(visInfo, Does.Not.Contain("<Exceptions />"));
+      Assert.That(visInfo, Does.Not.Contain("<Exceptions/>"));
+    }
+
+    [Test]
+    public void roundtrip_conformant_preserves_data()
+    {
+      // given
+      var adapter = new Bcf21FileAdapter();
+      var project = CreateConformantProject();
+      var issue = project.Issues.Single();
+      issue.Viewpoints.Add(new BcfViewpoint
+      {
+        ViewpointFileName = "viewpoint.bcfv",
+        Data = new BcfViewpointData
+        {
+          Guid = Guid.NewGuid().ToString(),
+          Components = new BcfComponentsData
+          {
+            Visibility = new BcfComponentVisibilityData { DefaultVisibility = true }
+          },
+          PerspectiveCamera = new BcfPerspectiveCameraData
+          {
+            CameraViewPoint = new BcfPointData { X = 1.5, Y = -2.5, Z = 0.25 },
+            CameraDirection = new BcfDirectionData { X = 0, Y = 0, Z = -1 },
+            CameraUpVector = new BcfDirectionData { X = 0, Y = 1, Z = 0 },
+            FieldOfView = 60
+          }
+        }
+      });
+      issue.Comments.Add(new BcfComment
+      {
+        Date = new DateTime(2026, 11, 1, 10, 0, 0, DateTimeKind.Local),
+        Author = "author@example.com",
+        Comment = "roundtrip comment",
+        ViewpointGuid = issue.Viewpoints.Single().Guid
+      });
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "roundtrip_conformant.bcf");
+
+      // when
+      Assert.That(adapter.Save(project, outPath), Is.True);
+      var reloaded = LoadThroughAdapter(new Bcf21FileAdapter(), outPath);
+
+      // then
+      Assert.That(reloaded.SourceFormat, Is.EqualTo(ProjectFormat.Bcf21));
+      var reloadedIssue = reloaded.Issues.Single();
+      Assert.That(reloadedIssue.Topic.Guid, Is.EqualTo(issue.Topic.Guid));
+      Assert.That(reloadedIssue.Topic.CreationAuthor, Is.EqualTo("someone@example.com"));
+      Assert.That(reloadedIssue.Comments, Has.Count.EqualTo(1));
+      Assert.That(reloadedIssue.Comments.Single().Comment, Is.EqualTo("roundtrip comment"));
+      Assert.That(reloadedIssue.Comments.Single().ViewpointGuid, Is.EqualTo(issue.Viewpoints.Single().Guid));
+      var data = reloadedIssue.Viewpoints.Single().Data;
+      Assert.That(data.Components.Visibility.DefaultVisibility, Is.True);
+      Assert.That(data.PerspectiveCamera.CameraViewPoint.X, Is.EqualTo(1.5));
+      Assert.That(data.PerspectiveCamera.FieldOfView, Is.EqualTo(60));
+    }
+
+    [Test]
+    public void roundtrip_preserves_sheet_camera()
+    {
+      // given
+      var adapter = new Bcf21FileAdapter();
+      var project = CreateConformantProject();
+      var sheetCamera = new BcfSheetCameraData
+      {
+        TopLeft = new BcfPointData { X = 1, Y = 2, Z = 0 },
+        BottomRight = new BcfPointData { X = 3, Y = 4, Z = 0 },
+        SheetID = 42,
+        SheetName = "A-101"
+      };
+      project.Issues.Single().Viewpoints.Add(new BcfViewpoint
+      {
+        ViewpointFileName = "viewpoint.bcfv",
+        Data = new BcfViewpointData
+        {
+          PerspectiveCamera = new BcfPerspectiveCameraData
+          {
+            CameraViewPoint = new BcfPointData(),
+            CameraDirection = new BcfDirectionData { Z = -1 },
+            CameraUpVector = new BcfDirectionData { Y = 1 },
+            FieldOfView = 45
+          },
+          SheetCamera = sheetCamera
+        }
+      });
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "roundtrip_sheet.bcf");
+
+      // when: save (schema-valid) and reload
+      Assert.That(adapter.Save(project, outPath), Is.True);
+      var reloaded = LoadThroughAdapter(new Bcf21FileAdapter(), outPath);
+
+      // then: the sheet camera survives the schema-valid round-trip
+      var data = reloaded.Issues.Single().Viewpoints.Single().Data;
+      Assert.That(data.SheetCamera, Is.Not.Null);
+      Assert.That(data.SheetCamera.SheetID, Is.EqualTo(42));
+      Assert.That(data.SheetCamera.SheetName, Is.EqualTo("A-101"));
+      Assert.That(data.SheetCamera.TopLeft.X, Is.EqualTo(1));
+      Assert.That(data.SheetCamera.BottomRight.Y, Is.EqualTo(4));
+    }
+
+    [Test]
+    public void legacy_file_migrates_to_valid_on_save()
+    {
+      // given: a legacy (schema-violating) file opened through the adapter
+      var adapter = new Bcf21FileAdapter();
+      var project = LoadThroughAdapter(adapter, _legacyCameraBcfPath);
+      Assert.That(project.SourceFormat, Is.EqualTo(ProjectFormat.Bcf21Legacy));
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "migrated.bcf");
+
+      // when: saved (always schema-valid) and reloaded
+      Assert.That(adapter.Save(project, outPath), Is.True);
+      var reloaded = LoadThroughAdapter(new Bcf21FileAdapter(), outPath);
+
+      // then: the file is now conformant 2.1; data survived the migration
+      Assert.That(reloaded.SourceFormat, Is.EqualTo(ProjectFormat.Bcf21));
+      Assert.That(adapter.Detect(outPath), Is.EqualTo(ProjectFormat.Bcf21));
+      Assert.That(reloaded.Issues.Count, Is.EqualTo(project.Issues.Count));
+      var originalViewpoint = project.Issues.Single().Viewpoints.Single();
+      var reloadedViewpoint = reloaded.Issues.Single().Viewpoints.Single();
+      Assert.That(reloadedViewpoint.ViewpointFileName, Is.EqualTo(originalViewpoint.ViewpointFileName));
+      Assert.That(reloadedViewpoint.Data.PerspectiveCamera.CameraViewPoint.X,
+        Is.EqualTo(originalViewpoint.Data.PerspectiveCamera.CameraViewPoint.X));
+      Assert.That(reloadedViewpoint.Data.Components.Visibility.DefaultVisibility,
+        Is.EqualTo(originalViewpoint.Data.Components.Visibility.DefaultVisibility));
+      // and the migrated file is schema-valid
+      AssertXsdValid(outPath);
+    }
+
+    [Test]
+    public void save_fills_required_creation_author()
+    {
+      // given: a topic without CreationAuthor (required, minOccurs=1 in markup.xsd)
+      var adapter = new Bcf21FileAdapter();
+      var project = new BcfProject
+      {
+        TempPath = Path.Combine(_outputDir, "temp", Guid.NewGuid().ToString()),
+        Issues =
+        {
+            new BcfIssue(new BcfTopic { CreationAuthor = null, ModifiedAuthor = null })
+            {
+            Comments =
+            {
+              new BcfComment
+              {
+                Date = DateTime.Now,
+                Author = null,
+                Comment = null,
+                ModifiedAuthor = null
+              }
+            }
+          }
+        }
+      };
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "creation_author.bcf");
+
+      // when
+      Assert.That(adapter.Save(project, outPath), Is.True);
+
+      // then: CreationAuthor falls back to "unknown" and the markup validates
+      AssertXsdValid(outPath);
+      string markup;
+      using (var archive = ZipFile.OpenRead(outPath))
+      {
+        var entry = archive.Entries.Single(e => e.Name == "markup.bcf");
+        using (var stream = entry.Open())
+        using (var reader = new StreamReader(stream))
+          markup = reader.ReadToEnd();
+      }
+      Assert.That(markup, Does.Contain("<CreationAuthor>unknown</CreationAuthor>"));
+    }
+
+    [Test]
+    public void detect_after_valid_save_returns_bcf21()
+    {
+      // given: a file saved by the schema-valid codec
+      var adapter = new Bcf21FileAdapter();
+      var project = CreateConformantProject();
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "detect_after_save.bcf");
+      Assert.That(adapter.Save(project, outPath), Is.True);
+
+      // when / then
+      Assert.That(adapter.Detect(outPath), Is.EqualTo(ProjectFormat.Bcf21));
+    }
+
+    private void AssertXsdValid(string bcfPath)
+    {
+      var schemasDir = Path.Combine(AppContext.BaseDirectory, "Schemas", "release_2_1");
+      var totalErrors = 0;
+      using (var archive = ZipFile.OpenRead(bcfPath))
+      {
+        foreach (var entry in archive.Entries)
+        {
+          string xsdFile;
+          if (entry.Name == "markup.bcf")
+            xsdFile = "markup.xsd";
+          else if (entry.Name == "project.bcfp")
+            xsdFile = "project.xsd";
+          else if (entry.Name == "bcf.version")
+            xsdFile = "version.xsd";
+          else if (entry.Name.EndsWith(".bcfv", StringComparison.OrdinalIgnoreCase))
+            xsdFile = "visinfo_bcfier.xsd";
+          else
+            continue;
+
+          using (var schemaStream = File.OpenRead(Path.Combine(schemasDir, xsdFile)))
+          {
+            var schema = XmlSchema.Read(schemaStream, null);
+            Assert.That(schema, Is.Not.Null, $"schema '{xsdFile}' must be readable");
+            var set = new System.Xml.Schema.XmlSchemaSet();
+            set.Add(schema!);
+
+            var entryErrors = 0;
+            var entryMessages = new List<string>();
+            using (var entryStream = entry.Open())
+            {
+              var doc = System.Xml.Linq.XDocument.Load(entryStream);
+              doc.Validate(set, (o, e) => { entryErrors++; entryMessages.Add(e.Message); });
+            }
+            Assert.That(entryErrors, Is.Zero,
+              $"entry '{entry.FullName}' must be valid against '{xsdFile}': {string.Join("; ", entryMessages)}");
+            totalErrors += entryErrors;
+          }
+        }
+      }
+      Assert.That(totalErrors, Is.Zero);
+    }
+
+    private const string Bcf21VersionXml =
+      "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+      "<Version VersionId=\"2.1\"><DetailedVersion>2.1</DetailedVersion></Version>";
+
+    private static void CreateBcfZip(string path, Action<BcfZipBuilder> configure)
+    {
+      using (var archive = ZipFile.Open(path, ZipArchiveMode.Create))
+      {
+        configure(new BcfZipBuilder(archive));
+      }
+    }
+
+    private class BcfZipBuilder
+    {
+      private readonly ZipArchive _archive;
+
+      public BcfZipBuilder(ZipArchive archive)
+      {
+        _archive = archive;
+      }
+
+      public void AddFile(string name, string content)
+      {
+        var entry = _archive.CreateEntry(name);
+        using (var writer = new StreamWriter(entry.Open()))
+        {
+          writer.Write(content);
+        }
+      }
     }
   }
 }

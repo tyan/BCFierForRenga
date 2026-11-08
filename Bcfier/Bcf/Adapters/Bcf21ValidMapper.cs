@@ -425,7 +425,8 @@ namespace Bcfier.Bcf.Adapters
       var result = new Topic
       {
         Guid = topic.Guid,
-        Title = topic.Title,
+        // Title is required (minOccurs="1" in markup.xsd); keep empty topics schema-valid.
+        Title = FirstNonEmpty(topic.Title, "(no title)"),
         Priority = topic.Priority,
         TopicType = topic.TopicType,
         TopicStatus = topic.TopicStatus,
@@ -465,8 +466,11 @@ namespace Bcfier.Bcf.Adapters
       {
         Guid = comment.Guid.ToString(),
         Date = comment.Date,
-        Author = comment.Author,
-        Comment1 = comment.Comment,
+        // Date/Author/Comment are required (minOccurs="1" in markup.xsd); keep
+        // degenerate comments schema-valid with placeholders.
+        Author = FirstNonEmpty(comment.Author, "unknown"),
+        // empty string is a valid placeholder for the required Comment element
+        Comment1 = comment.Comment ?? "",
         ModifiedDate = comment.ModifiedDate,
         ModifiedDateSpecified = comment.ModifiedDate != default(DateTime),
         ModifiedAuthor = comment.ModifiedAuthor,
@@ -497,7 +501,9 @@ namespace Bcfier.Bcf.Adapters
 
       var result = new VisualizationInfo
       {
-        Guid = data.Guid,
+        // Guid is required on VisualizationInfo (visinfo.xsd); legacy files may carry
+        // viewpoint payloads without it, so fall back to a fresh guid.
+        Guid = FirstNonEmpty(data.Guid) ?? Guid.NewGuid().ToString(),
         Components = ToValid21(data.Components),
         OrthogonalCamera = ToValid21(data.OrthogonalCamera),
         PerspectiveCamera = ToValid21(data.PerspectiveCamera),
