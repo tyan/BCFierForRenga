@@ -485,7 +485,8 @@ namespace Bcfier.Bcf.Adapters
       {
         Guid = viewpoint.Guid.ToString(),
         Viewpoint = viewpoint.ViewpointFileName,
-        Snapshot = viewpoint.SnapshotFileName
+        Snapshot = viewpoint.SnapshotFileName,
+        VisInfo = ToValid21(viewpoint.Data)
       };
     }
 

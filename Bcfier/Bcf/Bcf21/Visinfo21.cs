@@ -93,6 +93,11 @@ namespace Bcfier.Bcf.Bcf21 {
             }
         }
 
+        // keep empty <Lines/> out of the output: the official schema requires at least one Line
+        public bool ShouldSerializeLines() {
+            return this.linesField != null && this.linesField.Length > 0;
+        }
+
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
         public ClippingPlane[] ClippingPlanes {
@@ -104,6 +109,10 @@ namespace Bcfier.Bcf.Bcf21 {
             }
         }
 
+        public bool ShouldSerializeClippingPlanes() {
+            return this.clippingPlanesField != null && this.clippingPlanesField.Length > 0;
+        }
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Bitmap")]
         public VisualizationInfoBitmap[] Bitmap {
@@ -113,6 +122,10 @@ namespace Bcfier.Bcf.Bcf21 {
             set {
                 this.bitmapField = value;
             }
+        }
+
+        public bool ShouldSerializeBitmap() {
+            return this.bitmapField != null && this.bitmapField.Length > 0;
         }
         
         /// <remarks/>
@@ -162,6 +175,11 @@ namespace Bcfier.Bcf.Bcf21 {
                 this.selectionField = value;
             }
         }
+
+        // keep empty <Selection/> out of the output: the official schema requires at least one Component
+        public bool ShouldSerializeSelection() {
+            return this.selectionField != null && this.selectionField.Length > 0;
+        }
         
         /// <remarks/>
         public ComponentVisibility Visibility {
@@ -182,6 +200,11 @@ namespace Bcfier.Bcf.Bcf21 {
             set {
                 this.coloringField = value;
             }
+        }
+
+        // keep empty <Coloring/> out of the output: the official schema requires at least one Color
+        public bool ShouldSerializeColoring() {
+            return this.coloringField != null && this.coloringField.Length > 0;
         }
     }
     
@@ -558,6 +581,11 @@ namespace Bcfier.Bcf.Bcf21 {
                 this.exceptionsField = value;
             }
         }
+
+        // keep empty <Exceptions/> out of the output: the official schema requires at least one Component
+        public bool ShouldSerializeExceptions() {
+            return this.exceptionsField != null && this.exceptionsField.Length > 0;
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -648,6 +676,11 @@ namespace Bcfier.Bcf.Bcf21 {
             set {
                 this.componentField = value;
             }
+        }
+
+        // keep empty <Component/> out of the output: the schema requires at least one element
+        public bool ShouldSerializeComponent() {
+            return this.componentField != null && this.componentField.Length > 0;
         }
         
         /// <remarks/>

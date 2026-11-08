@@ -66,6 +66,11 @@ namespace Bcfier.Bcf.Bcf21 {
             }
         }
 
+        // null-safe getter above must not make the serializer emit empty <Comment/> elements
+        public bool ShouldSerializeComment() {
+            return this.commentField != null && this.commentField.Length > 0;
+        }
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Viewpoints", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ViewPoint[] Viewpoints {
@@ -75,6 +80,10 @@ namespace Bcfier.Bcf.Bcf21 {
             set {
                 this.viewpointsField = value;
             }
+        }
+
+        public bool ShouldSerializeViewpoints() {
+            return this.viewpointsField != null && this.viewpointsField.Length > 0;
         }
     }
     
@@ -516,6 +525,11 @@ namespace Bcfier.Bcf.Bcf21 {
                 this.referenceLinkField = value;
             }
         }
+
+        // null-safe getter above must not make the serializer emit empty <ReferenceLink/> elements
+        public bool ShouldSerializeReferenceLink() {
+            return this.referenceLinkField != null && this.referenceLinkField.Length > 0;
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -570,6 +584,11 @@ namespace Bcfier.Bcf.Bcf21 {
             set {
                 this.labelsField = value;
             }
+        }
+
+        // null-safe getter above must not make the serializer emit empty <Labels/> elements
+        public bool ShouldSerializeLabels() {
+            return this.labelsField != null && this.labelsField.Length > 0;
         }
         
         /// <remarks/>
@@ -704,6 +723,11 @@ namespace Bcfier.Bcf.Bcf21 {
             }
         }
 
+        // null-safe getter above must not make the serializer emit empty <DocumentReference/> elements
+        public bool ShouldSerializeDocumentReference() {
+            return this.documentReferenceField != null && this.documentReferenceField.Length > 0;
+        }
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("RelatedTopic", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public TopicRelatedTopic[] RelatedTopic {
@@ -713,6 +737,10 @@ namespace Bcfier.Bcf.Bcf21 {
             set {
                 this.relatedTopicField = value;
             }
+        }
+
+        public bool ShouldSerializeRelatedTopic() {
+            return this.relatedTopicField != null && this.relatedTopicField.Length > 0;
         }
         
         /// <remarks/>
