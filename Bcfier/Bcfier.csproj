@@ -37,9 +37,4 @@
     <Resource Include="Assets\i24_open.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Page Remove="SampleBcfFile.xaml" />
-    <None Include="SampleBcfFile.xaml" />
-  </ItemGroup>
-
 </Project>
