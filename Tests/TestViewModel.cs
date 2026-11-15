@@ -1,5 +1,5 @@
 using Bcfier.Bcf;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Model;
 using Bcfier.Bcf.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -32,71 +32,71 @@ namespace Tests
         Directory.Delete(_baseTemp, true);
     }
 
-    private static Markup BuildMarkupWithViewpoint(Guid? viewpointGuid)
+    private static BcfIssue BuildIssueWithViewpoint(Guid? viewpointGuid)
     {
-      var markup = new Markup(DateTime.Now);
+      var issue = new BcfIssue(DateTime.Now);
       if (viewpointGuid.HasValue)
       {
-        markup.Viewpoints.Add(new ViewPoint(false) { Guid = viewpointGuid.Value.ToString() });
+        issue.Viewpoints.Add(new BcfViewpoint(false) { Guid = viewpointGuid.Value });
       }
-      return markup;
+      return issue;
     }
 
-    private static Comment BuildComment(Guid guid, string comment, Guid? viewpointGuid)
+    private static BcfComment BuildComment(Guid guid, string comment, Guid? viewpointGuid)
     {
-      return new Comment
+      return new BcfComment
       {
-        Guid = guid.ToString(),
-        Comment1 = comment,
+        Guid = guid,
+        Comment = comment,
         Date = DateTime.Now,
-        Viewpoint = viewpointGuid.HasValue ? new CommentViewpoint { Guid = viewpointGuid.Value.ToString() } : null
+        ViewpointGuid = viewpointGuid
       };
     }
 
     private static BcfFileVM CreateBcf(string tempPath)
     {
       Directory.CreateDirectory(tempPath);
-      return BcfFileVM.FromModel(new BcfFile { TempPath = tempPath });
+      return BcfFileVM.FromModel(new BcfProject { TempPath = tempPath });
     }
 
-    private static MarkupVM AddIssue(BcfFileVM bcf, Guid topicGuid)
+    private static IssueVM AddIssue(BcfFileVM bcf, Guid topicGuid)
     {
-      var markup = new Markup(DateTime.Now);
-      markup.Topic.Guid = topicGuid.ToString();
-      var vm = MarkupVM.FromModel(markup);
+      var issue = new BcfIssue(DateTime.Now);
+      issue.Topic.Guid = topicGuid.ToString();
+      var vm = IssueVM.FromModel(issue);
       bcf.Issues.Add(vm);
       return vm;
     }
 
     [Test]
-    public void markup_vm_maps_fields_from_model()
+    public void issue_vm_maps_fields_from_model()
     {
       // given
-      var model = BuildMarkupWithViewpoint(vp1Id);
-      model.Viewpoints[0].Snapshot = "snap.png";
+      var model = BuildIssueWithViewpoint(vp1Id);
+      model.Viewpoints[0].SnapshotFileName = "snap.png";
       model.Topic.Title = "Title";
-      model.Comment.Add(BuildComment(comment1Id, "Comment string", vp1Id));
+      model.Comments.Add(BuildComment(comment1Id, "Comment string", vp1Id));
 
       // when
-      var vm = MarkupVM.FromModel(model);
+      var vm = IssueVM.FromModel(model);
 
       // then
       Assert.That(vm.Model, Is.SameAs(model));
       Assert.That(vm.Topic.Title, Is.EqualTo("Title"));
       Assert.That(vm.Viewpoints, Has.Count.EqualTo(1));
-      Assert.That(vm.Viewpoints[0].Snapshot, Is.EqualTo("snap.png"));
+      Assert.That(vm.Viewpoints[0].SnapshotFileName, Is.EqualTo("snap.png"));
       Assert.That(vm.Comment, Has.Count.EqualTo(1));
-      Assert.That(vm.Comment[0].Model.Comment1, Is.SameAs(model.Comment[0].Comment1));
+      Assert.That(vm.Comment[0].Model.Comment, Is.SameAs(model.Comments[0].Comment));
     }
 
     [Test]
-    public void markup_vm_viewcomments_groups_comments_by_viewpoint()
+    public void issue_vm_viewcomments_groups_comments_by_viewpoint()
     {
       // given
-      var model = BuildMarkupWithViewpoint(vp1Id);
-      model.Comment.Add(BuildComment(comment1Id, "Comment1", vp1Id));
-      model.Comment.Add(BuildComment(comment2Id, "Comment2", null));
-      var vm = MarkupVM.FromModel(model);
+      var model = BuildIssueWithViewpoint(vp1Id);
+      model.Comments.Add(BuildComment(comment1Id, "Comment1", vp1Id));
+      model.Comments.Add(BuildComment(comment2Id, "Comment2", null));
+      var vm = IssueVM.FromModel(model);
 
       // when
       var groups = vm.ViewComments;
@@ -106,18 +106,18 @@ namespace Tests
       Assert.That(groups, Has.Count.EqualTo(2));
       // check viewpoint group
       var vpGroup = groups.First(g => g.Viewpoint != null);
-      Assert.That(vpGroup.Viewpoint.Guid, Is.EqualTo(vp1Id.ToString()));
-      Assert.That(vpGroup.Comments.Select(c => c.Guid), Is.EqualTo(new[] { comment1Id.ToString() }));
+      Assert.That(vpGroup.Viewpoint.Guid, Is.EqualTo(vp1Id));
+      Assert.That(vpGroup.Comments.Select(c => c.Guid), Is.EqualTo(new[] { comment1Id }));
       // check root group
       var emptyGroup = groups.First(g => g.Viewpoint == null);
-      Assert.That(emptyGroup.Comments.Select(c => c.Guid), Is.EqualTo(new[] { comment2Id.ToString() }));
+      Assert.That(emptyGroup.Comments.Select(c => c.Guid), Is.EqualTo(new[] { comment2Id }));
     }
 
     [Test]
-    public void markup_vm_raises_viewcomments_changed_when_comment_added()
+    public void issue_vm_raises_viewcomments_changed_when_comment_added()
     {
       // given
-      var vm = MarkupVM.FromModel(BuildMarkupWithViewpoint(vp1Id));
+      var vm = IssueVM.FromModel(BuildIssueWithViewpoint(vp1Id));
       var changedProperty = "";
       vm.PropertyChanged += (s, e) => changedProperty = e.PropertyName;
 
@@ -129,27 +129,27 @@ namespace Tests
     }
 
     [Test]
-    public void markup_vm_raises_viewcomments_changed_when_viewpoint_added()
+    public void issue_vm_raises_viewcomments_changed_when_viewpoint_added()
     {
       // given
-      var vm = MarkupVM.FromModel(BuildMarkupWithViewpoint(null));
+      var vm = IssueVM.FromModel(BuildIssueWithViewpoint(null));
       var changedProperty = "";
       vm.PropertyChanged += (s, e) => changedProperty = e.PropertyName;
 
       // when
-      vm.Viewpoints.Add(ViewPointVM.FromModel(new ViewPoint(false) { Guid = vp1Id.ToString() }));
+      vm.Viewpoints.Add(ViewPointVM.FromModel(new BcfViewpoint(false) { Guid = vp1Id }));
 
       // then
       Assert.That(changedProperty, Is.EqualTo("ViewComments"));
     }
 
     [Test]
-    public void markup_vm_viewpoints_add_mirrors_to_model()
+    public void issue_vm_viewpoints_add_mirrors_to_model()
     {
       // given
-      var model = BuildMarkupWithViewpoint(vp1Id);
-      var vm = MarkupVM.FromModel(model);
-      var viewPoint = ViewPointVM.FromModel(new ViewPoint(false) { Guid = vp2Id.ToString() });
+      var model = BuildIssueWithViewpoint(vp1Id);
+      var vm = IssueVM.FromModel(model);
+      var viewPoint = ViewPointVM.FromModel(new BcfViewpoint(false) { Guid = vp2Id });
 
       // when
       vm.Viewpoints.Add(viewPoint);
@@ -161,12 +161,12 @@ namespace Tests
     }
 
     [Test]
-    public void markup_vm_comment_remove_mirrors_to_model()
+    public void issue_vm_comment_remove_mirrors_to_model()
     {
       // given
-      var model = BuildMarkupWithViewpoint(vp1Id);
-      model.Comment.Add(BuildComment(comment1Id, "Comment1", vp1Id));
-      var vm = MarkupVM.FromModel(model);
+      var model = BuildIssueWithViewpoint(vp1Id);
+      model.Comments.Add(BuildComment(comment1Id, "Comment1", vp1Id));
+      var vm = IssueVM.FromModel(model);
       var comment = vm.Comment[0];
 
       // when
@@ -174,31 +174,31 @@ namespace Tests
 
       // then
       Assert.That(vm.Comment, Is.Empty);
-      Assert.That(vm.Model.Comment, Is.Empty);
+      Assert.That(vm.Model.Comments, Is.Empty);
     }
 
     [Test]
-    public void markup_vm_collections_clear_mirrors_to_model()
+    public void issue_vm_collections_clear_mirrors_to_model()
     {
       // given
-      var model = BuildMarkupWithViewpoint(vp1Id);
-      model.Comment.Add(BuildComment(comment1Id, "Comment1", vp1Id));
-      model.Comment.Add(BuildComment(comment2Id, "Comment2", null));
-      var vm = MarkupVM.FromModel(model);
+      var model = BuildIssueWithViewpoint(vp1Id);
+      model.Comments.Add(BuildComment(comment1Id, "Comment1", vp1Id));
+      model.Comments.Add(BuildComment(comment2Id, "Comment2", null));
+      var vm = IssueVM.FromModel(model);
 
       // when
       vm.Comment.Clear();
 
       // then
       Assert.That(vm.Comment, Is.Empty);
-      Assert.That(vm.Model.Comment, Is.Empty);
+      Assert.That(vm.Model.Comments, Is.Empty);
     }
 
     [Test]
     public void topic_vm_proxies_scalars_and_option_collections()
     {
       // given
-      var vm = TopicVM.FromModel(new Topic());
+      var vm = TopicVM.FromModel(new BcfTopic());
       vm.TopicStatusesCollection.Clear();
       vm.TopicTypesCollection.Clear();
       vm.TopicStatusesCollection.Add("Open");
@@ -218,7 +218,7 @@ namespace Tests
     public void viewpoint_vm_snapshot_path_raises_property_changed()
     {
       // given
-      var vm = ViewPointVM.FromModel(new ViewPoint(false));
+      var vm = ViewPointVM.FromModel(new BcfViewpoint(false));
       var changedProperty = "";
       vm.PropertyChanged += (s, e) => changedProperty = e.PropertyName;
 
@@ -233,8 +233,8 @@ namespace Tests
     public void bcf_file_vm_maps_issues_from_model()
     {
       // given
-      var model = new BcfFile();
-      model.Issues.Add(new Markup(DateTime.Now));
+      var model = new BcfProject();
+      model.Issues.Add(new BcfIssue(DateTime.Now));
 
       // when
       var vm = BcfFileVM.FromModel(model);
@@ -248,8 +248,8 @@ namespace Tests
     public void bcf_file_vm_raises_selection_changed()
     {
       // given
-      var model = new BcfFile();
-      model.Issues.Add(new Markup(DateTime.Now));
+      var model = new BcfProject();
+      model.Issues.Add(new BcfIssue(DateTime.Now));
       var vm = BcfFileVM.FromModel(model);
       var changedProperty = "";
       vm.PropertyChanged += (s, e) => changedProperty = e.PropertyName;
@@ -265,9 +265,9 @@ namespace Tests
     public void bcf_file_vm_issues_add_mirrors_to_model()
     {
       // given
-      var model = new BcfFile();
+      var model = new BcfProject();
       var vm = BcfFileVM.FromModel(model);
-      var issue = new MarkupVM(new Markup(DateTime.Now));
+      var issue = new IssueVM(new BcfIssue(DateTime.Now));
 
       // when
       vm.Issues.Add(issue);
@@ -282,7 +282,7 @@ namespace Tests
     public void bcf_file_vm_raises_saved_event()
     {
       // given
-      var model = new BcfFile();
+      var model = new BcfProject();
       var vm = BcfFileVM.FromModel(model);
 
       var changedProperty = "";
@@ -313,8 +313,8 @@ namespace Tests
       bcf.RemoveComment(toRemoveComment, issue);
 
       // then
-      Assert.That(issue.Comment.Select(c => c.Guid), Is.EqualTo(new[] { toKeepCommentId.ToString() }));
-      Assert.That(issue.Model.Comment.Select(c => c.Guid), Is.EqualTo(new[] { toKeepCommentId.ToString() }));
+      Assert.That(issue.Comment.Select(c => c.Guid), Is.EqualTo(new[] { toKeepCommentId }));
+      Assert.That(issue.Model.Comments.Select(c => c.Guid), Is.EqualTo(new[] { toKeepCommentId }));
       Assert.That(bcf.HasBeenSaved, Is.False);
     }
 
@@ -333,7 +333,7 @@ namespace Tests
 
       // then
       Assert.That(issue.Comment, Is.Empty);
-      Assert.That(issue.Model.Comment, Is.Empty);
+      Assert.That(issue.Model.Comments, Is.Empty);
       Assert.That(bcf.HasBeenSaved, Is.False);
     }
 
@@ -346,14 +346,14 @@ namespace Tests
       var bcf = CreateBcf(targetTemp);
       var issue = AddIssue(bcf, topicGuid);
 
-      var view = new ViewPoint(false);
+      var view = new BcfViewpoint(false);
       var issueDir = Path.Combine(targetTemp, topicGuid.ToString());
       Directory.CreateDirectory(issueDir);
 
-      var viewpointFile = Path.Combine(issueDir, view.Viewpoint);
+      var viewpointFile = Path.Combine(issueDir, view.ViewpointFileName);
       File.WriteAllText(viewpointFile, "view");
 
-      var snapshotFile = Path.Combine(_baseTemp, view.Snapshot);
+      var snapshotFile = Path.Combine(_baseTemp, view.SnapshotFileName);
       File.WriteAllText(snapshotFile, "img");
 
       var viewVm = ViewPointVM.FromModel(view);
@@ -379,9 +379,9 @@ namespace Tests
       var bcf = CreateBcf(Path.Combine(_baseTemp, "target"));
       var issue = AddIssue(bcf, topicGuid);
 
-      var view = new ViewPoint(false);
+      var view = new BcfViewpoint(false);
       issue.Viewpoints.Add(ViewPointVM.FromModel(view));
-      issue.Comment.Add(CommentVM.FromModel(BuildComment(comment1Id, "linked", Guid.Parse(view.Guid))));
+      issue.Comment.Add(CommentVM.FromModel(BuildComment(comment1Id, "linked", view.Guid)));
 
       // when
       bcf.RemoveView(issue.Viewpoints[0], issue, true);
@@ -389,7 +389,7 @@ namespace Tests
       // then
       Assert.That(issue.Viewpoints, Is.Empty);
       Assert.That(issue.Comment, Is.Empty);
-      Assert.That(issue.Model.Comment, Is.Empty);
+      Assert.That(issue.Model.Comments, Is.Empty);
     }
 
     [Test]
@@ -400,9 +400,9 @@ namespace Tests
       var bcf = CreateBcf(Path.Combine(_baseTemp, "target"));
       var issue = AddIssue(bcf, topicGuid);
 
-      var view = new ViewPoint(false);
+      var view = new BcfViewpoint(false);
       issue.Viewpoints.Add(ViewPointVM.FromModel(view));
-      issue.Comment.Add(CommentVM.FromModel(BuildComment(comment1Id, "linked", Guid.Parse(view.Guid))));
+      issue.Comment.Add(CommentVM.FromModel(BuildComment(comment1Id, "linked", view.Guid)));
 
       // when
       bcf.RemoveView(issue.Viewpoints[0], issue, false);
@@ -410,8 +410,8 @@ namespace Tests
       // then
       Assert.That(issue.Viewpoints, Is.Empty);
       Assert.That(issue.Comment, Has.Count.EqualTo(1));
-      Assert.That(issue.Comment[0].Viewpoint, Is.Null);
-      Assert.That(issue.Model.Comment.Single().Viewpoint, Is.Null);
+      Assert.That(issue.Comment[0].ViewpointGuid, Is.Null);
+      Assert.That(issue.Model.Comments.Single().ViewpointGuid, Is.Null);
     }
 
     [Test]
@@ -422,12 +422,12 @@ namespace Tests
       var bcf = CreateBcf(Path.Combine(_baseTemp, "target"));
       var issue = AddIssue(bcf, topicGuid);
 
-      var keptView = new ViewPoint(false);
-      var removedView = new ViewPoint(false);
+      var keptView = new BcfViewpoint(false);
+      var removedView = new BcfViewpoint(false);
       issue.Viewpoints.Add(ViewPointVM.FromModel(keptView));
       var removedViewVm = ViewPointVM.FromModel(removedView);
       issue.Viewpoints.Add(removedViewVm);
-      issue.Comment.Add(CommentVM.FromModel(BuildComment(comment1Id, "linked", Guid.Parse(keptView.Guid))));
+      issue.Comment.Add(CommentVM.FromModel(BuildComment(comment1Id, "linked", keptView.Guid)));
 
       // when
       bcf.RemoveView(removedViewVm, issue, true);
@@ -436,7 +436,7 @@ namespace Tests
       Assert.That(issue.Viewpoints, Has.Count.EqualTo(1));
       Assert.That(issue.Viewpoints[0].Guid, Is.EqualTo(keptView.Guid));
       Assert.That(issue.Comment, Has.Count.EqualTo(1));
-      Assert.That(issue.Comment[0].Viewpoint.Guid, Is.EqualTo(keptView.Guid));
+      Assert.That(issue.Comment[0].ViewpointGuid, Is.EqualTo(keptView.Guid));
     }
 
     [Test]
@@ -446,7 +446,7 @@ namespace Tests
       var topicGuid = Guid.NewGuid();
       var bcf = CreateBcf(Path.Combine(_baseTemp, "target"));
       var issue = AddIssue(bcf, topicGuid);
-      var view = new ViewPoint(false);
+      var view = new BcfViewpoint(false);
       issue.Viewpoints.Add(ViewPointVM.FromModel(view));
 
       // when / then

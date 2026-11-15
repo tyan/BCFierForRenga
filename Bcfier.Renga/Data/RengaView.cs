@@ -2,14 +2,11 @@
 using Bcfier.RengaPlugin.Entry;
 using Renga;
 using System;
+using System.Linq;
+using Bcfier.Bcf.Model;
 
-using BcfPerspectiveCamera = Bcfier.Bcf.Bcf2.PerspectiveCamera;
 using BcfUtils = Bcfier.Data.Utils.Utils;
-using Component = Bcfier.Bcf.Bcf2.Component;
-using Components = Bcfier.Bcf.Bcf2.Components;
-using ComponentVisibility = Bcfier.Bcf.Bcf2.ComponentVisibility;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
-using VisualizationInfo = Bcfier.Bcf.Bcf2.VisualizationInfo;
 
 namespace Bcfier.RengaPlugin.Data
 {
@@ -38,55 +35,47 @@ namespace Bcfier.RengaPlugin.Data
       return Guid.Empty;
     }
 
-    private static Component CreateComponent(Guid uniqueId, Guid owningEntityId)
+    private static BcfComponentData CreateComponent(Guid uniqueId, Guid owningEntityId)
     {
       var rengaEntityPath = new RengaEntityPath(uniqueId, owningEntityId);
-      return new Component
+      return new BcfComponentData
       {
         IfcGuid = Bcfier.Data.Utils.IfcGuid.ToIfcGuid(uniqueId),
         AuthoringToolId = rengaEntityPath.ToString()
       };
     }
 
-    private static ComponentVisibility BuildVisibility(IModel model, IModelView modelView, Guid owningEntityId)
+    private static BcfComponentVisibilityData BuildVisibility(IModel model, IModelView modelView, Guid owningEntityId)
     {
       var hiddenIds = modelView.GetHiddenObjects();
       if (hiddenIds == null)
         throw new System.Exception("IModelView.GetHiddenObjects returned null.");
 
-      if (hiddenIds.Length == 0)
+      var result = new BcfComponentVisibilityData
       {
-        return new ComponentVisibility
-        {
-          DefaultVisibilitySpecified = true,
-          DefaultVisibility = true,
-          Exceptions = Array.Empty<Component>()
-        };
-      }
+        DefaultVisibility = true
+      };
 
-      var hiddenComponents = new Component[hiddenIds.Length];
+      if (hiddenIds.Length == 0)
+        return result;
+
       for (int i = 0; i < hiddenIds.Length; i++)
       {
         var hiddenLocalId = (int)hiddenIds.GetValue(i);
         var hiddenUniqueId = model.GetUniqueIdFromId(hiddenLocalId);
-        hiddenComponents[i] = CreateComponent(hiddenUniqueId, owningEntityId);
+        result.Exceptions.Add(CreateComponent(hiddenUniqueId, owningEntityId));
       }
 
       // Default visibility stays true because most scenes show the majority of objects.
-      return new ComponentVisibility
-      {
-        DefaultVisibilitySpecified = true,
-        DefaultVisibility = true,
-        Exceptions = hiddenComponents
-      };
+      return result;
     }
 
-    private static Component[] BuildSelectionComponents(IModel model, Array selectedLocalIds, Guid owningEntityId)
+    private static BcfComponentData[] BuildSelectionComponents(IModel model, Array selectedLocalIds, Guid owningEntityId)
     {
       if (selectedLocalIds == null || selectedLocalIds.Length == 0)
-        return Array.Empty<Component>();
+        return Array.Empty<BcfComponentData>();
 
-      var selection = new Component[selectedLocalIds.Length];
+      var selection = new BcfComponentData[selectedLocalIds.Length];
       for (int i = 0; i < selectedLocalIds.Length; i++)
       {
         var selectedLocalId = (int)selectedLocalIds.GetValue(i);
@@ -97,10 +86,15 @@ namespace Bcfier.RengaPlugin.Data
       return selection;
     }
 
-    private static BcfPerspectiveCamera CreateCameraParams(Renga.IView3DParams view3DParams)
+    private static BcfPerspectiveCameraData CreateCameraParams(Renga.IView3DParams view3DParams)
     {
       var rengaCamera = view3DParams.Camera;
-      var bcfViewCamera = new BcfPerspectiveCamera();
+      var bcfViewCamera = new BcfPerspectiveCameraData
+      {
+        CameraViewPoint = new BcfPointData(),
+        CameraDirection = new BcfDirectionData(),
+        CameraUpVector = new BcfDirectionData()
+      };
 
       // Position
       bcfViewCamera.CameraViewPoint.X = rengaCamera.Position.X / 1000;
@@ -129,10 +123,10 @@ namespace Bcfier.RengaPlugin.Data
     }
 
     //<summary>
-    //Generate a VisualizationInfo of the current view
+    //Generate a BcfViewpointData of the current view
     //</summary>
     //<returns></returns>
-    public static VisualizationInfo GenerateViewpoint(Renga.IApplication app)
+    public static BcfViewpointData GenerateViewpoint(Renga.IApplication app)
     {
       try
       {
@@ -152,16 +146,18 @@ namespace Bcfier.RengaPlugin.Data
           return null;
 
         var owningEntityId = GetOwningEntityId(project, entityId);
-        var visualization = new VisualizationInfo();
+        var visualization = new BcfViewpointData();
 
         if (modelView is Renga.IView3DParams view3DParams)
           visualization.PerspectiveCamera = CreateCameraParams(view3DParams);
 
-        visualization.Components = new Components
+        var components = new BcfComponentsData
         {
           Visibility = BuildVisibility(model, modelView, owningEntityId),
-          Selection = BuildSelectionComponents(model, app.Selection?.GetSelectedObjects(), owningEntityId)
+          Selection = BuildSelectionComponents(model, app.Selection?.GetSelectedObjects(), owningEntityId).ToList()
         };
+
+        visualization.Components = components;
 
         return visualization;
       }

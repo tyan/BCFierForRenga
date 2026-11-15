@@ -132,7 +132,7 @@
                 Grid.Row="1"
                 Padding="5"
                 HorizontalAlignment="Stretch"
-                local:NavigationService.Text="{Binding Comment1}"
+                local:NavigationService.Text="{Binding Comment}"
                 TextWrapping="Wrap" />
             </Grid>
           </DataTemplate>

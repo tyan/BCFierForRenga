@@ -33,6 +33,9 @@
     <None Include="data\V_2_1_old\*.bcf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="data\V_2_1\*.bcf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

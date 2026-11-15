@@ -1,5 +1,4 @@
-﻿using Bcfier.Bcf.Bcf2;
-using Bcfier.Bcf.ViewModel;
+﻿using Bcfier.Bcf.ViewModel;
 using System.Windows;
 
 namespace Bcfier.Win
@@ -9,7 +8,7 @@ namespace Bcfier.Win
   /// </summary>
   public partial class AddView : Window
   {
-    public AddView(MarkupVM issue, string bcfTempFolder)
+    public AddView(IssueVM issue, string bcfTempFolder)
     {
       this.InitializeComponent();
       AddViewControl.Issue = issue;

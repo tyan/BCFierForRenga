@@ -1,66 +1,58 @@
 ﻿using System;
 using System.ComponentModel;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Model;
 
 namespace Bcfier.Bcf.ViewModel
 {
   /// <summary>
-  /// ViewModel around the model <see cref="ViewPoint"/>. Holds the UI-facing state
+  /// ViewModel around the model <see cref="BcfViewpoint"/>. Holds the UI-facing state
   /// such as <see cref="SnapshotPath"/> and raises change notifications.
   /// </summary>
   public class ViewPointVM : INotifyPropertyChanged
   {
-    public ViewPoint Model { get; private set; }
+    public BcfViewpoint Model { get; private set; }
 
-    public ViewPointVM(ViewPoint model)
+    public ViewPointVM(BcfViewpoint model)
     {
       Model = model;
     }
 
-    public static ViewPointVM FromModel(ViewPoint model)
+    public static ViewPointVM FromModel(BcfViewpoint model)
     {
       return new ViewPointVM(model);
     }
 
-    public string Guid
+    public Guid Guid
     {
       get { return Model.Guid; }
       set { Model.Guid = value; NotifyPropertyChanged("Guid"); }
     }
 
-    public string Viewpoint
+    public string ViewpointFileName
     {
-      get { return Model.Viewpoint; }
-      set { Model.Viewpoint = value; NotifyPropertyChanged("Viewpoint"); }
+      get { return Model.ViewpointFileName; }
+      set { Model.ViewpointFileName = value; NotifyPropertyChanged("ViewpointFileName"); }
     }
 
-    public string Snapshot
+    public string SnapshotFileName
     {
-      get { return Model.Snapshot; }
-      set { Model.Snapshot = value; NotifyPropertyChanged("Snapshot"); }
+      get { return Model.SnapshotFileName; }
+      set { Model.SnapshotFileName = value; NotifyPropertyChanged("SnapshotFileName"); }
     }
 
-    public int Index
+    public BcfViewpointData Data
     {
-      get { return Model.Index; }
-      set { Model.Index = value; NotifyPropertyChanged("Index"); }
+      get { return Model.Data; }
+      set { Model.Data = value; NotifyPropertyChanged("Data"); }
     }
-
-    public VisualizationInfo VisInfo
-    {
-      get { return Model.VisInfo; }
-      set { Model.VisInfo = value; NotifyPropertyChanged("VisInfo"); }
-    }
-
-    private string _snapshotPath;
 
     //used for an easier binding in the UI
     public string SnapshotPath
     {
-      get { return _snapshotPath; }
+      get { return Model.SnapshotPath; }
       set
       {
-        _snapshotPath = value;
+        Model.SnapshotPath = value;
         NotifyPropertyChanged("SnapshotPath");
       }
     }

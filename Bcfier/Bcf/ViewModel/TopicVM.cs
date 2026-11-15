@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Model;
 using Bcfier.Data;
 
 namespace Bcfier.Bcf.ViewModel
 {
   /// <summary>
-  /// ViewModel around the model <see cref="Topic"/>. Exposes the scalar data plus
+  /// ViewModel around the model <see cref="BcfTopic"/>. Exposes the scalar data plus
   /// the UI-facing dropdown option collections (not part of the BCF model).
   /// </summary>
   public class TopicVM : INotifyPropertyChanged
   {
-    public Topic Model { get; private set; }
+    public BcfTopic Model { get; private set; }
 
-    public TopicVM(Topic model)
+    public TopicVM(BcfTopic model)
     {
       Model = model;
 
@@ -26,7 +26,7 @@ namespace Bcfier.Bcf.ViewModel
         TopicTypesCollection.Add(type);
     }
 
-    public static TopicVM FromModel(Topic model)
+    public static TopicVM FromModel(BcfTopic model)
     {
       return new TopicVM(model);
     }
