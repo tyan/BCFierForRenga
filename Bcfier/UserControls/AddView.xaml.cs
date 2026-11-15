@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Model;
 using Bcfier.Bcf.ViewModel;
 using Bcfier.Data.Utils;
 using Bcfier.Localization;
@@ -18,14 +18,14 @@ namespace Bcfier.UserControls
   public partial class AddView : UserControl
   {
     internal string TempFolder;
-    internal MarkupVM Issue;
+    internal IssueVM Issue;
 
     public AddView()
     {
       InitializeComponent();
     }
 
-    public AddView(MarkupVM issue, string bcfTempFolder)
+    public AddView(IssueVM issue, string bcfTempFolder)
     {
       InitializeComponent();
       Issue = issue;
@@ -75,7 +75,7 @@ namespace Bcfier.UserControls
     {
       try
       {
-        var view = ViewPointVM.FromModel(new ViewPoint(!Issue.Viewpoints.Any()));
+        var view = ViewPointVM.FromModel(new BcfViewpoint(!Issue.Viewpoints.Any()));
 
         if (!Directory.Exists(Path.Combine(TempFolder, Issue.Topic.Guid)))
           Directory.CreateDirectory(Path.Combine(TempFolder, Issue.Topic.Guid));
@@ -83,21 +83,19 @@ namespace Bcfier.UserControls
 
         if (!string.IsNullOrEmpty(CommentBox.Text))
         {
-          var c = new Comment
+          var c = new BcfComment
           {
-            Comment1 = CommentBox.Text,
+            Comment = CommentBox.Text,
             Author = Utils.GetUsername(),
-            //Status = comboStatuses.SelectedValue.ToString(),
-            //VerbalStatus = VerbalStatus.Text,
             Date = DateTime.Now,
-            Viewpoint = new CommentViewpoint { Guid = view.Guid }
+            ViewpointGuid = view.Guid
           };
           Issue.Comment.Add(CommentVM.FromModel(c));
         }
         //first save the image, then update path
         if (SnapshotImg.Source != null)
         {
-          var path = Path.Combine(TempFolder, Issue.Topic.Guid, view.Snapshot);
+          var path = Path.Combine(TempFolder, Issue.Topic.Guid, view.SnapshotFileName);
           ImagingUtils.SaveImageSource(SnapshotImg.Source, path);
           view.SnapshotPath = path;
         }

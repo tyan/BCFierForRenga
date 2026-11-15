@@ -4,43 +4,38 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Model;
 
 namespace Bcfier.Bcf.ViewModel
 {
   /// <summary>
-  /// ViewModel around the model <see cref="Markup"/>. Owns observable collections
+  /// ViewModel around the model <see cref="BcfIssue"/>. Owns observable collections
   /// of viewpoints and comments and the computed <see cref="ViewComments"/> grouping,
   /// raising change notifications from here rather than from the model.
   /// </summary>
-  public class MarkupVM : INotifyPropertyChanged
+  public class IssueVM : INotifyPropertyChanged
   {
-    public Markup Model { get; private set; }
+    public BcfIssue Model { get; private set; }
 
     public TopicVM Topic { get; private set; }
-    public ObservableCollectionVM<ViewPointVM, ViewPoint> Viewpoints { get; private set; }
-    public ObservableCollectionVM<CommentVM, Comment> Comment { get; private set; }
+    public ObservableCollectionVM<ViewPointVM, BcfViewpoint> Viewpoints { get; private set; }
+    public ObservableCollectionVM<CommentVM, BcfComment> Comment { get; private set; }
 
-    public MarkupVM(Markup model)
+    public IssueVM(BcfIssue model)
     {
       Model = model;
-      Topic = model.Topic != null ? TopicVM.FromModel(model.Topic) : null;
-// The synced collections need a real model collection to mirror into. If the incoming
-      // model has null collections (only possible via the parameterless Markup ctor), attach
-      // an empty one to the model; serialization-wise empty == absent, so the write is idempotent.
-      var modelViewpoints = model.Viewpoints ?? (model.Viewpoints = new List<ViewPoint>());
-      var modelComments = model.Comment ?? (model.Comment = new List<Comment>());
-      Viewpoints = new ObservableCollectionVM<ViewPointVM, ViewPoint>(modelViewpoints, ViewPointVM.FromModel, v => v.Model);
-      Comment = new ObservableCollectionVM<CommentVM, Comment>(modelComments, CommentVM.FromModel, c => c.Model);
+      Topic = TopicVM.FromModel(model.Topic);
+      Viewpoints = new ObservableCollectionVM<ViewPointVM, BcfViewpoint>(model.Viewpoints, ViewPointVM.FromModel, v => v.Model);
+      Comment = new ObservableCollectionVM<CommentVM, BcfComment>(model.Comments, CommentVM.FromModel, c => c.Model);
 
       //when Views or comments change refresh the ViewComments grouping
       Viewpoints.CollectionChanged += OnViewCommentsChanged;
       Comment.CollectionChanged += OnViewCommentsChanged;
     }
 
-    public static MarkupVM FromModel(Markup model)
+    public static IssueVM FromModel(BcfIssue model)
     {
-      return new MarkupVM(model);
+      return new IssueVM(model);
     }
 
     private void OnViewCommentsChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -60,7 +55,7 @@ namespace Bcfier.Bcf.ViewModel
         foreach (var viewpoint in Viewpoints)
         {
           var linkedComments = Comment.Where(
-            x => x.Viewpoint != null && x.Viewpoint.Guid == viewpoint.Guid);
+            x => x.ViewpointGuid.HasValue && x.ViewpointGuid.Value == viewpoint.Guid);
           var linkedCommentsCollection = new ObservableCollection<CommentVM>(linkedComments);
           var viewPointCommentsVM = new ViewCommentsVM(viewpoint, linkedCommentsCollection);
 
@@ -68,7 +63,7 @@ namespace Bcfier.Bcf.ViewModel
         }
 
         var unlinkedComments = Comment.Where(
-          x => !Viewpoints.Any(v => x.Viewpoint != null && v.Guid == x.Viewpoint.Guid));
+          x => !x.ViewpointGuid.HasValue || !Viewpoints.Any(v => v.Guid == x.ViewpointGuid.Value));
         var unlinkedCommentsCollection = new ObservableCollection<CommentVM>(unlinkedComments);
         result.Add(new ViewCommentsVM(null, unlinkedCommentsCollection));
 

@@ -50,14 +50,20 @@ namespace Bcfier.Bcf.Adapters
 
     public static BcfIssue ToDomain(Markup markup)
     {
-      var issue = new BcfIssue
+      if (markup == null)
+        return null;
+
+      // Topic is required by the BCF 2.1 schema (minOccurs="1"); the loader rejects
+      // markup.bcf without it, so here it is a domain invariant.
+      var issue = new BcfIssue(ToDomain(markup.Topic))
       {
-        Topic = ToDomain(markup.Topic),
         Index = markup.Topic.Index,
         HasBeenSaved = false
       };
-      issue.Comments.AddRange(markup.Comment.Select(ToDomain));
-      issue.Viewpoints.AddRange(markup.Viewpoints.Select(ToDomain));
+      if (markup.Comment != null)
+        issue.Comments.AddRange(markup.Comment.Select(ToDomain));
+      if (markup.Viewpoints != null)
+        issue.Viewpoints.AddRange(markup.Viewpoints.Select(ToDomain));
       if (markup.Header != null)
         issue.HeaderFiles.AddRange(markup.Header.Select(ToDomain));
       return issue;
@@ -428,8 +434,10 @@ namespace Bcfier.Bcf.Adapters
         CreationDate = topic.CreationDate,
         CreationAuthor = topic.CreationAuthor,
         ModifiedDate = topic.ModifiedDate,
+        ModifiedDateSpecified = topic.ModifiedDate != default(DateTime),
         ModifiedAuthor = topic.ModifiedAuthor,
         DueDate = topic.DueDate,
+        DueDateSpecified = topic.DueDate != default(DateTime),
         AssignedTo = topic.AssignedTo,
         Stage = topic.Stage,
         Description = topic.Description,
@@ -457,6 +465,7 @@ namespace Bcfier.Bcf.Adapters
         Author = comment.Author,
         Comment1 = comment.Comment,
         ModifiedDate = comment.ModifiedDate,
+        ModifiedDateSpecified = comment.ModifiedDate != default(DateTime),
         ModifiedAuthor = comment.ModifiedAuthor,
         Viewpoint = comment.ViewpointGuid.HasValue
           ? new CommentViewpoint { Guid = comment.ViewpointGuid.Value.ToString() }
@@ -557,7 +566,8 @@ namespace Bcfier.Bcf.Adapters
 
       var result = new ComponentVisibility
       {
-        DefaultVisibility = visibility.DefaultVisibility
+        DefaultVisibility = visibility.DefaultVisibility,
+        DefaultVisibilitySpecified = true
       };
 
       if (visibility.Exceptions != null && visibility.Exceptions.Count > 0)

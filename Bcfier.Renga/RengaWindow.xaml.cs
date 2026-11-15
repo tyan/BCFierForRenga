@@ -5,13 +5,10 @@ using System.Windows;
 using System.Windows.Input;
 
 using Renga;
-using Bcfier.Bcf.Bcf2;
 using Bcfier.Bcf.ViewModel;
 using Bcfier.RengaPlugin.Entry;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Component = Bcfier.Bcf.Bcf2.Component;
-using Point = Bcfier.Bcf.Bcf2.Point;
 using Bcfier.Data.Utils;
 using Bcfier.RengaPlugin.Data;
 using Bcfier.Localization;
@@ -63,7 +60,7 @@ namespace Bcfier.RengaPlugin
         if (view == null)
           return;
 
-        ExtEvntOpenView.Execute(_App, view.VisInfo);
+        ExtEvntOpenView.Execute(_App, view.Data);
       }
       catch (System.Exception ex)
       {
@@ -82,7 +79,7 @@ namespace Bcfier.RengaPlugin
         if (m_panel.SelectedBcf() == null)
           return;
         
-        var issue = e.Parameter as MarkupVM;
+        var issue = e.Parameter as IssueVM;
         if (issue == null)
         {
           MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"));
@@ -107,7 +104,7 @@ namespace Bcfier.RengaPlugin
         if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
         {
           //generate and set the visinfo
-          issue.Viewpoints.Last().VisInfo = RengaView.GenerateViewpoint(_App);
+          issue.Viewpoints.Last().Data = RengaView.GenerateViewpoint(_App);
           m_panel.SelectedBcf().HasBeenSaved = false;
         }
 

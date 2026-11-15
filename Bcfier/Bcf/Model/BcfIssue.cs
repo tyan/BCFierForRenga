@@ -5,10 +5,12 @@ namespace Bcfier.Bcf.Model
 {
   /// <summary>
   /// Version-neutral domain model of a single BCF issue (aggregate root: topic + comments + viewpoints).
+  /// <see cref="Topic"/> is a required invariant (the BCF 2.1 schema declares Topic as minOccurs="1"):
+  /// it is never null and can only be supplied through a constructor.
   /// </summary>
   public class BcfIssue
   {
-    public BcfTopic Topic { get; set; }
+    public BcfTopic Topic { get; private set; }
     public List<BcfComment> Comments { get; set; } = new List<BcfComment>();
     public List<BcfViewpoint> Viewpoints { get; set; } = new List<BcfViewpoint>();
     public List<BcfHeaderFile> HeaderFiles { get; set; } = new List<BcfHeaderFile>();
@@ -18,11 +20,17 @@ namespace Bcfier.Bcf.Model
 
     public BcfIssue()
     {
+      Topic = new BcfTopic();
     }
 
     public BcfIssue(DateTime created)
     {
       Topic = new BcfTopic(created);
+    }
+
+    public BcfIssue(BcfTopic topic)
+    {
+      Topic = topic ?? throw new ArgumentNullException(nameof(topic));
     }
   }
 

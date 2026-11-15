@@ -64,8 +64,8 @@ namespace Tests
       Assert.That(issue.Viewpoints.Select(v => v.Guid),
         Is.EquivalentTo(new[]
         {
-          "b8bcbaba-c94d-46f0-8c53-63c63235446e",
-          "d66b0ff3-9172-4393-980a-fe1ba798a1fd"
+          Guid.Parse("b8bcbaba-c94d-46f0-8c53-63c63235446e"),
+          Guid.Parse("d66b0ff3-9172-4393-980a-fe1ba798a1fd")
         }));
       Assert.That(issue.Viewpoints.All(v => v.SnapshotPath != null), Is.True);
     }
@@ -90,16 +90,16 @@ namespace Tests
       Assert.That(issue.Comment.Select(c => c.Guid),
         Is.EquivalentTo(new[]
         {
-          "d6c8d1de-e197-4657-b7ae-6ea03b7f4a00",
-          "ba48f036-489c-4d4e-9340-8efd18f62b57"
+          Guid.Parse("d6c8d1de-e197-4657-b7ae-6ea03b7f4a00"),
+          Guid.Parse("ba48f036-489c-4d4e-9340-8efd18f62b57")
         }));
-      Assert.That(issue.Comment.All(c => c.Viewpoint != null && c.Viewpoint.Guid == "d3ce8d2d-cca4-42fd-9577-2ffa981219e1"), Is.True);
-      var firstComment = issue.Comment.Single(c => c.Guid == "d6c8d1de-e197-4657-b7ae-6ea03b7f4a00");
+      Assert.That(issue.Comment.All(c => c.ViewpointGuid == Guid.Parse("d3ce8d2d-cca4-42fd-9577-2ffa981219e1")), Is.True);
+      var firstComment = issue.Comment.Single(c => c.Guid == Guid.Parse("d6c8d1de-e197-4657-b7ae-6ea03b7f4a00"));
       Assert.That(firstComment.Author, Is.EqualTo("Коля"));
-      Assert.That(firstComment.Comment1, Is.EqualTo("Комментарий 1"));
-      var secondComment = issue.Comment.Single(c => c.Guid == "ba48f036-489c-4d4e-9340-8efd18f62b57");
+      Assert.That(firstComment.Comment, Is.EqualTo("Комментарий 1"));
+      var secondComment = issue.Comment.Single(c => c.Guid == Guid.Parse("ba48f036-489c-4d4e-9340-8efd18f62b57"));
       Assert.That(secondComment.Author, Is.EqualTo("Юра"));
-      Assert.That(secondComment.Comment1, Is.EqualTo("Обсудим?"));
+      Assert.That(secondComment.Comment, Is.EqualTo("Обсудим?"));
       Assert.That(issue.Viewpoints.Single().SnapshotPath, Is.Not.Null);
       var viewComments = issue.ViewComments;
       Assert.That(viewComments, Has.Count.EqualTo(2));

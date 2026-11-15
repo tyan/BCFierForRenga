@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using Bcfier.Bcf.Bcf2;
+﻿using System.Windows;
+using Bcfier.Bcf.Model;
 
 
 namespace Bcfier.Windows
@@ -11,7 +10,7 @@ namespace Bcfier.Windows
   public partial class ComponentsList : Window
   {
     //disabled for now
-    public ComponentsList(Components components)
+    public ComponentsList(BcfComponentsData components)
     {
       InitializeComponent();
       //componentsList.ItemsSource = components.Selection;

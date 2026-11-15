@@ -26,6 +26,7 @@ namespace Bcfier.Bcf.Model
     public BcfProject()
     {
       Id = Guid.NewGuid();
+      TempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "BCFier", Id.ToString());
     }
   }
 }

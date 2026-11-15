@@ -1,5 +1,6 @@
 using Bcfier.Bcf.Bcf2;
 using System;
+using System.Collections.Generic;
 using System.IO.Compression;
 using System.IO;
 using System.Linq;
@@ -144,7 +145,17 @@ namespace Bcfier.Bcf
         var issue = DeserializeMarkup(markupFile);
         Trace.Assert(issue != null);
 
+        // Topic is required by the BCF 2.1 schema (minOccurs="1"); a markup without it is
+        // an invalid archive — fail with a clear error instead of an NRE in the ordering below.
+        if (issue.Topic == null)
+          throw new InvalidDataException($"markup.bcf without Topic: '{markupFile}'");
+
         DeserializeViewpoints(issue, dirInfo);
+
+        if (issue.Comment == null)
+          issue.Comment = new List<Bcf2.Comment>();
+        if (issue.Viewpoints == null)
+          issue.Viewpoints = new List<Bcf2.ViewPoint>();
 
         issue.Comment = issue.Comment.OrderBy(x => x.Date).ToList();
         issue.Viewpoints = issue.Viewpoints.OrderBy(x => x.Index).ToList();

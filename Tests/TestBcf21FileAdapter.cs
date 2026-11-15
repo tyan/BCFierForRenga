@@ -14,11 +14,14 @@ namespace Tests
     private readonly string _legacyTwoViewsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "TwoViewsMaisonette.bcf");
     private readonly string _legacyDrawingTwoCommentsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "DrawingTwoCommentsMaisonette.bcf");
     private readonly string _legacyMultipleMarkupsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "MultipleMarkups.bcf");
+    private readonly string _noTopicBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1_old", "NoTopic.bcf");
 
     // conformant 2.1 fixtures: used everywhere else
     private readonly string _conformantTwoViewsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1", "TwoViewsMaisonette.bcf");
     private readonly string _conformantDrawingTwoCommentsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1", "DrawingTwoCommentsMaisonette.bcf");
+    private readonly string _conformantCameraBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1", "CameraMaisonette.bcf");
     private readonly string _conformantNoSnapshotBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1", "NoSnapshot.bcf");
+    private readonly string _conformantNoCommentsViewpointsBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1", "NoCommentsViewpoints.bcf");
     private readonly string _conformantEmptyBcfPath = Path.Combine(AppContext.BaseDirectory, "data", "V_2_1", "Empty.bcf");
 
     private readonly List<string> _loadedTempPaths = new List<string>();
@@ -50,11 +53,8 @@ namespace Tests
         TempPath = Path.Combine(_outputDir, "temp", Guid.NewGuid().ToString()),
         Issues =
         {
-          new BcfIssue
-          {
-            // conformant 2.1: CreationAuthor present, no plural legacy elements
-            Topic = new BcfTopic { CreationAuthor = "someone@example.com" }
-          }
+          // conformant 2.1: CreationAuthor present, no plural legacy elements
+          new BcfIssue(new BcfTopic { CreationAuthor = "someone@example.com" })
         }
       };
     }
@@ -452,6 +452,111 @@ namespace Tests
       Assert.That(issue.Viewpoints.All(v => v.Data != null), Is.True);
       Assert.That(issue.Viewpoints.Single(v => v.Guid == originalIssue.Viewpoints[0].Guid).Data.Guid,
         Is.EqualTo(originalIssue.Viewpoints[0].Data.Guid));
+    }
+
+    [Test]
+    public void roundtrip_preserves_default_visibility()
+    {
+      // given
+      var adapter = new Bcf21FileAdapter();
+      var project = LoadThroughAdapter(adapter, _conformantCameraBcfPath);
+      var viewpoint = project.Issues.Single().Viewpoints.Single();
+      Assert.That(viewpoint.Data.Components, Is.Not.Null, "pre-condition: fixture must carry components");
+      Assert.That(viewpoint.Data.Components.Visibility, Is.Not.Null, "pre-condition: fixture must carry visibility");
+      Assert.That(viewpoint.Data.Components.Visibility.DefaultVisibility, Is.True,
+        "pre-condition: fixture must carry DefaultVisibility=true");
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "roundtrip_visibility.bcf");
+
+      // when
+      Assert.That(adapter.Save(project, outPath), Is.True);
+      var reloaded = LoadThroughAdapter(new Bcf21FileAdapter(), outPath);
+
+      // then
+      var visibility = reloaded.Issues.Single().Viewpoints.Single().Data.Components.Visibility;
+      Assert.That(visibility, Is.Not.Null);
+      Assert.That(visibility.DefaultVisibility, Is.True,
+        "DefaultVisibility=true was lost on save: DefaultVisibilitySpecified is not set");
+    }
+
+    [Test]
+    public void roundtrip_preserves_comment_modified_date()
+    {
+      // given
+      var adapter = new Bcf21FileAdapter();
+      var modifiedDate = new DateTime(2026, 10, 15, 12, 30, 45, DateTimeKind.Local);
+      var project = CreateConformantProject();
+      project.Issues.Single().Comments.Add(new BcfComment
+      {
+        ModifiedDate = modifiedDate,
+      });
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "roundtrip_comment_modified.bcf");
+
+      // when
+      Assert.That(adapter.Save(project, outPath), Is.True);
+      var reloaded = LoadThroughAdapter(new Bcf21FileAdapter(), outPath);
+
+      // then
+      var comment = reloaded.Issues.Single().Comments.Single();
+      Assert.That(comment.ModifiedDate, Is.EqualTo(modifiedDate),
+        "comment ModifiedDate was lost on save: ModifiedDateSpecified is not set");
+    }
+
+    [Test]
+    public void roundtrip_preserves_topic_modified_and_due_date()
+    {
+      // given
+      var adapter = new Bcf21FileAdapter();
+      var modifiedDate = new DateTime(2026, 10, 15, 12, 30, 45, DateTimeKind.Local);
+      var dueDate = new DateTime(2026, 11, 20, 18, 0, 0, DateTimeKind.Local);
+      var project = CreateConformantProject();
+      var topic = project.Issues.Single().Topic;
+      topic.ModifiedDate = modifiedDate;
+      topic.DueDate = dueDate;
+      Directory.CreateDirectory(_outputDir);
+      var outPath = Path.Combine(_outputDir, "roundtrip_topic_dates.bcf");
+
+      // when
+      Assert.That(adapter.Save(project, outPath), Is.True);
+      var reloaded = LoadThroughAdapter(new Bcf21FileAdapter(), outPath);
+
+      // then
+      var topicReloaded = reloaded.Issues.Single().Topic;
+      Assert.That(topicReloaded.ModifiedDate, Is.EqualTo(modifiedDate),
+        "topic ModifiedDate was lost on save: ModifiedDateSpecified is not set");
+      Assert.That(topicReloaded.DueDate, Is.EqualTo(dueDate),
+        "topic DueDate was lost on save: DueDateSpecified is not set");
+    }
+
+    [Test]
+    public void load_markup_without_comments_viewpoints_works()
+    {
+      // given: a conformant fixture whose markup.bcf has no Comment and no Viewpoints elements
+      // (allowed by the BCF 2.1 schema, written by third-party tools)
+      var adapter = new Bcf21FileAdapter();
+
+      // when
+      var project = LoadThroughAdapter(adapter, _conformantNoCommentsViewpointsBcfPath);
+
+      // then
+      var issue = project.Issues.Single();
+      Assert.That(issue.Comments, Is.Empty);
+      Assert.That(issue.Viewpoints, Is.Empty);
+      Assert.That(issue.Topic.Guid, Is.EqualTo("11111111-2222-4333-8444-555555555555"));
+      Assert.That(project.SourceFormat, Is.EqualTo(ProjectFormat.Bcf21));
+    }
+
+    [Test]
+    public void load_markup_without_topic_throws_invalid_data()
+    {
+      // given: an archive whose markup.bcf has no Topic element
+      // (Topic is required by the BCF 2.1 schema: minOccurs="1")
+      var adapter = new Bcf21FileAdapter();
+
+      // when / then: the invalid archive is rejected at load, not silently mapped to
+      // an issue with a null Topic (a domain invariant)
+      Assert.Throws<InvalidDataException>(() => adapter.Load(_noTopicBcfPath));
     }
   }
 }

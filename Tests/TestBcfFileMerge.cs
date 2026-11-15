@@ -1,5 +1,5 @@
 using Bcfier.Bcf;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Model;
 using Bcfier.Bcf.ViewModel;
 using System;
 using System.IO;
@@ -29,7 +29,7 @@ namespace Tests
     {
       if (createDirectory)
         Directory.CreateDirectory(tempPath);
-      return BcfFileVM.FromModel(new BcfFile { TempPath = tempPath });
+      return BcfFileVM.FromModel(new BcfProject { TempPath = tempPath });
     }
 
     private (BcfFileVM Target, BcfFileVM Source, string TargetTemp, string SourceTemp) CreateTargetAndSource()
@@ -39,29 +39,29 @@ namespace Tests
       return (CreateBcf(targetTemp), CreateBcf(sourceTemp), targetTemp, sourceTemp);
     }
 
-    private static MarkupVM AddIssue(BcfFileVM bcf, Guid topicGuid)
+    private static IssueVM AddIssue(BcfFileVM bcf, Guid topicGuid)
     {
-      var markup = new Markup(DateTime.Now);
-      markup.Topic.Guid = topicGuid.ToString();
-      var vm = MarkupVM.FromModel(markup);
+      var issue = new BcfIssue(DateTime.Now);
+      issue.Topic.Guid = topicGuid.ToString();
+      var vm = IssueVM.FromModel(issue);
       bcf.Issues.Add(vm);
       return vm;
     }
 
-    private static Comment BuildComment(Guid guid, string text, DateTime date)
+    private static BcfComment BuildComment(Guid guid, string text, DateTime date)
     {
-      return new Comment { Guid = guid.ToString(), Comment1 = text, Date = date };
+      return new BcfComment { Guid = guid, Comment = text, Date = date };
     }
 
-    private static ViewPointVM AddView(BcfFileVM bcf, MarkupVM issue, string? snapshotName = null, string? viewpointName = null)
+    private static ViewPointVM AddView(BcfFileVM bcf, IssueVM issue, string? snapshotName = null, string? viewpointName = null)
     {
-      var view = new ViewPoint(false);
+      var view = new BcfViewpoint(false);
       if (snapshotName != null)
-        view.Snapshot = snapshotName;
+        view.SnapshotFileName = snapshotName;
       if (viewpointName != null)
-        view.Viewpoint = viewpointName;
+        view.ViewpointFileName = viewpointName;
       var viewVm = ViewPointVM.FromModel(view);
-      viewVm.SnapshotPath = Path.Combine(bcf.TempPath, issue.Model.Topic.Guid, view.Snapshot);
+      viewVm.SnapshotPath = Path.Combine(bcf.TempPath, issue.Model.Topic.Guid, view.SnapshotFileName);
       issue.Viewpoints.Add(viewVm);
       return viewVm;
     }
@@ -99,7 +99,7 @@ namespace Tests
       var issue = AddIssue(source, topicGuid);
       var viewVm = AddView(source, issue);
       var sourceIssueDir = CreateIssueDirectory(source, topicGuid);
-      File.WriteAllText(Path.Combine(sourceIssueDir, viewVm.Snapshot), "img");
+      File.WriteAllText(Path.Combine(sourceIssueDir, viewVm.SnapshotFileName), "img");
 
       // when
       target.MergeBcfFile(new[] { source });
@@ -108,10 +108,10 @@ namespace Tests
       Assert.That(target.Issues, Has.Count.EqualTo(1));
       var mergedDir = Path.Combine(targetTemp, topicGuid.ToString());
       Assert.That(Directory.Exists(mergedDir), Is.True);
-      Assert.That(File.Exists(Path.Combine(mergedDir, viewVm.Snapshot)), Is.True);
+      Assert.That(File.Exists(Path.Combine(mergedDir, viewVm.SnapshotFileName)), Is.True);
       Assert.That(Directory.Exists(sourceIssueDir), Is.False);
       Assert.That(Directory.Exists(sourceTemp), Is.False);
-      Assert.That(target.Issues[0].Viewpoints[0].SnapshotPath, Is.EqualTo(Path.Combine(mergedDir, viewVm.Snapshot)));
+      Assert.That(target.Issues[0].Viewpoints[0].SnapshotPath, Is.EqualTo(Path.Combine(mergedDir, viewVm.SnapshotFileName)));
       Assert.That(target.HasBeenSaved, Is.False);
     }
 
@@ -138,7 +138,7 @@ namespace Tests
       // then
       var merged = target.Issues.Single();
       Assert.That(merged.Comment, Has.Count.EqualTo(2));
-      Assert.That(merged.Comment.Select(c => c.Guid), Is.EqualTo(new[] { newId.ToString(), existingId.ToString() }));
+      Assert.That(merged.Comment.Select(c => c.Guid), Is.EqualTo(new[] { newId, existingId }));
       Assert.That(target.HasBeenSaved, Is.False);
     }
 
@@ -162,7 +162,7 @@ namespace Tests
       // then
       var merged = target.Issues.Single();
       Assert.That(merged.Comment, Has.Count.EqualTo(1));
-      Assert.That(merged.Comment.Single().Guid, Is.EqualTo(commentId.ToString()));
+      Assert.That(merged.Comment.Single().Guid, Is.EqualTo(commentId));
     }
 
     [Test]
@@ -182,7 +182,7 @@ namespace Tests
       var sourceIssue = AddIssue(source, topicGuid);
       var viewVm = AddView(source, sourceIssue, "snapshot.png", "viewpoint.bcfv");
       var sourceIssueDir = CreateIssueDirectory(source, topicGuid);
-      var sourceSnapshot = Path.Combine(sourceIssueDir, viewVm.Snapshot);
+      var sourceSnapshot = Path.Combine(sourceIssueDir, viewVm.SnapshotFileName);
       File.WriteAllText(sourceSnapshot, "source");
 
       // when
@@ -194,8 +194,8 @@ namespace Tests
       var merged = target.Issues.Single();
       Assert.That(merged.Viewpoints, Has.Count.EqualTo(1));
       var mergedView = merged.Viewpoints[0];
-      Assert.That(mergedView.Viewpoint, Is.EqualTo(expectedViewpointName));
-      Assert.That(mergedView.Snapshot, Is.EqualTo(expectedSnapshotName));
+      Assert.That(mergedView.ViewpointFileName, Is.EqualTo(expectedViewpointName));
+      Assert.That(mergedView.SnapshotFileName, Is.EqualTo(expectedSnapshotName));
       Assert.That(mergedView.SnapshotPath, Is.EqualTo(Path.Combine(targetTemp, topicGuid.ToString(), expectedSnapshotName)));
       Assert.That(File.ReadAllText(Path.Combine(targetIssueDir, expectedSnapshotName)), Is.EqualTo("source"));
       Assert.That(File.ReadAllText(Path.Combine(targetIssueDir, "snapshot.png")), Is.EqualTo("target"));
@@ -224,8 +224,8 @@ namespace Tests
       var merged = target.Issues.Single();
       Assert.That(merged.Viewpoints, Has.Count.EqualTo(1));
       var mergedView = merged.Viewpoints[0];
-      Assert.That(mergedView.Viewpoint, Is.EqualTo(viewVm.Guid + ".bcfv"));
-      Assert.That(mergedView.Snapshot, Is.EqualTo(viewVm.Guid + ".png"));
+      Assert.That(mergedView.ViewpointFileName, Is.EqualTo(viewVm.Guid + ".bcfv"));
+      Assert.That(mergedView.SnapshotFileName, Is.EqualTo(viewVm.Guid + ".png"));
       Assert.That(mergedView.SnapshotPath, Is.EqualTo(Path.Combine(targetTemp, topicGuid.ToString(), viewVm.Guid + ".png")));
     }
 
@@ -238,10 +238,10 @@ namespace Tests
       var (target, source, _, _) = CreateTargetAndSource();
 
       var targetIssue = AddIssue(target, topicGuid);
-      targetIssue.Viewpoints.Add(ViewPointVM.FromModel(new ViewPoint(false) { Guid = viewGuid.ToString() }));
+      targetIssue.Viewpoints.Add(ViewPointVM.FromModel(new BcfViewpoint(false) { Guid = viewGuid }));
 
       var sourceIssue = AddIssue(source, topicGuid);
-      sourceIssue.Viewpoints.Add(ViewPointVM.FromModel(new ViewPoint(false) { Guid = viewGuid.ToString() }));
+      sourceIssue.Viewpoints.Add(ViewPointVM.FromModel(new BcfViewpoint(false) { Guid = viewGuid }));
 
       // when
       target.MergeBcfFile(new[] { source });
@@ -249,7 +249,7 @@ namespace Tests
       // then
       var merged = target.Issues.Single();
       Assert.That(merged.Viewpoints, Has.Count.EqualTo(1));
-      Assert.That(merged.Viewpoints.Single().Guid, Is.EqualTo(viewGuid.ToString()));
+      Assert.That(merged.Viewpoints.Single().Guid, Is.EqualTo(viewGuid));
     }
 
     // TODO: even if there is nothing to merge
