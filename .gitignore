@@ -29,6 +29,7 @@ TestResult.xml
 
 # Agent development
 _agents/
+.ralph/
 
 # Common temporary files
 *.log
