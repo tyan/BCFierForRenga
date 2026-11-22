@@ -1,27 +1,27 @@
 ﻿using System;
 using System.ComponentModel;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Model;
 
 namespace Bcfier.Bcf.ViewModel
 {
   /// <summary>
-  /// ViewModel around the model <see cref="Comment"/>.
+  /// ViewModel around the model <see cref="BcfComment"/>.
   /// </summary>
   public class CommentVM : INotifyPropertyChanged
   {
-    public Comment Model { get; private set; }
+    public BcfComment Model { get; private set; }
 
-    public CommentVM(Comment model)
+    public CommentVM(BcfComment model)
     {
       Model = model;
     }
 
-    public static CommentVM FromModel(Comment model)
+    public static CommentVM FromModel(BcfComment model)
     {
       return new CommentVM(model);
     }
 
-    public string Guid
+    public Guid Guid
     {
       get { return Model.Guid; }
       set { Model.Guid = value; NotifyPropertyChanged("Guid"); }
@@ -39,16 +39,16 @@ namespace Bcfier.Bcf.ViewModel
       set { Model.Author = value; NotifyPropertyChanged("Author"); }
     }
 
-    public string Comment1
+    public string Comment
     {
-      get { return Model.Comment1; }
-      set { Model.Comment1 = value; NotifyPropertyChanged("Comment1"); }
+      get { return Model.Comment; }
+      set { Model.Comment = value; NotifyPropertyChanged("Comment"); }
     }
 
-    public CommentViewpoint Viewpoint
+    public Guid? ViewpointGuid
     {
-      get { return Model.Viewpoint; }
-      set { Model.Viewpoint = value; NotifyPropertyChanged("Viewpoint"); }
+      get { return Model.ViewpointGuid; }
+      set { Model.ViewpointGuid = value; NotifyPropertyChanged("ViewpointGuid"); }
     }
 
     public DateTime ModifiedDate

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Model;
 using Bcfier.Data.Utils;
 using Bcfier.Localization;
 using Renga;
@@ -10,14 +10,14 @@ namespace Bcfier.RengaPlugin.Entry
 { 
   public class ExtEvntOpenView
   {
-    static private string GetAnyAuthoringToolId(Components components)
+    static private string GetAnyAuthoringToolId(BcfComponentsData components)
     {
       // Here we use AuthoringToolId provided by BCF standard to contain full path to the Renga entity.
       // Consider all Components belong to the same Renga entity
 
       return components.Selection?.FirstOrDefault()?.AuthoringToolId 
         ?? components.Visibility?.Exceptions?.FirstOrDefault()?.AuthoringToolId 
-        ?? components.Coloring?.FirstOrDefault(c => c.Component?.Length > 0)?.Component?.FirstOrDefault()?.AuthoringToolId 
+        ?? components.Coloring?.FirstOrDefault(c => c.Components?.Count > 0)?.Components?.FirstOrDefault()?.AuthoringToolId 
         ?? string.Empty;
     }
 
@@ -37,7 +37,7 @@ namespace Bcfier.RengaPlugin.Entry
       return new Tuple<Renga.IModel, int>(drawing as Renga.IModel, drawing.Id);
     }
 
-    static private Tuple<Renga.IModel, int> GetModelAndView(Renga.IProject project, Components components)
+    static private Tuple<Renga.IModel, int> GetModelAndView(Renga.IProject project, BcfComponentsData components)
     {
       // Building model is the default case
       var anyAuthoringToolIdString = GetAnyAuthoringToolId(components);
@@ -63,7 +63,7 @@ namespace Bcfier.RengaPlugin.Entry
       return null;
     }
 
-    static private void SetCameraPosition(Renga.IModelView view, PerspectiveCamera bcfCamera)
+    static private void SetCameraPosition(Renga.IModelView view, BcfPerspectiveCameraData bcfCamera)
     {
       var rengaCamera = (view as Renga.IView3DParams)?.Camera;
       if (rengaCamera == null)
@@ -89,7 +89,7 @@ namespace Bcfier.RengaPlugin.Entry
       rengaCamera.LookAt(rengaFocusPoint, rengaCameraPos, rengaUpVector);
     }
 
-    static public void Execute(Renga.IApplication app, VisualizationInfo viewInfo)
+    static public void Execute(Renga.IApplication app, BcfViewpointData viewInfo)
     {
       try
       {
@@ -126,14 +126,13 @@ namespace Bcfier.RengaPlugin.Entry
         }
         else
         {
-          if (viewInfo.Components.Visibility.DefaultVisibilitySpecified)
-            defaultVisibility = viewInfo.Components.Visibility.DefaultVisibility;
+          defaultVisibility = viewInfo.Components.Visibility.DefaultVisibility;
 
           Func<string, bool> isExceptionObject = (string ifcGuid) =>
           {
             if (viewInfo.Components.Visibility.Exceptions == null)
               return false;
-            return Array.Find(viewInfo.Components.Visibility.Exceptions, exception => exception.IfcGuid == ifcGuid) != null;
+            return viewInfo.Components.Visibility.Exceptions.Find(exception => exception.IfcGuid == ifcGuid) != null;
           };
 
           foreach (int id in allObjectIds)

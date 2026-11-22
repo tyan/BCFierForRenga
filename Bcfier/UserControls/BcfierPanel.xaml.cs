@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Bcfier.Bcf;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Model;
 using Bcfier.Bcf.ViewModel;
 using Bcfier.Data.Utils;
 using Bcfier.Windows;
@@ -86,7 +86,7 @@ namespace Bcfier.UserControls
           return;
 
         var selItems = e.Parameter as IList;
-        var issues = selItems.Cast<MarkupVM>().ToList();
+        var issues = selItems.Cast<IssueVM>().ToList();
         if (!issues.Any())
         {
           Utils.ShowInfoMessageBox(LocValueGetter.Get("NoIssue"));
@@ -119,7 +119,7 @@ namespace Bcfier.UserControls
           return;
         var values = (object[])e.Parameter;
         var view = values[0] as ViewPointVM;
-        var issue = values[1] as MarkupVM;
+        var issue = values[1] as IssueVM;
         var content = values[2].ToString();
         //var status = (values[3] == null) ? "" : values[3].ToString();
         //var verbalStatus = values[4].ToString();
@@ -129,18 +129,14 @@ namespace Bcfier.UserControls
           return;
         }
 
-        Comment c = new Comment();
-        c.Guid = Guid.NewGuid().ToString();
-        c.Comment1 = content;
-        //c.Topic = new CommentTopic();
-        //c.Topic.Guid = issue.Topic.Guid;
-        c.Date = DateTime.Now;
-        //c.VerbalStatus = verbalStatus;
-        //c.Status = status;
-        c.Author = Utils.GetUsername();
-
-        c.Viewpoint = new CommentViewpoint();
-        c.Viewpoint.Guid = (view != null) ? view.Guid : "";
+        var c = new BcfComment
+        {
+          Guid = Guid.NewGuid(),
+          Comment = content,
+          Date = DateTime.Now,
+          Author = Utils.GetUsername(),
+          ViewpointGuid = view != null ? view.Guid : (Guid?)null
+        };
 
         issue.Comment.Add(CommentVM.FromModel(c));
 
@@ -161,7 +157,7 @@ namespace Bcfier.UserControls
         var values = (object[])e.Parameter;
         var comment = values[0] as CommentVM;
         //  var comments = selItems.Cast<Comment>().ToList();
-        var issue = (MarkupVM)values[1];
+        var issue = (IssueVM)values[1];
         if (issue == null)
         {
           MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
@@ -200,7 +196,7 @@ namespace Bcfier.UserControls
           return;
         var values = (object[])e.Parameter;
         var view = values[0] as ViewPointVM;
-        var issue = (MarkupVM)values[1];
+        var issue = (IssueVM)values[1];
         if (issue == null)
         {
           MessageBox.Show(LocValueGetter.Get("NoIssue"), LocValueGetter.Get("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
@@ -237,7 +233,7 @@ namespace Bcfier.UserControls
         if (SelectedBcf() == null)
           return;
 
-        var issue = new MarkupVM(new Markup(DateTime.Now));
+        var issue = new IssueVM(new BcfIssue(DateTime.Now));
         SelectedBcf().AddIssue(issue);
         SelectedBcf().SelectedIssue = issue;
 

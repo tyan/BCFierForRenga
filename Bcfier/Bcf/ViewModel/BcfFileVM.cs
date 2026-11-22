@@ -1,50 +1,47 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Data;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Model;
 using Bcfier.Data.Utils;
 
 namespace Bcfier.Bcf.ViewModel
 {
   /// <summary>
-  /// ViewModel around the model <see cref="BcfFile"/>. Owns the observable issues
+  /// ViewModel around the model <see cref="BcfProject"/>. Owns the observable issues
   /// collection, selection, text-search filter and dirty flag, raising change
   /// notifications from here rather than from the model.
   /// </summary>
   public class BcfFileVM : INotifyPropertyChanged
   {
-    public BcfFile Model { get; private set; }
+    public BcfProject Model { get; private set; }
 
-    private ObservableCollectionVM<MarkupVM, Markup> _issues;
-    private MarkupVM _selectedIssue;
+    private ObservableCollectionVM<IssueVM, BcfIssue> _issues;
+    private IssueVM _selectedIssue;
     private string _textSearch;
     private bool _hasBeenSaved;
     private ListCollectionView _view;
 
-    public BcfFileVM(BcfFile model)
+    public BcfFileVM(BcfProject model)
     {
       Model = model;
-      _issues = new ObservableCollectionVM<MarkupVM, Markup>(model.Issues, MarkupVM.FromModel, m => m.Model);
+      _issues = new ObservableCollectionVM<IssueVM, BcfIssue>(model.Issues, IssueVM.FromModel, m => m.Model);
       _view = new ListCollectionView(_issues);
       HasBeenSaved = true;
     }
 
-    public static BcfFileVM FromModel(BcfFile model)
+    public static BcfFileVM FromModel(BcfProject model)
     {
       var vm = new BcfFileVM(model);
       //recompute snapshot paths (UI state) from the model's relative snapshot names
       foreach (var issue in vm.Issues)
       {
-        if (issue.Model.Topic == null)
-          continue;
         foreach (var view in issue.Viewpoints)
         {
-          view.SnapshotPath = view.Snapshot != null
-            ? Path.Combine(model.TempPath, issue.Model.Topic.Guid, view.Snapshot)
+          view.SnapshotPath = view.SnapshotFileName != null
+            ? Path.Combine(model.TempPath, issue.Model.Topic.Guid, view.SnapshotFileName)
             : null;
         }
       }
@@ -97,7 +94,7 @@ namespace Bcfier.Bcf.ViewModel
       set { Model.TempPath = value; }
     }
 
-    public ObservableCollectionVM<MarkupVM, Markup> Issues
+    public ObservableCollectionVM<IssueVM, BcfIssue> Issues
     {
       get { return _issues; }
       set
@@ -108,7 +105,7 @@ namespace Bcfier.Bcf.ViewModel
       }
     }
 
-    public MarkupVM SelectedIssue
+    public IssueVM SelectedIssue
     {
       get { return _selectedIssue; }
       set
@@ -140,23 +137,31 @@ namespace Bcfier.Bcf.ViewModel
 
     private bool Filter(object o)
     {
-      var issue = o as MarkupVM;
+      var issue = o as IssueVM;
       if (issue == null)
         return false;
-      if (issue.Topic != null && ((issue.Topic.Title != null && issue.Topic.Title.ToLowerInvariant().Contains(TextSearch.ToLowerInvariant())) ||
-          (issue.Topic.Description != null && issue.Topic.Description.ToLowerInvariant().Contains(TextSearch.ToLowerInvariant()))) ||
-         issue.Comment != null && issue.Comment.Any(x => x.Comment1 != null && x.Comment1.ToLowerInvariant().Contains(TextSearch.ToLowerInvariant()))
-        )
+
+      var text = TextSearch?.ToLowerInvariant();
+      if (string.IsNullOrEmpty(text))
         return true;
+
+      Func<string, bool> containsText = item => item.IndexOf(text, StringComparison.OrdinalIgnoreCase) >= 0;
+
+      if (containsText(issue.Topic.Title) || containsText(issue.Topic.Description))
+        return true;
+
+      if (issue.Comment != null && issue.Comment.Any(x => containsText(x.Comment)))
+        return true;
+
       return false;
     }
 
-    public void AddIssue(MarkupVM issue)
+    public void AddIssue(IssueVM issue)
     {
       Issues.Add(issue);
     }
 
-    public void RemoveIssues(IEnumerable<MarkupVM> selectetitems)
+    public void RemoveIssues(IEnumerable<IssueVM> selectetitems)
     {
       foreach (var item in selectetitems)
       {
@@ -166,36 +171,37 @@ namespace Bcfier.Bcf.ViewModel
       HasBeenSaved = false;
     }
 
-    public void RemoveComment(IEnumerable<CommentVM> selectetitems, MarkupVM issue)
+    public void RemoveComment(IEnumerable<CommentVM> selectetitems, IssueVM issue)
     {
       foreach (var item in selectetitems)
         issue.Comment.Remove(item);
       HasBeenSaved = false;
     }
 
-    public void RemoveComment(CommentVM comment, MarkupVM issue)
+    public void RemoveComment(CommentVM comment, IssueVM issue)
     {
       RemoveComment(new[] { comment }, issue);
     }
 
-    public void RemoveView(ViewPointVM view, MarkupVM issue, bool delComm)
+    public void RemoveView(ViewPointVM view, IssueVM issue, bool delComm)
     {
       RemoveView(new[]{ view}, issue, delComm);
     }
 
-    public void RemoveView(IEnumerable<ViewPointVM> selectetitems, MarkupVM issue, bool delComm)
+    public void RemoveView(IEnumerable<ViewPointVM> selectetitems, IssueVM issue, bool delComm)
     {
       foreach (var item in selectetitems)
       {
-        if (File.Exists(Path.Combine(TempPath, issue.Model.Topic.Guid, item.Viewpoint)))
-          File.Delete(Path.Combine(TempPath, issue.Model.Topic.Guid, item.Viewpoint));
+        if (item.ViewpointFileName != null &&
+            File.Exists(Path.Combine(TempPath, issue.Model.Topic.Guid, item.ViewpointFileName)))
+          File.Delete(Path.Combine(TempPath, issue.Model.Topic.Guid, item.ViewpointFileName));
         if (File.Exists(item.SnapshotPath))
           File.Delete(item.SnapshotPath);
 
         var guid = item.Guid;
         issue.Viewpoints.Remove(item);
         //remove comments associated with that view
-        var viewcomments = issue.Comment.Where(x => x.Viewpoint != null && x.Viewpoint.Guid == guid).ToList();
+        var viewcomments = issue.Comment.Where(x => x.ViewpointGuid.HasValue && x.ViewpointGuid.Value == guid).ToList();
 
         if (!viewcomments.Any())
           continue;
@@ -205,7 +211,7 @@ namespace Bcfier.Bcf.ViewModel
           if (delComm)
             issue.Comment.Remove(viewcomm);
           else
-            viewcomm.Viewpoint = null;
+            viewcomm.ViewpointGuid = null;
         }
       }
       HasBeenSaved = false;
@@ -224,7 +230,7 @@ namespace Bcfier.Bcf.ViewModel
         foreach (var mergedIssue in bcf.Issues)
         {
           //it's a new issue
-          if (!Issues.Any(x => x.Model.Topic != null && mergedIssue.Model.Topic != null && x.Model.Topic.Guid == mergedIssue.Model.Topic.Guid))
+          if (!Issues.Any(x => x.Model.Topic.Guid == mergedIssue.Model.Topic.Guid))
           {
             string sourceDir = Path.Combine(bcf.TempPath, mergedIssue.Model.Topic.Guid);
             string destDir = Path.Combine(TempPath, mergedIssue.Model.Topic.Guid);
@@ -233,7 +239,7 @@ namespace Bcfier.Bcf.ViewModel
             //update path set for binding
             foreach (var view in mergedIssue.Viewpoints)
             {
-              view.SnapshotPath = Path.Combine(TempPath, mergedIssue.Model.Topic.Guid, view.Snapshot);
+              view.SnapshotPath = Path.Combine(TempPath, mergedIssue.Model.Topic.Guid, view.SnapshotFileName);
             }
             Issues.Add(mergedIssue);
           }
@@ -262,11 +268,11 @@ namespace Bcfier.Bcf.ViewModel
                 //img to be merged
                 string sourceFile = newView.SnapshotPath;
                 //assign new safe name based on guid
-                newView.Snapshot = newView.Guid + ".png";
+                newView.SnapshotFileName = newView.Guid + ".png";
                 //set new temp path for binding
-                newView.SnapshotPath = Path.Combine(TempPath, issue.Model.Topic.Guid, newView.Snapshot);
+                newView.SnapshotPath = Path.Combine(TempPath, issue.Model.Topic.Guid, newView.SnapshotFileName);
                 //assign new safe name based on guid
-                newView.Viewpoint = newView.Guid + ".bcfv";
+                newView.ViewpointFileName = newView.Guid + ".bcfv";
                 if (!string.IsNullOrEmpty(sourceFile))
                   File.Move(sourceFile, newView.SnapshotPath);
                 issue.Viewpoints.Add(newView);

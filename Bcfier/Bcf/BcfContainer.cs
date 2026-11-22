@@ -6,7 +6,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.Bcf.Adapters;
+using Bcfier.Bcf.Model;
 using Bcfier.Bcf.ViewModel;
 using Bcfier.Data.Utils;
 using Bcfier.Data;
@@ -60,7 +61,7 @@ namespace Bcfier.Bcf
     // Remove this
     public void NewFile()
     {
-      var newBcf = BcfFileVM.FromModel(new BcfFile());
+      var newBcf = BcfFileVM.FromModel(new BcfProject());
       newBcf.Filename = LocValueGetter.Get("NewBCF");
       AddBcf(newBcf);
     }
@@ -71,7 +72,7 @@ namespace Bcfier.Bcf
 
       if (!string.IsNullOrEmpty(bcf.Fullname))
       {
-        BcfSerializer.save(bcf.Model, bcf.Fullname);
+        ProjectAdapterFactory.Create(bcf.Model.SourceFormat).Save(bcf.Model, bcf.Fullname);
         bcf.HasBeenSaved = true;
       }
       else
@@ -241,7 +242,8 @@ namespace Bcfier.Bcf
     /// <returns></returns>
     private static BcfFileVM OpenBcfFile(string filePath)
     {
-      return BcfFileVM.FromModel(BcfSerializer.load(filePath));
+      var adapter = ProjectAdapterFactory.Create(ProjectFormat.Bcf21);
+      return BcfFileVM.FromModel(adapter.Load(filePath));
     }
 
     /// <summary>
@@ -259,7 +261,8 @@ namespace Bcfier.Bcf
       // Process save file dialog box results
       if (string.IsNullOrWhiteSpace(filename))
         return false;
-      var saved = BcfSerializer.save(bcf.Model, filename);
+      var adapter = ProjectAdapterFactory.Create(bcf.Model.SourceFormat);
+      var saved = adapter.Save(bcf.Model, filename);
       if (saved)
         bcf.HasBeenSaved = true;
       return saved;
